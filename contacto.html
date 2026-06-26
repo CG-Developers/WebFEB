@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="root-path" content="">
+  <meta name="description" content="Contacto y reservas — Flamenco & Events Barcelona.">
+  <title>Contacto — Flamenco & Events Barcelona</title>
+  <link rel="icon" href="assets/logo.jpg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<section class="hero hero-inner" style="min-height:45vh">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay" style="background:rgba(10,10,10,.75)"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-body" style="padding-bottom:48px">
+    <div class="breadcrumb"><a href="index.html">Inicio</a><span>›</span>Contacto</div>
+    <div class="hero-eyebrow">Reservas · Consultas · Información</div>
+    <h1 class="hero-title" style="font-size:clamp(2.5rem,6vw,4.5rem)">Contacto &amp;<br>Reservas</h1>
+    <p class="hero-sub">Estamos aquí para ayudarte</p>
+  </div>
+</section>
+
+<!-- Contacto principal -->
+<section class="section section--white">
+  <div class="section-inner">
+    <div class="grid-2" style="gap:clamp(32px,5vw,80px);align-items:flex-start">
+
+      <!-- Formulario -->
+      <div>
+        <div class="section-label">Escríbenos</div>
+        <h2 class="section-title" style="font-size:clamp(1.75rem,3vw,2.25rem);margin-bottom:28px">¿En qué podemos ayudarte?</h2>
+
+        <!-- NOTA: Configura el formulario con tu servicio preferido.
+             Opciones: Formspree (formspree.io), IONOS WebApps, o mailto:
+             Reemplaza action="#" con tu endpoint. -->
+        <form class="form" action="https://formspree.io/f/XXXXXXXX" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="nombre">Nombre *</label>
+              <input class="form-input" type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email *</label>
+              <input class="form-input" type="email" id="email" name="email" required placeholder="tu@email.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="telefono">Teléfono</label>
+              <input class="form-input" type="tel" id="telefono" name="telefono" placeholder="+34 6XX XXX XXX">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="servicio">Servicio de interés</label>
+              <select class="form-select" id="servicio" name="servicio">
+                <option value="">Selecciona...</option>
+                <option value="tablao">Tablao Flamenco</option>
+                <option value="talleres">Talleres</option>
+                <option value="clases">Clases de baile</option>
+                <option value="fiesta">Fiesta / Evento privado</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fecha">Fecha aproximada</label>
+            <input class="form-input" type="text" id="fecha" name="fecha" placeholder="Ej: 15 de marzo de 2026">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="mensaje">Mensaje *</label>
+            <textarea class="form-textarea" id="mensaje" name="mensaje" required placeholder="Cuéntanos qué buscas: número de personas, nivel, necesidades especiales..."></textarea>
+          </div>
+          <p class="form-note">* Campos obligatorios. Respondemos en menos de 24 horas.</p>
+          <button type="submit" class="btn btn-lg btn-primary" style="margin-top:8px">Enviar mensaje</button>
+        </form>
+      </div>
+
+      <!-- Info de contacto -->
+      <div style="display:flex;flex-direction:column;gap:32px">
+        <div>
+          <div class="section-label">Información de contacto</div>
+          <h2 class="section-title" style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:24px">Cómo encontrarnos</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="padding:20px;border:1px solid #EBE3D2">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9B1B30;margin-bottom:8px">Email</div>
+            <a href="mailto:info@flamencoeventsbarcelona.com" style="font-size:1rem;color:#0A0A0A">info@flamencoeventsbarcelona.com</a>
+          </div>
+          <div style="padding:20px;border:1px solid #EBE3D2">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9B1B30;margin-bottom:8px">Ubicación</div>
+            <div style="font-size:1rem;color:#4A4440">Barcelona, Catalunya</div>
+            <div style="font-size:.875rem;color:#9B9189;margin-top:4px">Indicamos la dirección exacta al confirmar la reserva</div>
+          </div>
+          <div style="padding:20px;border:1px solid #EBE3D2">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9B1B30;margin-bottom:8px">Horario de atención</div>
+            <div style="font-size:.9375rem;color:#4A4440;line-height:1.7">Lunes – Viernes: 10:00 – 20:00<br>Sábados: 10:00 – 14:00</div>
+          </div>
+          <div style="padding:20px;border:1px solid #EBE3D2">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9B1B30;margin-bottom:8px">Web</div>
+            <a href="https://www.flamencoeventsbarcelona.com" style="font-size:.9375rem;color:#0A0A0A">www.flamencoeventsbarcelona.com</a>
+          </div>
+        </div>
+
+        <!-- Mapa placeholder -->
+        <div style="background:#EBE3D2;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center;color:#9B9189">
+            <div style="font-family:'Bodoni Moda',serif;font-size:1.1rem;margin-bottom:6px;color:#6B6560">Mapa de ubicación</div>
+            <div style="font-size:.8125rem">Inserta aquí un iframe de Google Maps</div>
+          </div>
+        </div>
+        <!-- Ejemplo de mapa: reemplaza con tu dirección real
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!..." width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+        -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQs -->
+<section class="section section--pale">
+  <div class="section-inner max-900">
+    <div class="section-label">Preguntas frecuentes</div>
+    <h2 class="section-title" style="margin-bottom:36px">FAQ</h2>
+    <div style="display:flex;flex-direction:column;gap:0">
+      <details style="border-top:1px solid #EBE3D2;padding:18px 0">
+        <summary style="font-weight:600;cursor:pointer;font-size:1rem">¿Es necesario tener experiencia previa para el tablao?</summary>
+        <p style="color:#6B6560;line-height:1.75;margin-top:10px;padding-right:20px">No, en absoluto. El tablao está diseñado para todo tipo de público, con o sin experiencia en flamenco. Nuestros artistas crean una atmósfera que llega a todos por igual.</p>
+      </details>
+      <details style="border-top:1px solid #EBE3D2;padding:18px 0">
+        <summary style="font-weight:600;cursor:pointer;font-size:1rem">¿Cuánto tiempo de antelación hay que reservar?</summary>
+        <p style="color:#6B6560;line-height:1.75;margin-top:10px;padding-right:20px">Para el tablao, recomendamos reservar con al menos 3–5 días de antelación, ya que las plazas son limitadas. Para eventos privados y talleres, contacta con nosotros con la máxima antelación posible.</p>
+      </details>
+      <details style="border-top:1px solid #EBE3D2;padding:18px 0">
+        <summary style="font-weight:600;cursor:pointer;font-size:1rem">¿Los talleres se hacen en nuestras instalaciones?</summary>
+        <p style="color:#6B6560;line-height:1.75;margin-top:10px;padding-right:20px">Sí, podemos ir a vuestro espacio o podéis venir al nuestro. Nos adaptamos a lo que mejor os convenga. Solo necesitamos una sala con espacio suficiente para moverse.</p>
+      </details>
+      <details style="border-top:1px solid #EBE3D2;padding:18px 0">
+        <summary style="font-weight:600;cursor:pointer;font-size:1rem">¿Ofrecéis espectáculos para grupos de turistas?</summary>
+        <p style="color:#6B6560;line-height:1.75;margin-top:10px;padding-right:20px">Sí. Ofrecemos espectáculos y talleres especiales para grupos turísticos, hoteles, agencias de viaje y plataformas de experiencias. Contacta con nosotros para condiciones especiales.</p>
+      </details>
+      <details style="border-top:1px solid var(--ivory-400, #EBE3D2);border-bottom:1px solid #EBE3D2;padding:18px 0">
+        <summary style="font-weight:600;cursor:pointer;font-size:1rem">¿Puedo cancelar o modificar una reserva?</summary>
+        <p style="color:#6B6560;line-height:1.75;margin-top:10px;padding-right:20px">Puedes cancelar hasta 48h antes sin coste. Las cancelaciones con menos de 48h de antelación pueden tener penalización. Para más información, consúltanos directamente.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="js/main.js"></script>
+</body>
+</html>
