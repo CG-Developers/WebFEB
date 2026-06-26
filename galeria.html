@@ -61,6 +61,14 @@
                 <div class="gitem" data-idx="9"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-10.jpg" alt="Flamenco Barcelona 10" loading="lazy"></div></div>
                 <div class="gitem" data-idx="10"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-11.jpg" alt="Flamenco Barcelona 11" loading="lazy"></div></div>
                 <div class="gitem" data-idx="11"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-12.jpg" alt="Flamenco Barcelona 12" loading="lazy"></div></div>
+                <!-- Noves fotos -->
+                <div class="gitem" data-idx="12"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-13.jpg" alt="Bailaora flamenca con abanico" loading="lazy"></div></div>
+                <div class="gitem" data-idx="13"><div class="photo-slot" style="aspect-ratio:4/5"><img src="assets/photos/galeria-14.jpg" alt="Bailaora con vestido lila y guitarrista" loading="lazy"></div></div>
+                <div class="gitem" data-idx="14"><div class="photo-slot" style="aspect-ratio:9/16"><img src="assets/photos/galeria-15.jpg" alt="Bailaora en movimiento con bata de cola" loading="lazy"></div></div>
+                <div class="gitem" data-idx="15"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-16.jpg" alt="Escenario del tablao con claveles rojos" loading="lazy"></div></div>
+                <div class="gitem" data-idx="16"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-17.jpg" alt="Artistas flamencos con palmas en escena" loading="lazy"></div></div>
+                <div class="gitem" data-idx="17"><div class="photo-slot" style="aspect-ratio:1/1"><img src="assets/photos/galeria-18.jpg" alt="Bailaora con mantón y flor amarilla" loading="lazy"></div></div>
+                <div class="gitem" data-idx="18"><div class="photo-slot" style="aspect-ratio:9/16"><img src="assets/photos/galeria-19.jpg" alt="Cuadro flamenco completo en escena" loading="lazy"></div></div>
             </div>
         </div>
     </section>
@@ -97,29 +105,29 @@
     <div id="footer-placeholder"></div>
     <script src="js/main.js"></script>
     <script>
-        // Simple lightbox
-        const items = document.querySelectorAll('.gitem');
-        const lb = document.getElementById('lb');
-        const lbImg = document.getElementById('lb-img');
-        let current = 0;
-        const srcs = [...items].map(i => i.querySelector('img')?.src || '');
-        items.forEach(item => {
-            item.addEventListener('click', () => {
-                current = parseInt(item.dataset.idx);
-                lbImg.src = srcs[current];
-                lb.classList.add('open');
-            });
+    // Simple lightbox
+    const items = document.querySelectorAll('.gitem');
+    const lb = document.getElementById('lb');
+    const lbImg = document.getElementById('lb-img');
+    let current = 0;
+    const srcs = [...items].map(i => i.querySelector('img')?.src || '');
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            current = parseInt(item.dataset.idx);
+            lbImg.src = srcs[current];
+            lb.classList.add('open');
         });
-        document.getElementById('lb-close').onclick = () => lb.classList.remove('open');
-        document.getElementById('lb-prev').onclick = () => { current = (current - 1 + srcs.length) % srcs.length; lbImg.src = srcs[current]; };
-        document.getElementById('lb-next').onclick = () => { current = (current + 1) % srcs.length; lbImg.src = srcs[current]; };
-        lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
-        document.addEventListener('keydown', e => {
-            if (!lb.classList.contains('open')) return;
-            if (e.key === 'Escape') lb.classList.remove('open');
-            if (e.key === 'ArrowLeft') { current = (current-1+srcs.length)%srcs.length; lbImg.src=srcs[current]; }
-            if (e.key === 'ArrowRight') { current = (current+1)%srcs.length; lbImg.src=srcs[current]; }
-        });
+    });
+    document.getElementById('lb-close').onclick = () => lb.classList.remove('open');
+    document.getElementById('lb-prev').onclick = () => { current = (current - 1 + srcs.length) % srcs.length; lbImg.src = srcs[current]; };
+    document.getElementById('lb-next').onclick = () => { current = (current + 1) % srcs.length; lbImg.src = srcs[current]; };
+    lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+    document.addEventListener('keydown', e => {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') lb.classList.remove('open');
+        if (e.key === 'ArrowLeft') { current = (current-1+srcs.length)%srcs.length; lbImg.src=srcs[current]; }
+        if (e.key === 'ArrowRight') { current = (current+1)%srcs.length; lbImg.src=srcs[current]; }
+    });
     </script>
 </body>
 </html>
