@@ -182,12 +182,14 @@
 
 /* ── Video section ────────────────────────────────────── */
 .evento-video-wrap {
-  max-width: 860px;
+  max-width: 480px;
   margin: 0 auto;
-  aspect-ratio: 16/9;
+  aspect-ratio: 9/16;
+  max-height: 70vh;
   background: var(--obsidian);
   overflow: hidden;
   position: relative;
+  border: 1px solid rgba(255,255,255,.08);
 }
 .evento-video {
   width: 100%;
