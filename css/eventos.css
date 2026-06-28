@@ -224,6 +224,14 @@
   color: var(--crimson);
   margin-top: 4px;
 }
+.artista-card__photo--pending {
+  opacity: .5;
+  filter: grayscale(1);
+}
+.artista-card__name--pending {
+  color: var(--humo-200);
+  font-style: italic;
+}
 
 /* ── Los Claveles header ──────────────────────────────── */
 .claveles-header {
