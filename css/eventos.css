@@ -1,19 +1,57 @@
 /* ==========================================================
-   Eventos page — additional styles
-   Append to styles.css or link separately
+   Eventos page — Flamenco & Events Barcelona
    ========================================================== */
 
-/* ── Featured event layout ────────────────────────────── */
-.evento-featured {
+/* ── Compact page header (no hero) ────────────────────── */
+.page-header-strip {
+  background: var(--obsidian);
+  padding-top: calc(var(--nav-h) + 20px);
+  padding-bottom: 0;
+}
+.page-header-strip__inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--pad-x);
+}
+
+/* ── Main event hero section ──────────────────────────── */
+.evento-hero-section {
+  padding-top: 28px;
+}
+.evento-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(32px, 6vw, 80px);
   align-items: center;
-  margin-top: 20px;
 }
-.evento-featured__photo {
+.evento-hero__info {
+  display: flex;
+  flex-direction: column;
+}
+.evento-hero__title {
+  font-family: var(--font-d);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  color: var(--ivory-100);
+  margin: 20px 0 16px;
+}
+.evento-hero__title em {
+  display: block;
+  color: var(--dorado);
+  font-style: italic;
+  font-size: .75em;
+}
+.evento-hero__desc {
+  color: var(--humo-100);
+  line-height: 1.75;
+  max-width: 500px;
+  margin-bottom: 24px;
+  font-size: clamp(.9rem, 1.5vw, 1.05rem);
+}
+.evento-hero__photo {
   aspect-ratio: 3/4;
-  max-height: 580px;
+  max-height: 560px;
 }
 
 /* ── Date badge ───────────────────────────────────────── */
@@ -21,21 +59,22 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 24px 14px;
-  border: 1px solid rgba(255,255,255,.15);
+  padding: 18px 28px 14px;
+  border: 1px solid rgba(255,255,255,.12);
   text-align: center;
   line-height: 1;
+  align-self: flex-start;
 }
 .evento-date-badge__day {
   font-family: var(--font-d);
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: 700;
   color: var(--ivory-100);
 }
 .evento-date-badge__month {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: .14em;
+  letter-spacing: .16em;
   color: var(--dorado);
   margin-top: 2px;
 }
@@ -47,30 +86,30 @@
   margin-top: 4px;
 }
 
-/* ── Pricing — elegant, not discount-y ────────────────── */
+/* ── Pricing — tasteful ───────────────────────────────── */
 .evento-pricing {
   display: flex;
   align-items: baseline;
   gap: 14px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 .evento-pricing__special {
   font-family: var(--font-d);
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: clamp(3rem, 6vw, 4.2rem);
   font-weight: 700;
   color: var(--ivory-100);
   line-height: 1;
 }
 .evento-pricing__curr {
-  font-size: .55em;
+  font-size: .5em;
   color: var(--dorado);
 }
-.evento-pricing__original {
+.evento-pricing__was {
   font-family: var(--font-d);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   color: var(--humo-200);
 }
-.evento-pricing__original del {
+.evento-pricing__was del {
   text-decoration-color: var(--humo-200);
 }
 .evento-pricing__note {
@@ -82,21 +121,27 @@
   align-self: center;
 }
 
-/* ── Event meta (hora / lugar / duración) ─────────────── */
+/* ── Event meta ───────────────────────────────────────── */
 .evento-meta {
   display: flex;
-  gap: 32px;
+  gap: 28px;
   flex-wrap: wrap;
-  padding: 20px 0;
+  padding: 18px 0;
   border-top: 1px solid rgba(255,255,255,.1);
   border-bottom: 1px solid rgba(255,255,255,.1);
 }
 .evento-meta__item {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: flex-start;
+  gap: 10px;
+}
+.evento-meta__icon {
+  font-size: 1.1rem;
+  color: var(--dorado);
+  line-height: 1.3;
 }
 .evento-meta__label {
+  display: block;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: .1em;
@@ -104,8 +149,27 @@
   color: var(--humo-200);
 }
 .evento-meta__value {
+  display: block;
   font-size: .9375rem;
   color: var(--ivory-100);
+  margin-top: 2px;
+}
+
+/* ── Video section ────────────────────────────────────── */
+.evento-video-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  background: var(--obsidian);
+  overflow: hidden;
+  position: relative;
+}
+.evento-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
 }
 
 /* ── Artists grid ─────────────────────────────────────── */
@@ -136,12 +200,26 @@
   margin-top: 4px;
 }
 
+/* ── Los Claveles header ──────────────────────────────── */
+.claveles-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+.claveles-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 /* ── Tardeos grid ─────────────────────────────────────── */
 .tardeos-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;
-  margin-top: 20px;
 }
 .tardeo-card {
   border: 1px solid rgba(255,255,255,.08);
@@ -170,15 +248,28 @@
 }
 .tardeo-card__name {
   font-family: var(--font-d);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--ivory-100);
   line-height: 1.2;
+}
+.tardeo-card__venue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 4px;
+}
+.tardeo-card__venue a:hover {
+  text-decoration: underline;
 }
 .tardeo-card__desc {
   font-size: .875rem;
   color: var(--humo-100);
   line-height: 1.7;
+}
+.tardeo-card__btn {
+  align-self: flex-start;
+  margin-top: 8px;
 }
 
 /* ── Responsive ───────────────────────────────────────── */
@@ -186,12 +277,11 @@
   .artistas-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  .evento-featured { grid-template-columns: 1fr; }
-  .evento-featured__photo { max-height: 400px; }
+  .evento-hero { grid-template-columns: 1fr; }
+  .evento-hero__photo { max-height: 400px; }
   .artistas-grid { grid-template-columns: repeat(2, 1fr); }
   .tardeos-grid  { grid-template-columns: 1fr; }
   .evento-meta   { gap: 20px; }
-}
-@media (max-width: 480px) {
-  .artistas-grid { grid-template-columns: repeat(2, 1fr); }
+  .claveles-header { gap: 16px; }
+  .claveles-logo { width: 60px; height: 60px; }
 }

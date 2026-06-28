@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/eventos.css">
 
-    <!-- OpenGraph for social sharing -->
-    <meta property="og:title" content="Eventos — Flamenco & Events Barcelona">
-    <meta property="og:description" content="Tablao flamenco especial 10 de julio · Tardeos flamencos · Fiestas y eventos. Flamenco en estado puro en Barcelona.">
+    <!-- OpenGraph -->
+    <meta property="og:title" content="Tablao Flamenco · 10 Julio — Flamenco & Events Barcelona">
+    <meta property="og:description" content="Noche única de flamenco puro. 5 artistas, precio especial 25€. C/ Aribau 230, Barcelona.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.flamencoeventsbarcelona.com/eventos.html">
     <meta property="og:image" content="https://www.flamencoeventsbarcelona.com/assets/photos/eventos/Tablao.jpg">
@@ -20,7 +20,7 @@
     <meta property="og:locale:alternate" content="en_GB">
     <meta property="og:locale:alternate" content="ca_ES">
 
-    <!-- Schema.org Event markup for Google -->
+    <!-- Schema.org Event -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -68,75 +68,112 @@
 <body>
     <div id="nav-placeholder"></div>
 
-    <!-- Hero inner -->
-    <section class="hero hero-inner">
-        <div class="hero-bg"></div>
-        <div class="hero-img">
-            <img src="assets/photos/eventos/Tablao.jpg" alt="Espectáculo de flamenco en el tablao de Barcelona">
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-pattern"></div>
-        <div class="hero-body">
+    <!-- ═══════════════════════════════════════════════════
+         COMPACT PAGE HEADER — no hero, straight to content
+         ═══════════════════════════════════════════════════ -->
+    <div class="page-header-strip">
+        <div class="page-header-strip__inner">
             <div class="breadcrumb">
                 <a href="index.html">Inicio</a><span>›</span><span data-i18n="nav.eventos">Eventos</span>
             </div>
-            <div class="hero-eyebrow" data-i18n="eventos.eyebrow">Próximos eventos</div>
-            <h1 class="hero-title" data-i18n="eventos.title">Eventos</h1>
-            <p class="hero-sub" data-i18n="eventos.subtitle">Noches únicas de flamenco</p>
         </div>
-    </section>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════
          FEATURED: TABLAO 10 JULIO
          ═══════════════════════════════════════════════════ -->
-    <section class="section section--dark" id="tablao-julio">
+    <section class="section section--dark evento-hero-section">
         <div class="section-inner">
-            <div class="section-label" data-i18n="eventos.featured_label">Noche única</div>
-            <div class="evento-featured">
-                <div class="evento-featured__info">
+            <div class="evento-hero">
+                <!-- Left: info -->
+                <div class="evento-hero__info">
                     <div class="evento-date-badge fade-up">
                         <span class="evento-date-badge__day">10</span>
                         <span class="evento-date-badge__month" data-i18n="eventos.julio">JUL</span>
                         <span class="evento-date-badge__year">2026</span>
                     </div>
-                    <h2 class="section-title fade-up" data-i18n="eventos.tablao_title" style="margin-top:20px">Tablao Flamenco<br><em style="color:var(--dorado);font-style:italic">Noche Especial</em></h2>
-                    <p style="color:var(--humo-100);line-height:1.75;margin-bottom:24px;max-width:500px" class="fade-up" data-i18n="eventos.tablao_desc">Una hora de flamenco puro con cinco artistas de primer nivel. Baile, cante y guitarra a un palmo del público en nuestro tablao íntimo de la zona alta de Barcelona.</p>
+
+                    <h1 class="evento-hero__title fade-up">
+                        Tablao Flamenco
+                        <em>Noche Especial</em>
+                    </h1>
+
+                    <p class="evento-hero__desc fade-up" data-i18n="eventos.tablao_desc">Una hora de flamenco puro con cinco artistas de primer nivel. Baile, cante y guitarra a un palmo del público en nuestro tablao íntimo de la zona alta de Barcelona.</p>
 
                     <div class="evento-pricing fade-up">
                         <div class="evento-pricing__special">25<span class="evento-pricing__curr">€</span></div>
-                        <div class="evento-pricing__original"><del>35€</del></div>
+                        <div class="evento-pricing__was"><del>35€</del></div>
                         <div class="evento-pricing__note" data-i18n="eventos.precio_nota">Precio especial · Pase único</div>
                     </div>
 
                     <div class="evento-meta fade-up">
                         <div class="evento-meta__item">
-                            <span class="evento-meta__label" data-i18n="eventos.hora_label">Hora</span>
-                            <span class="evento-meta__value">19:00 h</span>
+                            <span class="evento-meta__icon">&#9201;</span>
+                            <div>
+                                <span class="evento-meta__label" data-i18n="eventos.hora_label">Hora</span>
+                                <span class="evento-meta__value">19:00 h</span>
+                            </div>
                         </div>
                         <div class="evento-meta__item">
-                            <span class="evento-meta__label" data-i18n="eventos.lugar_label">Lugar</span>
-                            <span class="evento-meta__value">C/ Aribau 230, Barcelona</span>
+                            <span class="evento-meta__icon">&#9906;</span>
+                            <div>
+                                <span class="evento-meta__label" data-i18n="eventos.lugar_label">Lugar</span>
+                                <span class="evento-meta__value">C/ Aribau 230</span>
+                            </div>
                         </div>
                         <div class="evento-meta__item">
-                            <span class="evento-meta__label" data-i18n="eventos.duracion_label">Duración</span>
-                            <span class="evento-meta__value">1 h</span>
+                            <span class="evento-meta__icon">&#9834;</span>
+                            <div>
+                                <span class="evento-meta__label" data-i18n="eventos.duracion_label">Duración</span>
+                                <span class="evento-meta__value">1 h</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="hero-actions fade-up" style="margin-top:32px">
+                    <div class="hero-actions fade-up" style="margin-top:28px">
                         <a href="contacto.html" class="btn btn-lg btn-inverse" data-i18n="eventos.reservar">Reservar entrada</a>
                     </div>
                 </div>
 
-                <div class="evento-featured__photo photo-slot fade-up">
-                    <img src="assets/photos/eventos/Tablao.jpg" alt="Cuadro flamenco en escena">
+                <!-- Right: photo -->
+                <div class="evento-hero__visual fade-up">
+                    <div class="photo-slot evento-hero__photo">
+                        <img src="assets/photos/eventos/Tablao.jpg" alt="Cuadro flamenco en escena">
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Artists for July 10 -->
-    <section class="section section--pale" id="artistas-julio">
+    <!-- ── Video del espectáculo ──────────────────────── -->
+    <section class="section section--pale" id="video">
+        <div class="section-inner text-center">
+            <div class="section-label" data-i18n="eventos.video_label">El espectáculo</div>
+            <h2 class="section-title" data-i18n="eventos.video_title">Siéntelo antes de vivirlo</h2>
+            <p class="section-subtitle" data-i18n="eventos.video_sub">Flamenco en estado puro</p>
+
+            <div class="evento-video-wrap">
+                <!-- ════════════════════════════════════════
+                     VÍDEO: reemplaza el src con tu MP4
+                     Coloca el archivo en assets/videos/
+                     ════════════════════════════════════════ -->
+                <video
+                    class="evento-video"
+                    controls
+                    playsinline
+                    preload="metadata"
+                    poster="assets/photos/eventos/Tablao.jpg"
+                    controlsList="nodownload"
+                    oncontextmenu="return false;">
+                    <source src="assets/videos/evento-tablao.mp4" type="video/mp4">
+                    <!-- Si aún no tienes vídeo, el poster se muestra como imagen -->
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Artistas 10 julio ─────────────────────────── -->
+    <section class="section section--white" id="artistas-julio">
         <div class="section-inner">
             <div class="section-label" data-i18n="eventos.artistas_label">En escena · 10 julio</div>
             <h2 class="section-title" data-i18n="eventos.artistas_title">Los artistas</h2>
@@ -183,39 +220,55 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════════
-         TARDEOS FLAMENCOS
+         TARDEOS FLAMENCOS — LOS CLAVELES
          ═══════════════════════════════════════════════════ -->
     <section class="section section--dark" id="tardeos">
         <div class="section-inner">
-            <div class="section-label" style="color:var(--dorado)" data-i18n="eventos.tardeos_label">Tardeos flamencos</div>
-            <h2 class="section-title" style="color:var(--ivory-100)" data-i18n="eventos.tardeos_title">Los Claveles</h2>
-            <p class="section-subtitle" style="color:var(--humo-100)" data-i18n="eventos.tardeos_sub">Fiestas flamencas para bailar y disfrutar</p>
+            <!-- Header with logo -->
+            <div class="claveles-header fade-up">
+                <img src="assets/photos/eventos/logo_claveles.png" alt="Los Claveles" class="claveles-logo">
+                <div>
+                    <div class="section-label" style="color:var(--dorado);margin-bottom:6px" data-i18n="eventos.tardeos_label">Tardeos flamencos</div>
+                    <h2 class="section-title" style="color:var(--ivory-100);margin-bottom:4px" data-i18n="eventos.tardeos_title">Los Claveles</h2>
+                    <p style="color:var(--humo-100);font-family:var(--font-d);font-style:italic;font-size:1.1rem" data-i18n="eventos.tardeos_sub">Fiestas flamencas para bailar y disfrutar</p>
+                </div>
+            </div>
 
             <div class="tardeos-grid">
+                <!-- Granollers -->
                 <div class="tardeo-card fade-up">
                     <div class="photo-slot tardeo-card__photo">
-                        <img src="assets/photos/eventos/Granollers.jpg" alt="Los Claveles Granollers — Tardeo flamenco">
+                        <img src="assets/photos/eventos/Granollers.jpg" alt="Los Claveles al Casino de Granollers">
                     </div>
                     <div class="tardeo-card__body">
-                        <div class="tardeo-card__location">Granollers</div>
+                        <div class="tardeo-card__location" data-i18n="eventos.granollers_location">Granollers</div>
                         <div class="tardeo-card__name">Los Claveles</div>
+                        <div class="tardeo-card__venue">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--dorado)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <a href="https://www.instagram.com/casino.granollers/" target="_blank" rel="noopener" style="color:var(--dorado);font-size:.8125rem">Casino Club de Ritme · Granollers</a>
+                        </div>
                         <p class="tardeo-card__desc" data-i18n="eventos.tardeo_desc_granollers">Tarde flamenca con música en vivo, baile y ambiente auténtico. La fiesta que no te puedes perder.</p>
-                        <a href="https://www.instagram.com/losclaveles_granollers/" target="_blank" rel="noopener" class="btn btn-sm btn-inv-out" style="align-self:flex-start;margin-top:auto">
+                        <a href="https://www.instagram.com/losclaveles_granollers/" target="_blank" rel="noopener" class="btn btn-sm btn-inv-out tardeo-card__btn">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
                             @losclaveles_granollers
                         </a>
                     </div>
                 </div>
 
+                <!-- Costa Breve -->
                 <div class="tardeo-card fade-up">
                     <div class="photo-slot tardeo-card__photo">
-                        <img src="assets/photos/eventos/Costa_Breve.jpg" alt="Los Claveles Costa Brava — Tardeo flamenco">
+                        <img src="assets/photos/eventos/Costa_Breve.jpg" alt="Los Claveles a Costa Breve Barcelona">
                     </div>
                     <div class="tardeo-card__body">
-                        <div class="tardeo-card__location">Costa Brava</div>
-                        <div class="tardeo-card__name">Los Claveles</div>
-                        <p class="tardeo-card__desc" data-i18n="eventos.tardeo_desc_costa">Flamenco junto al mar. Tardeo con arte, sol y la mejor energía de la Costa Brava.</p>
-                        <a href="https://www.instagram.com/losclaveles_costabreve/" target="_blank" rel="noopener" class="btn btn-sm btn-inv-out" style="align-self:flex-start;margin-top:auto">
+                        <div class="tardeo-card__location">Barcelona · Zona Alta</div>
+                        <div class="tardeo-card__name">Los Claveles · Costa Breve</div>
+                        <div class="tardeo-card__venue">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--dorado)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <span style="color:var(--dorado);font-size:.8125rem">Discoteca Costa Breve · Barcelona</span>
+                        </div>
+                        <p class="tardeo-card__desc" data-i18n="eventos.tardeo_desc_costa">Tardeo flamenco en una de las discotecas más emblemáticas de la zona alta de Barcelona. Música, baile y la mejor energía.</p>
+                        <a href="https://www.instagram.com/losclaveles_costabreve/" target="_blank" rel="noopener" class="btn btn-sm btn-inv-out tardeo-card__btn">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
                             @losclaveles_costabreve
                         </a>
