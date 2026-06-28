@@ -10,7 +10,34 @@ const i18n = {
     'nav.about':    'Quiénes somos',
     'nav.contacto': 'Contacto',
     'nav.blog':     'Blog',
+    'nav.eventos':  'Eventos',
     'nav.cta':      'Reservar',
+    'eventos.eyebrow':     'Próximos eventos',
+    'eventos.title':       'Eventos',
+    'eventos.subtitle':    'Noches únicas de flamenco',
+    'eventos.featured_label': 'Noche única',
+    'eventos.julio':       'JUL',
+    'eventos.tablao_title':'Tablao Flamenco',
+    'eventos.tablao_desc': 'Una hora de flamenco puro con cinco artistas de primer nivel. Baile, cante y guitarra a un palmo del público en nuestro tablao íntimo de la zona alta de Barcelona.',
+    'eventos.precio_nota': 'Precio especial · Pase único',
+    'eventos.hora_label':  'Hora',
+    'eventos.lugar_label': 'Lugar',
+    'eventos.duracion_label':'Duración',
+    'eventos.reservar':    'Reservar entrada',
+    'eventos.artistas_label':'En escena · 10 julio',
+    'eventos.artistas_title':'Los artistas',
+    'eventos.artistas_sub':'Cinco artistas de primer nivel',
+    'eventos.baile':       'Baile',
+    'eventos.cante':       'Cante',
+    'eventos.guitarra':    'Guitarra',
+    'eventos.tardeos_label':'Tardeos flamencos',
+    'eventos.tardeos_title':'Los Claveles',
+    'eventos.tardeos_sub': 'Fiestas flamencas para bailar y disfrutar',
+    'eventos.tardeo_desc_granollers':'Tarde flamenca con música en vivo, baile y ambiente auténtico. La fiesta que no te puedes perder.',
+    'eventos.tardeo_desc_costa':'Flamenco junto al mar. Tardeo con arte, sol y la mejor energía de la Costa Brava.',
+    'eventos.cta_title':   '¿Quieres vivir el flamenco?',
+    'eventos.cta_sub':     'Reserva tu entrada y vive una experiencia inolvidable',
+    'eventos.cta_btn':     'Reservar ahora',
     'footer.services': 'Servicios',
     'footer.company':  'Compañía',
     'footer.contact':  'Contacto',
@@ -31,7 +58,34 @@ const i18n = {
     'nav.about':    'Qui som',
     'nav.contacto': 'Contacte',
     'nav.blog':     'Blog',
+    'nav.eventos':  'Esdeveniments',
     'nav.cta':      'Reservar',
+    'eventos.eyebrow':     'Propers esdeveniments',
+    'eventos.title':       'Esdeveniments',
+    'eventos.subtitle':    'Nits úniques de flamenc',
+    'eventos.featured_label': 'Nit única',
+    'eventos.julio':       'JUL',
+    'eventos.tablao_title':'Tablao Flamenc',
+    'eventos.tablao_desc': 'Una hora de flamenc pur amb cinc artistes de primer nivell. Ball, cant i guitarra a un pam del públic al nostre tablao íntim de la zona alta de Barcelona.',
+    'eventos.precio_nota': 'Preu especial · Pas únic',
+    'eventos.hora_label':  'Hora',
+    'eventos.lugar_label': 'Lloc',
+    'eventos.duracion_label':'Durada',
+    'eventos.reservar':    'Reservar entrada',
+    'eventos.artistas_label':'En escena · 10 juliol',
+    'eventos.artistas_title':'Els artistes',
+    'eventos.artistas_sub':'Cinc artistes de primer nivell',
+    'eventos.baile':       'Ball',
+    'eventos.cante':       'Cant',
+    'eventos.guitarra':    'Guitarra',
+    'eventos.tardeos_label':'Tardejos flamencs',
+    'eventos.tardeos_title':'Los Claveles',
+    'eventos.tardeos_sub': 'Festes flamenques per ballar i gaudir',
+    'eventos.tardeo_desc_granollers':'Tarda flamenca amb música en directe, ball i ambient autèntic. La festa que no et pots perdre.',
+    'eventos.tardeo_desc_costa':'Flamenc vora el mar. Tardejo amb art, sol i la millor energia de la Costa Brava.',
+    'eventos.cta_title':   'Vols viure el flamenc?',
+    'eventos.cta_sub':     'Reserva la teva entrada i viu una experiència inoblidable',
+    'eventos.cta_btn':     'Reservar ara',
     'footer.services': 'Serveis',
     'footer.company':  'Companyia',
     'footer.contact':  'Contacte',
@@ -52,7 +106,34 @@ const i18n = {
     'nav.about':    'About us',
     'nav.contacto': 'Contact',
     'nav.blog':     'Blog',
+    'nav.eventos':  'Events',
     'nav.cta':      'Book now',
+    'eventos.eyebrow':     'Upcoming events',
+    'eventos.title':       'Events',
+    'eventos.subtitle':    'Unique flamenco nights',
+    'eventos.featured_label': 'One night only',
+    'eventos.julio':       'JUL',
+    'eventos.tablao_title':'Flamenco Tablao',
+    'eventos.tablao_desc': 'One hour of pure flamenco with five top-level artists. Dance, singing and guitar up close in our intimate tablao in Barcelona\'s uptown.',
+    'eventos.precio_nota': 'Special price · One show only',
+    'eventos.hora_label':  'Time',
+    'eventos.lugar_label': 'Venue',
+    'eventos.duracion_label':'Duration',
+    'eventos.reservar':    'Book tickets',
+    'eventos.artistas_label':'On stage · July 10',
+    'eventos.artistas_title':'The artists',
+    'eventos.artistas_sub':'Five top-level performers',
+    'eventos.baile':       'Dance',
+    'eventos.cante':       'Singing',
+    'eventos.guitarra':    'Guitar',
+    'eventos.tardeos_label':'Flamenco afternoon parties',
+    'eventos.tardeos_title':'Los Claveles',
+    'eventos.tardeos_sub': 'Flamenco parties to dance and enjoy',
+    'eventos.tardeo_desc_granollers':'Flamenco afternoon with live music, dance and authentic atmosphere. The party you can\'t miss.',
+    'eventos.tardeo_desc_costa':'Flamenco by the sea. Afternoon party with art, sun and the best energy of the Costa Brava.',
+    'eventos.cta_title':   'Ready to experience flamenco?',
+    'eventos.cta_sub':     'Book your ticket and live an unforgettable experience',
+    'eventos.cta_btn':     'Book now',
     'footer.services': 'Services',
     'footer.company':  'Company',
     'footer.contact':  'Contact',
@@ -90,6 +171,7 @@ function buildNav(lang) {
       <a class="nav-link ${active('tablao.html')}"          href="${root}tablao.html"          data-i18n="nav.tablao">${t['nav.tablao']}</a>
       <a class="nav-link ${active('talleres.html')}"        href="${root}talleres.html"        data-i18n="nav.talleres">${t['nav.talleres']}</a>
       <a class="nav-link ${active('clases.html')}"          href="${root}clases.html"          data-i18n="nav.clases">${t['nav.clases']}</a>
+      <a class="nav-link ${active('eventos.html')}"         href="${root}eventos.html"         data-i18n="nav.eventos">${t['nav.eventos']}</a>
       <a class="nav-link ${active('galeria.html')}"         href="${root}galeria.html"         data-i18n="nav.galeria">${t['nav.galeria']}</a>
       <a class="nav-link ${active('sobre-nosotros.html')}"  href="${root}sobre-nosotros.html"  data-i18n="nav.about">${t['nav.about']}</a>
       <a class="nav-link ${active('blog.html')}"            href="${root}blog.html"            data-i18n="nav.blog">${t['nav.blog']}</a>
@@ -110,6 +192,7 @@ function buildNav(lang) {
   <a class="nav-link" href="${root}tablao.html" data-i18n="nav.tablao">${t['nav.tablao']}</a>
   <a class="nav-link" href="${root}talleres.html" data-i18n="nav.talleres">${t['nav.talleres']}</a>
   <a class="nav-link" href="${root}clases.html" data-i18n="nav.clases">${t['nav.clases']}</a>
+  <a class="nav-link" href="${root}eventos.html" data-i18n="nav.eventos">${t['nav.eventos']}</a>
   <a class="nav-link" href="${root}galeria.html" data-i18n="nav.galeria">${t['nav.galeria']}</a>
   <a class="nav-link" href="${root}sobre-nosotros.html" data-i18n="nav.about">${t['nav.about']}</a>
   <a class="nav-link" href="${root}blog.html" data-i18n="nav.blog">${t['nav.blog']}</a>
@@ -141,6 +224,7 @@ function buildFooter(lang) {
         <a href="${root}tablao.html"    class="footer-link" data-i18n="nav.tablao">${t['nav.tablao']}</a>
         <a href="${root}talleres.html"  class="footer-link" data-i18n="nav.talleres">${t['nav.talleres']}</a>
         <a href="${root}clases.html"    class="footer-link" data-i18n="nav.clases">${t['nav.clases']}</a>
+        <a href="${root}eventos.html"   class="footer-link" data-i18n="nav.eventos">${t['nav.eventos']}</a>
         <a href="${root}contacto.html"  class="footer-link">Fiestas privadas</a>
       </div>
     </div>
