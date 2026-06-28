@@ -9,7 +9,7 @@ const i18n = {
     'nav.galeria':  'Galería',
     'nav.about':    'Quiénes somos',
     'nav.contacto': 'Contacto',
-    'nav.blog':     'Blog',
+    'nav.inicio':   'Inicio',
     'nav.eventos':  'Eventos',
     'nav.cta':      'Reservar',
     'eventos.eyebrow':     'Próximos eventos',
@@ -64,7 +64,7 @@ const i18n = {
     'nav.galeria':  'Galeria',
     'nav.about':    'Qui som',
     'nav.contacto': 'Contacte',
-    'nav.blog':     'Blog',
+    'nav.inicio':   'Inici',
     'nav.eventos':  'Esdeveniments',
     'nav.cta':      'Reservar',
     'eventos.eyebrow':     'Propers esdeveniments',
@@ -119,7 +119,7 @@ const i18n = {
     'nav.galeria':  'Gallery',
     'nav.about':    'About us',
     'nav.contacto': 'Contact',
-    'nav.blog':     'Blog',
+    'nav.inicio':   'Home',
     'nav.eventos':  'Events',
     'nav.cta':      'Book now',
     'eventos.eyebrow':     'Upcoming events',
@@ -189,13 +189,13 @@ function buildNav(lang) {
       <span class="nav-logo-text">Flamenco &amp; Events<em>Barcelona</em></span>
     </a>
     <div class="nav-links">
-      <a class="nav-link ${active('tablao.html')}"          href="${root}tablao.html"          data-i18n="nav.tablao">${t['nav.tablao']}</a>
-      <a class="nav-link ${active('talleres.html')}"        href="${root}talleres.html"        data-i18n="nav.talleres">${t['nav.talleres']}</a>
-      <a class="nav-link ${active('clases.html')}"          href="${root}clases.html"          data-i18n="nav.clases">${t['nav.clases']}</a>
-      <a class="nav-link ${active('eventos.html')}"         href="${root}eventos.html"         data-i18n="nav.eventos">${t['nav.eventos']}</a>
-      <a class="nav-link ${active('galeria.html')}"         href="${root}galeria.html"         data-i18n="nav.galeria">${t['nav.galeria']}</a>
+      <a class="nav-link ${active('index.html')}"           href="${root}index.html"           data-i18n="nav.inicio">${t['nav.inicio']}</a>
       <a class="nav-link ${active('sobre-nosotros.html')}"  href="${root}sobre-nosotros.html"  data-i18n="nav.about">${t['nav.about']}</a>
-      <a class="nav-link ${active('blog.html')}"            href="${root}blog.html"            data-i18n="nav.blog">${t['nav.blog']}</a>
+      <a class="nav-link ${active('tablao.html')}"          href="${root}tablao.html"          data-i18n="nav.tablao">${t['nav.tablao']}</a>
+      <a class="nav-link ${active('eventos.html')}"         href="${root}eventos.html"         data-i18n="nav.eventos">${t['nav.eventos']}</a>
+      <a class="nav-link ${active('clases.html')}"          href="${root}clases.html"          data-i18n="nav.clases">${t['nav.clases']}</a>
+      <a class="nav-link ${active('talleres.html')}"        href="${root}talleres.html"        data-i18n="nav.talleres">${t['nav.talleres']}</a>
+      <a class="nav-link ${active('galeria.html')}"         href="${root}galeria.html"         data-i18n="nav.galeria">${t['nav.galeria']}</a>
     </div>
     <div class="lang-sw">
       <button class="lang-btn ${lang==='es'?'active':''}" data-lang="es">ES</button>
@@ -209,14 +209,13 @@ function buildNav(lang) {
   </div>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-  <a class="nav-link" href="${root}index.html">Inicio / Inici / Home</a>
-  <a class="nav-link" href="${root}tablao.html" data-i18n="nav.tablao">${t['nav.tablao']}</a>
-  <a class="nav-link" href="${root}talleres.html" data-i18n="nav.talleres">${t['nav.talleres']}</a>
-  <a class="nav-link" href="${root}clases.html" data-i18n="nav.clases">${t['nav.clases']}</a>
-  <a class="nav-link" href="${root}eventos.html" data-i18n="nav.eventos">${t['nav.eventos']}</a>
-  <a class="nav-link" href="${root}galeria.html" data-i18n="nav.galeria">${t['nav.galeria']}</a>
+  <a class="nav-link" href="${root}index.html" data-i18n="nav.inicio">${t['nav.inicio']}</a>
   <a class="nav-link" href="${root}sobre-nosotros.html" data-i18n="nav.about">${t['nav.about']}</a>
-  <a class="nav-link" href="${root}blog.html" data-i18n="nav.blog">${t['nav.blog']}</a>
+  <a class="nav-link" href="${root}tablao.html" data-i18n="nav.tablao">${t['nav.tablao']}</a>
+  <a class="nav-link" href="${root}eventos.html" data-i18n="nav.eventos">${t['nav.eventos']}</a>
+  <a class="nav-link" href="${root}clases.html" data-i18n="nav.clases">${t['nav.clases']}</a>
+  <a class="nav-link" href="${root}talleres.html" data-i18n="nav.talleres">${t['nav.talleres']}</a>
+  <a class="nav-link" href="${root}galeria.html" data-i18n="nav.galeria">${t['nav.galeria']}</a>
   <a class="nav-link" href="${root}contacto.html" data-i18n="nav.contacto">${t['nav.contacto']}</a>
   <div class="lang-sw">
     <button class="lang-btn ${lang==='es'?'active':''}" data-lang="es">ES</button>
@@ -235,6 +234,7 @@ function buildFooter(lang) {
 <footer class="footer">
   <div class="footer-grid">
     <div>
+      <img src="${root}assets/logo.jpg" alt="Flamenco & Events Barcelona" style="width:80px;height:80px;margin-bottom:16px;display:block">
       <div class="footer-brand-name">Flamenco &amp; Events Barcelona</div>
       <div class="footer-tagline">Arte con Alma</div>
       <p class="footer-desc" data-i18n="footer.desc">${t['footer.desc']}</p>
@@ -254,7 +254,7 @@ function buildFooter(lang) {
       <div class="footer-links">
         <a href="${root}sobre-nosotros.html" class="footer-link" data-i18n="footer.about">${t['footer.about']}</a>
         <a href="${root}galeria.html"        class="footer-link" data-i18n="footer.gallery">${t['footer.gallery']}</a>
-        <a href="${root}blog.html"           class="footer-link" data-i18n="nav.blog">${t['nav.blog']}</a>
+        <a href="${root}index.html"          class="footer-link" data-i18n="nav.inicio">${t['nav.inicio']}</a>
       </div>
     </div>
     <div>
