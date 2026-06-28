@@ -153,23 +153,38 @@
             <h2 class="section-title" data-i18n="eventos.video_title">Siéntelo antes de vivirlo</h2>
             <p class="section-subtitle" data-i18n="eventos.video_sub">Flamenco en estado puro</p>
 
-            <div class="evento-video-wrap">
-                <!-- ════════════════════════════════════════
-                     VÍDEO: reemplaza el src con tu MP4
-                     Coloca el archivo en assets/videos/
-                     ════════════════════════════════════════ -->
+            <div class="evento-video-wrap" id="videoWrap" onclick="playEventVideo(this)">
+                <img src="assets/photos/eventos/video-poster.jpg" alt="Flamenco & Events Barcelona — Ver vídeo" class="evento-video-poster" id="videoPoster">
+                <div class="evento-video-play" id="videoPlay">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <circle cx="32" cy="32" r="31" stroke="rgba(255,255,255,.6)" stroke-width="2"/>
+                        <polygon points="26,20 26,44 46,32" fill="rgba(255,255,255,.9)"/>
+                    </svg>
+                </div>
                 <video
                     class="evento-video"
-                    controls
+                    id="eventoVideo"
                     playsinline
-                    preload="metadata"
-                    poster="assets/photos/eventos/Tablao.jpg"
+                    preload="none"
                     controlsList="nodownload"
-                    oncontextmenu="return false;">
+                    oncontextmenu="return false;"
+                    style="display:none">
                     <source src="assets/videos/evento-tablao.mp4" type="video/mp4">
-                    <!-- Si aún no tienes vídeo, el poster se muestra como imagen -->
                 </video>
             </div>
+
+            <script>
+            function playEventVideo(wrap) {
+                var poster = document.getElementById('videoPoster');
+                var playBtn = document.getElementById('videoPlay');
+                var video = document.getElementById('eventoVideo');
+                poster.style.display = 'none';
+                playBtn.style.display = 'none';
+                video.style.display = 'block';
+                video.controls = true;
+                video.play();
+            }
+            </script>
         </div>
     </section>
 
@@ -185,7 +200,7 @@
                     <div class="photo-slot artista-card__photo artista-card__photo--pending">
                         <img src="assets/photos/eventos/silueta.jpg" alt="Artista pendiente de confirmación">
                     </div>
-                    <div class="artista-card__name artista-card__name--pending" data-i18n="eventos.pendiente">Pendiente</div>
+                    <div class="artista-card__name artista-card__name--pending" data-i18n="eventos.pendiente">Pendiente confirmar</div>
                     <div class="artista-card__role" data-i18n="eventos.baile">Baile</div>
                 </div>
                 <div class="artista-card fade-up">
