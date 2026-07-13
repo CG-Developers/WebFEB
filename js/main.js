@@ -19,13 +19,14 @@ const i18n = {
     'eventos.julio':       'JUL',
     'eventos.tablao_title':'Tablao Flamenco',
     'eventos.tablao_desc': 'Una hora de flamenco puro con cinco artistas de primer nivel. Baile, cante y guitarra a un palmo del público en nuestro tablao íntimo de la zona alta de Barcelona.',
-    'eventos.precio_nota': 'Especial Verano · Pase único',
+    'eventos.precio_nota': 'Entradas desde · Reservas abiertas',
+    'eventos.vuelve':      'Volvemos en septiembre',
     'eventos.pendiente':   'Pendiente confirmar',
     'eventos.hora_label':  'Hora',
     'eventos.lugar_label': 'Lugar',
     'eventos.duracion_label':'Duración',
     'eventos.reservar':    'Reservar entrada',
-    'eventos.artistas_label':'En escena · 10 julio',
+    'eventos.artistas_label':'En escena',
     'eventos.artistas_title':'Los artistas',
     'eventos.artistas_sub':'Cinco artistas de primer nivel',
     'eventos.baile':       'Baile',
@@ -74,13 +75,14 @@ const i18n = {
     'eventos.julio':       'JUL',
     'eventos.tablao_title':'Tablao Flamenc',
     'eventos.tablao_desc': 'Una hora de flamenc pur amb cinc artistes de primer nivell. Ball, cant i guitarra a un pam del públic al nostre tablao íntim de la zona alta de Barcelona.',
-    'eventos.precio_nota': 'Especial Estiu · Pas únic',
+    'eventos.precio_nota': 'Entrades des de · Reserves obertes',
+    'eventos.vuelve':      'Tornem al setembre',
     'eventos.pendiente':   'Pendent confirmar',
     'eventos.hora_label':  'Hora',
     'eventos.lugar_label': 'Lloc',
     'eventos.duracion_label':'Durada',
     'eventos.reservar':    'Reservar entrada',
-    'eventos.artistas_label':'En escena · 10 juliol',
+    'eventos.artistas_label':'En escena',
     'eventos.artistas_title':'Els artistes',
     'eventos.artistas_sub':'Cinc artistes de primer nivell',
     'eventos.baile':       'Ball',
@@ -129,13 +131,14 @@ const i18n = {
     'eventos.julio':       'JUL',
     'eventos.tablao_title':'Flamenco Tablao',
     'eventos.tablao_desc': 'One hour of pure flamenco with five top-level artists. Dance, singing and guitar up close in our intimate tablao in Barcelona\'s uptown.',
-    'eventos.precio_nota': 'Summer Special · One show only',
+    'eventos.precio_nota': 'Tickets from · Booking open',
+    'eventos.vuelve':      'Back in September',
     'eventos.pendiente':   'To be confirmed',
     'eventos.hora_label':  'Time',
     'eventos.lugar_label': 'Venue',
     'eventos.duracion_label':'Duration',
     'eventos.reservar':    'Book tickets',
-    'eventos.artistas_label':'On stage · July 10',
+    'eventos.artistas_label':'On stage',
     'eventos.artistas_title':'The artists',
     'eventos.artistas_sub':'Five top-level performers',
     'eventos.baile':       'Dance',
@@ -202,7 +205,7 @@ function buildNav(lang) {
       <button class="lang-btn ${lang==='ca'?'active':''}" data-lang="ca">CA</button>
       <button class="lang-btn ${lang==='en'?'active':''}" data-lang="en">EN</button>
     </div>
-    <a href="${root}contacto.html" class="btn btn-sm btn-inverse nav-cta" data-i18n="nav.cta">${t['nav.cta']}</a>
+    <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-sm btn-inverse nav-cta" data-i18n="nav.cta">${t['nav.cta']}</a>
     <button class="nav-burger" id="nav-burger" aria-label="Menú">
       <span></span><span></span><span></span>
     </button>
@@ -222,7 +225,7 @@ function buildNav(lang) {
     <button class="lang-btn ${lang==='ca'?'active':''}" data-lang="ca">CA</button>
     <button class="lang-btn ${lang==='en'?'active':''}" data-lang="en">EN</button>
   </div>
-  <a href="${root}contacto.html" class="btn btn-md btn-inverse" data-i18n="nav.cta">${t['nav.cta']}</a>
+  <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-md btn-inverse" data-i18n="nav.cta">${t['nav.cta']}</a>
 </div>`;
 }
 
@@ -300,6 +303,25 @@ function initFadeUp() {
   els.forEach(el => obs.observe(el));
 }
 
+
+/* ── WhatsApp flotant ────────────────────────────────── */
+function initWhatsApp(lang) {
+  if (document.getElementById('wa-float')) return;
+  const msg = {
+    es: 'Hola! Quiero información para reservar en Flamenco & Events Barcelona.',
+    ca: 'Hola! Vull informació per reservar a Flamenco & Events Barcelona.',
+    en: 'Hi! I would like information to book at Flamenco & Events Barcelona.'
+  }[lang] || 'Hola!';
+  const a = document.createElement('a');
+  a.id = 'wa-float';
+  a.href = 'https://wa.me/34662432855?text=' + encodeURIComponent(msg);
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.setAttribute('aria-label', 'WhatsApp');
+  a.innerHTML = '<svg viewBox="0 0 32 32" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M16 3C9.4 3 4 8.3 4 14.9c0 2.6.8 5 2.3 7L4 29l7.3-2.3c1.9 1 4 1.6 6.2 1.6h.5c6.6 0 12-5.3 12-11.9C30 8.3 24.6 3 18 3h-2zm0 2h2c5.5 0 10 4.4 10 9.9S23.5 26.3 18 26.3h-.5c-2 0-3.9-.6-5.6-1.6l-.7-.4-4.3 1.4 1.4-4.1-.5-.7c-1.4-1.8-2.1-3.9-2.1-6C5.7 9.4 10.5 5 16 5zm-4.4 5.1c-.3 0-.7.1-1 .5-.3.4-1.3 1.3-1.3 3.1s1.3 3.6 1.5 3.8c.2.3 2.6 4.1 6.4 5.6 3.1 1.2 3.8 1 4.4.9.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.2-.3-.3-.7-.5s-2.2-1.1-2.5-1.2c-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.7.1-.3.1-.5 0-.7-.1-.2-.8-2.1-1.2-2.8-.3-.7-.6-.6-.8-.6h-.9z"/></svg>';
+  document.body.appendChild(a);
+}
+
 /* ── Init ────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   const lang = localStorage.getItem('feb-lang') || 'es';
@@ -311,6 +333,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Inject footer */
   const ftPh = document.getElementById('footer-placeholder');
   if (ftPh) ftPh.outerHTML = buildFooter(lang);
+
+  initWhatsApp(lang);
 
   /* Language buttons */
   document.addEventListener('click', e => {

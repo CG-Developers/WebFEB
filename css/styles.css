@@ -448,3 +448,15 @@ input, textarea, select { font-family: inherit; }
   .footer-grid{ grid-template-columns: 1fr; gap: 28px; }
   .stats      { gap: 28px; }
 }
+
+/* ── WhatsApp flotant ─────────────────────────────────── */
+#wa-float {
+  position: fixed; right: 22px; bottom: 22px; z-index: 60;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+#wa-float:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 22px rgba(0,0,0,.4); }
+@media (max-width: 640px) { #wa-float { right: 16px; bottom: 16px; width: 52px; height: 52px; } }
