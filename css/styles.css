@@ -286,6 +286,7 @@ input, textarea, select { font-family: inherit; }
 
 /* ── 2-col grid ───────────────────────────────────────── */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+.grid-2--about { grid-template-columns: 60fr 40fr; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
 /* ── Stats ────────────────────────────────────────────── */
@@ -439,7 +440,7 @@ input, textarea, select { font-family: inherit; }
   .nav-links  { display: none; }
   .nav-burger { display: flex; }
   .nav-cta    { display: none; }
-  .grid-2 { grid-template-columns: 1fr; }
+  .grid-2, .grid-2--about { grid-template-columns: 1fr; }
   .form-row   { grid-template-columns: 1fr; }
   .services-grid { grid-template-columns: 1fr; }
   .gallery-grid  { grid-template-columns: repeat(2, 1fr); }
@@ -727,8 +728,8 @@ input, textarea, select { font-family: inherit; }
 }
 /* escriptori: s'eixampla més que no s'estira (efecte panoràmic) */
 .hover-video.is-playing {
-  transform: scale(1.34);
-  box-shadow: 0 65px 150px rgba(0, 0, 0, .78);
+  transform: scale(1.48);
+  box-shadow: 0 70px 160px rgba(0, 0, 0, .8);
   z-index: 3;
 }
 /* el creixement no pot generar barra de scroll horitzontal */
