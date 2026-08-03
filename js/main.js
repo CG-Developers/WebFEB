@@ -363,5 +363,132 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   initFadeUp();
+  initHeroVideo();
+  initTiles();
   if (lang !== 'es') applyLang(lang);
 });
+
+/* ── Hero: vídeo que apareix al fer scroll ───────────────
+   La imatge queda fixa; el vídeo entra amb fosa segons el
+   progrés d'scroll. Càrrega mandrosa i bail-out en connexions
+   lentes / estalvi de dades / reduced-motion.               */
+function initHeroVideo() {
+  const hero = document.querySelector('.hero[data-hero-video]');
+  if (!hero) return;
+  const wrap = hero.querySelector('.hero-img');
+  if (!wrap) return;
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const conn = navigator.connection || {};
+  const slow = conn.saveData === true || /^(slow-)?2g$/.test(conn.effectiveType || '');
+  if (reduced || slow) return;
+
+  const src = hero.dataset.heroVideo;
+  const poster = hero.dataset.heroPoster || '';
+  let video = null, loaded = false;
+
+  const build = () => {
+    if (loaded) return;
+    loaded = true;
+    video = document.createElement('video');
+    video.className = 'hero-video';
+    video.muted = true; video.loop = true; video.playsInline = true;
+    video.setAttribute('muted', ''); video.setAttribute('playsinline', '');
+    video.preload = 'auto';
+    if (poster) video.poster = poster;
+    video.setAttribute('aria-hidden', 'true');
+    video.tabIndex = -1;
+    video.src = src;
+    wrap.appendChild(video);
+    hero.classList.add('has-video');
+    video.play().catch(() => {});
+  };
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const h = hero.offsetHeight || window.innerHeight;
+    /* progrés 0→1 durant el primer 55% de l'alçada del hero */
+    const p = Math.min(1, Math.max(0, window.scrollY / (h * 0.55)));
+    hero.style.setProperty('--hero-video-op', p.toFixed(3));
+    if (p > 0.02) build();
+    if (video) {
+      if (p > 0.02 && video.paused) video.play().catch(() => {});
+      if (p <= 0.02 && !video.paused) video.pause();
+    }
+  };
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  /* Precàrrega discreta quan el navegador està ociós */
+  if ('requestIdleCallback' in window) requestIdleCallback(() => { const l = document.createElement('link'); l.rel = 'prefetch'; l.as = 'video'; l.href = src; document.head.appendChild(l); }, { timeout: 4000 });
+  update();
+}
+
+/* ── Tiles horitzontals (galeria d'artistes) ──────────── */
+function initTiles() {
+  document.querySelectorAll('.tiles').forEach(root => {
+    const track = root.querySelector('.tiles-track');
+    if (!track) return;
+    const tiles = [...track.querySelectorAll('.tile')];
+    if (!tiles.length) return;
+
+    track.setAttribute('tabindex', '0');
+    track.setAttribute('role', 'region');
+
+    const native = CSS.supports && CSS.supports('animation-timeline', 'view(inline)');
+    if (native) track.classList.add('native-tl');
+
+    /* Fallback: marca la peça més centrada */
+    const mark = () => {
+      const c = track.scrollLeft + track.clientWidth / 2;
+      let best = null, bd = Infinity;
+      tiles.forEach(t => {
+        const d = Math.abs((t.offsetLeft + t.offsetWidth / 2) - c);
+        if (d < bd) { bd = d; best = t; }
+      });
+      tiles.forEach(t => t.classList.toggle('is-active', t === best));
+    };
+    if (!native) {
+      let tk = false;
+      track.addEventListener('scroll', () => { if (!tk) { tk = true; requestAnimationFrame(() => { tk = false; mark(); }); } }, { passive: true });
+      mark();
+    }
+
+    /* Arrossegar amb ratolí / trackpad */
+    let down = false, sx = 0, sl = 0, moved = 0;
+    track.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'touch') return;
+      down = true; moved = 0; sx = e.clientX; sl = track.scrollLeft;
+      track.setPointerCapture(e.pointerId);
+      track.classList.add('is-dragging');
+    });
+    track.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - sx; moved = Math.abs(dx);
+      track.scrollLeft = sl - dx;
+    });
+    const end = e => {
+      if (!down) return;
+      down = false; track.classList.remove('is-dragging');
+      try { track.releasePointerCapture(e.pointerId); } catch (_) {}
+      if (!native) mark();
+    };
+    track.addEventListener('pointerup', end);
+    track.addEventListener('pointercancel', end);
+    track.addEventListener('click', e => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+    /* Fletxes */
+    const step = () => (tiles[0].offsetWidth + 18);
+    const go = dir => track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+    root.querySelectorAll('[data-tiles-prev]').forEach(b => b.addEventListener('click', () => go(-1)));
+    root.querySelectorAll('[data-tiles-next]').forEach(b => b.addEventListener('click', () => go(1)));
+
+    /* Teclat */
+    track.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    });
+  });
+}
