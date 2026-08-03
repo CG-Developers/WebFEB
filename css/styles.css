@@ -462,19 +462,19 @@ input, textarea, select { font-family: inherit; }
 @media (max-width: 640px) { #wa-float { right: 16px; bottom: 16px; width: 52px; height: 52px; } }
 
 /* ══════════════════════════════════════════════════════════
-   Hero cinematic — imatge fixa + vídeo que apareix al scroll
+   Hero cinematic — imatge fixa + vídeo temporitzat
    ══════════════════════════════════════════════════════════ */
 .hero-img video.hero-video {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover; object-position: center center;
   opacity: var(--hero-video-op, 0);
-  transition: opacity 320ms linear;
+  transition: opacity 1400ms var(--ease);
   pointer-events: none;
   will-change: opacity;
 }
 .hero-img img { transition: transform 900ms var(--ease); }
-.hero.has-video .hero-img img { transform: scale(calc(1 + (var(--hero-video-op, 0) * .03))); }
+.hero.has-video .hero-img img { transform: scale(calc(1 + (var(--hero-video-op, 0) * .04))); }
 
 /* Indicador de scroll — desapareix quan el vídeo ja és visible */
 .hero-scroll-cue {
@@ -484,7 +484,7 @@ input, textarea, select { font-family: inherit; }
   font-size: 10px; font-weight: 600; letter-spacing: .16em;
   text-transform: uppercase; color: var(--humo-200);
   opacity: calc(1 - var(--hero-video-op, 0));
-  transition: opacity 320ms linear;
+  transition: opacity 900ms var(--ease);
   pointer-events: none;
 }
 .hero-scroll-cue i {
@@ -501,71 +501,88 @@ input, textarea, select { font-family: inherit; }
 }
 
 /* ══════════════════════════════════════════════════════════
-   Tiles horitzontals — galeria d'artistes
+   Anell 3D de targetes — galeria
    ══════════════════════════════════════════════════════════ */
-.tiles { position: relative; margin-top: 40px; }
-.tiles-track {
-  display: flex; gap: 18px;
-  overflow-x: auto; overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  padding: 30px 0 34px;
-  scrollbar-width: none; -ms-overflow-style: none;
+.ring3d {
+  position: relative;
+  height: clamp(430px, 50vw, 640px);
+  margin: 24px 0 8px;
+  perspective: 1500px;
+  perspective-origin: 50% 45%;
+  outline: none;
+  overflow: hidden;
+  -webkit-user-select: none; user-select: none;
+}
+.ring3d-track {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
   cursor: grab;
+  touch-action: pan-y;
 }
-.tiles-track::-webkit-scrollbar { display: none; }
-.tiles-track.is-dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
-.tiles-track:focus-visible { outline: 1px solid var(--dorado); outline-offset: 6px; }
+.ring3d.is-dragging .ring3d-track { cursor: grabbing; }
+.ring3d-track.is-snapping { transition: transform 720ms var(--ease); }
+.ring3d-track.is-snapping .ring-card { transition: opacity 500ms var(--ease); }
 
-/* Espaiadors perquè la primera i l'última peça puguin centrar-se */
-.tiles-track::before, .tiles-track::after {
-  content: ''; flex: 0 0 max(0px, calc(50% - clamp(150px, 17vw, 220px)));
+.ring-card {
+  position: absolute; top: 50%; left: 50%;
+  width: clamp(140px, 13vw, 190px);
+  aspect-ratio: 3 / 4;
+  margin: 0; overflow: hidden;
+  background: #131313;
+  box-shadow: 0 18px 50px rgba(10,10,10,.35);
+  cursor: pointer;
+  transition: opacity 500ms var(--ease);
 }
-
-.tile {
-  position: relative; flex: 0 0 clamp(230px, 28vw, 380px);
-  aspect-ratio: 3 / 4; scroll-snap-align: center;
-  overflow: hidden; background: #131313;
-  transform: scale(.88); opacity: .45;
-  transition: transform 600ms var(--ease), opacity 600ms var(--ease);
-}
-.tile img {
+.ring-card img {
   width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(.35) contrast(1.05);
-  transition: filter 700ms var(--ease), transform 900ms var(--ease);
+  display: block; pointer-events: none;
+  filter: grayscale(.4) contrast(1.05) brightness(.92);
+  transition: filter 700ms var(--ease);
 }
-.tile.is-active { transform: scale(1); opacity: 1; }
-.tile.is-active img { filter: grayscale(0) contrast(1); }
-.tile::after {
+
+/* La targeta frontal: protagonisme */
+.ring-card.is-front {
+  width: clamp(215px, 20vw, 280px);
+  z-index: 50;
+  box-shadow: 0 40px 90px rgba(10,10,10,.55);
+  transition: width 600ms var(--ease), opacity 500ms var(--ease);
+}
+.ring-card.is-front img { filter: none; }
+.ring-card.is-front::after {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(10,10,10,.55), transparent 45%);
-  opacity: 0; transition: opacity 600ms var(--ease);
+  border: 1px solid rgba(196,154,60,.45);
+  pointer-events: none;
 }
-.tile.is-active::after { opacity: 1; }
-.tile-cap {
-  position: absolute; z-index: 2; left: 18px; bottom: 16px;
+.ring-cap {
+  position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
+  padding: 30px 16px 14px;
+  background: linear-gradient(to top, rgba(10,10,10,.8), transparent);
   font-size: 10px; font-weight: 600; letter-spacing: .16em;
   text-transform: uppercase; color: var(--ivory-100);
-  opacity: 0; transform: translateY(8px);
-  transition: opacity 500ms var(--ease) 120ms, transform 500ms var(--ease) 120ms;
+  opacity: 0; transition: opacity 450ms var(--ease) 150ms;
 }
-.tile.is-active .tile-cap { opacity: 1; transform: none; }
+.ring-card.is-front .ring-cap { opacity: 1; }
 
-/* Navegadors natius amb scroll-driven animations (Chrome/Edge 115+) */
-@supports (animation-timeline: view(inline)) {
-  .tiles-track.native-tl .tile {
-    animation: tile-focus linear both;
-    animation-timeline: view(inline);
-    animation-range: entry 5% exit 95%;
-    transition: none;
-  }
-  @keyframes tile-focus {
-    0%   { transform: scale(.86); opacity: .35 }
-    45%,55% { transform: scale(1); opacity: 1 }
-    100% { transform: scale(.86); opacity: .35 }
-  }
+.ring3d-nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px; margin-top: 6px;
+}
+.ring3d-hint {
+  font-size: 10px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--humo-200);
 }
 
-.tiles-nav { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+@media (max-width: 900px) {
+  .ring3d { height: clamp(380px, 112vw, 540px); perspective: 1100px; }
+  .ring-card { width: 28vw; }
+  .ring-card.is-front { width: 42vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring3d-track.is-snapping,
+  .ring3d-track.is-snapping .ring-card { transition: none; }
+}
+
+/* ── Botons de navegació (anell / carrusels) ───────────── */
 .tiles-btn {
   width: 44px; height: 44px; display: grid; place-items: center;
   background: transparent; border: 1px solid rgba(10,10,10,.16);
@@ -573,16 +590,99 @@ input, textarea, select { font-family: inherit; }
   font-family: var(--font-b); font-size: 15px; line-height: 1;
 }
 .tiles-btn:hover { background: var(--crimson); border-color: var(--crimson); color: #fff; }
-.tiles-btn[disabled] { opacity: .25; cursor: default; }
-.section--dark .tiles-btn, .section--pale .tiles-btn { border-color: rgba(10,10,10,.16); }
 .section--dark .tiles-btn { border-color: rgba(255,255,255,.22); color: var(--ivory-100); }
 
-@media (prefers-reduced-motion: reduce) {
-  .tile { transform: none; opacity: 1; transition: none; }
-  .tiles-track.native-tl .tile { animation: none; }
+/* ══════════════════════════════════════════════════════════
+   Strips d'artistes — làmines que s'obren en gran
+   ══════════════════════════════════════════════════════════ */
+.strips {
+  display: flex; gap: 6px;
+  height: clamp(380px, 46vw, 560px);
+  margin-top: 36px;
+  overflow: hidden;
 }
-@media (max-width: 640px) {
-  .tile { flex: 0 0 74vw; }
-  .tiles-track::before, .tiles-track::after { flex: 0 0 max(0px, calc(50% - 37vw)); }
-  .tiles-nav { display: none; }
+.strip {
+  position: relative; flex: 1 1 0; min-width: 0;
+  display: block; overflow: hidden; cursor: pointer;
+  border: 0; padding: 0; background: #101010;
+  font: inherit; color: inherit; text-align: left;
+  -webkit-appearance: none; appearance: none;
+  transition: flex-grow 800ms var(--ease);
+  outline-offset: -2px;
+}
+.strip img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) contrast(1.08) brightness(.72);
+  transform: scale(1.06);
+  transition: filter 800ms var(--ease), transform 1200ms var(--ease);
+}
+.strip::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,.85) 0%, rgba(10,10,10,.15) 45%, transparent 70%);
+  opacity: .85; transition: opacity 700ms var(--ease);
+}
+
+/* Etiqueta vertical quan està tancada */
+.strip-vlabel {
+  display: block;
+  position: absolute; z-index: 2; left: 50%; bottom: 22px;
+  transform: translateX(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  font-size: 11px; font-weight: 600; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--ivory-100);
+  white-space: nowrap;
+  transition: opacity 400ms var(--ease);
+}
+/* Fitxa quan està oberta */
+.strip-info {
+  display: block;
+  position: absolute; z-index: 2; left: 24px; right: 24px; bottom: 24px;
+  text-align: left;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 600ms var(--ease) 220ms, transform 600ms var(--ease) 220ms;
+  pointer-events: none;
+}
+.strip-role {
+  display: block;
+  font-size: 10px; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--dorado); margin-bottom: 8px;
+}
+.strip-name {
+  display: block;
+  font-family: var(--font-d);
+  font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+  font-weight: 700; line-height: 1.05; color: var(--ivory-100);
+  margin-bottom: 6px;
+}
+.strip-desc {
+  display: block;
+  font-size: .875rem; color: var(--humo-100); line-height: 1.6;
+  max-width: 42ch;
+}
+
+/* Estat obert (hover en escriptori, .is-open en tàctil) */
+@media (hover: hover) and (pointer: fine) {
+  .strips:hover .strip { flex-grow: .55; }
+  .strip:hover { flex-grow: 7; }
+  .strip:hover img { filter: none; transform: scale(1); }
+  .strip:hover::after { opacity: .55; }
+  .strip:hover .strip-vlabel { opacity: 0; }
+  .strip:hover .strip-info { opacity: 1; transform: none; }
+}
+.strip:focus-visible { outline: 2px solid var(--dorado); }
+.strips .strip.is-open { flex-grow: 7; }
+.strips.has-open .strip:not(.is-open) { flex-grow: .55; }
+.strip.is-open img { filter: none; transform: scale(1); }
+.strip.is-open::after { opacity: .55; }
+.strip.is-open .strip-vlabel { opacity: 0; }
+.strip.is-open .strip-info { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .strips { height: clamp(340px, 92vw, 480px); gap: 4px; }
+  .strip-info { left: 16px; right: 16px; bottom: 18px; }
+  .strip-desc { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .strip, .strip img, .strip-info { transition-duration: 1ms; }
 }

@@ -364,14 +364,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initFadeUp();
   initHeroVideo();
-  initTiles();
+  initStrips();
+  initRing();
   if (lang !== 'es') applyLang(lang);
 });
 
-/* ── Hero: vídeo que apareix al fer scroll ───────────────
-   La imatge queda fixa; el vídeo entra amb fosa segons el
-   progrés d'scroll. Càrrega mandrosa i bail-out en connexions
-   lentes / estalvi de dades / reduced-motion.               */
+/* ── Hero: vídeo que entra sol als 10 s ──────────────────
+   La imatge queda fixa i, passats N segons (data-hero-delay),
+   el vídeo es fon per sobre sense tocar el scroll. Càrrega
+   mandrosa, pausa quan el hero surt de pantalla, i bail-out
+   en reduced-motion / estalvi de dades / xarxa lenta.        */
 function initHeroVideo() {
   const hero = document.querySelector('.hero[data-hero-video]');
   if (!hero) return;
@@ -385,11 +387,10 @@ function initHeroVideo() {
 
   const src = hero.dataset.heroVideo;
   const poster = hero.dataset.heroPoster || '';
-  let video = null, loaded = false;
+  const delay = parseInt(hero.dataset.heroDelay || '10000', 10);
+  let video = null, onScreen = true;
 
-  const build = () => {
-    if (loaded) return;
-    loaded = true;
+  const reveal = () => {
     video = document.createElement('video');
     video.className = 'hero-video';
     video.muted = true; video.loop = true; video.playsInline = true;
@@ -398,97 +399,150 @@ function initHeroVideo() {
     if (poster) video.poster = poster;
     video.setAttribute('aria-hidden', 'true');
     video.tabIndex = -1;
+
+    /* Només fem la fosa quan hi ha prou buffer: evita el primer frame negre */
+    const show = () => {
+      hero.classList.add('has-video');
+      hero.style.setProperty('--hero-video-op', '1');
+      if (onScreen) video.play().catch(() => {});
+    };
+    video.addEventListener('canplay', show, { once: true });
+    setTimeout(show, 2500); /* xarxa lenta: mostrem igualment */
+
     video.src = src;
     wrap.appendChild(video);
-    hero.classList.add('has-video');
-    video.play().catch(() => {});
   };
 
-  let ticking = false;
-  const update = () => {
-    ticking = false;
-    const h = hero.offsetHeight || window.innerHeight;
-    /* progrés 0→1 durant el primer 55% de l'alçada del hero */
-    const p = Math.min(1, Math.max(0, window.scrollY / (h * 0.55)));
-    hero.style.setProperty('--hero-video-op', p.toFixed(3));
-    if (p > 0.02) build();
-    if (video) {
-      if (p > 0.02 && video.paused) video.play().catch(() => {});
-      if (p <= 0.02 && !video.paused) video.pause();
-    }
-  };
-  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  /* Precarreguem abans d'hora perquè als 10 s ja estigui llest */
+  const warm = () => { const l = document.createElement('link'); l.rel = 'prefetch'; l.as = 'video'; l.href = src; document.head.appendChild(l); };
+  if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 3000 }); else setTimeout(warm, 1200);
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  /* Precàrrega discreta quan el navegador està ociós */
-  if ('requestIdleCallback' in window) requestIdleCallback(() => { const l = document.createElement('link'); l.rel = 'prefetch'; l.as = 'video'; l.href = src; document.head.appendChild(l); }, { timeout: 4000 });
-  update();
+  setTimeout(reveal, delay);
+
+  /* Estalvi de bateria: pausa si el hero no es veu o la pestanya s'amaga */
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+      if (!video) return;
+      if (onScreen) video.play().catch(() => {}); else video.pause();
+    }, { threshold: 0.05 }).observe(hero);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (!video) return;
+    if (document.hidden) video.pause(); else if (onScreen) video.play().catch(() => {});
+  });
 }
 
-/* ── Tiles horitzontals (galeria d'artistes) ──────────── */
-function initTiles() {
-  document.querySelectorAll('.tiles').forEach(root => {
-    const track = root.querySelector('.tiles-track');
-    if (!track) return;
-    const tiles = [...track.querySelectorAll('.tile')];
-    if (!tiles.length) return;
+/* ── Strips d'artistes (obre en gran) ───────────────────── */
+function initStrips() {
+  document.querySelectorAll('.strips').forEach(root => {
+    const strips = [...root.querySelectorAll('.strip')];
+    if (!strips.length) return;
+    const coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 
-    track.setAttribute('tabindex', '0');
-    track.setAttribute('role', 'region');
-
-    const native = CSS.supports && CSS.supports('animation-timeline', 'view(inline)');
-    if (native) track.classList.add('native-tl');
-
-    /* Fallback: marca la peça més centrada */
-    const mark = () => {
-      const c = track.scrollLeft + track.clientWidth / 2;
-      let best = null, bd = Infinity;
-      tiles.forEach(t => {
-        const d = Math.abs((t.offsetLeft + t.offsetWidth / 2) - c);
-        if (d < bd) { bd = d; best = t; }
-      });
-      tiles.forEach(t => t.classList.toggle('is-active', t === best));
+    const open = el => {
+      strips.forEach(s => s.classList.toggle('is-open', s === el));
+      root.classList.toggle('has-open', !!el);
+      strips.forEach(s => s.setAttribute('aria-expanded', String(s === el)));
     };
-    if (!native) {
-      let tk = false;
-      track.addEventListener('scroll', () => { if (!tk) { tk = true; requestAnimationFrame(() => { tk = false; mark(); }); } }, { passive: true });
-      mark();
-    }
 
-    /* Arrossegar amb ratolí / trackpad */
-    let down = false, sx = 0, sl = 0, moved = 0;
+    strips.forEach(s => {
+      s.setAttribute('aria-expanded', 'false');
+      s.addEventListener('click', () => open(s.classList.contains('is-open') && coarse ? null : s));
+      s.addEventListener('focus', () => { if (!coarse) open(s); });
+    });
+
+    /* En tàctil obrim la primera perquè no es vegi una filera de tires buides */
+    if (coarse) open(strips[0]);
+  });
+}
+
+/* ── Anell 3D de targetes (galeria) ─────────────────────── */
+function initRing() {
+  document.querySelectorAll('.ring3d').forEach(root => {
+    const track = root.querySelector('.ring3d-track');
+    const cards = [...root.querySelectorAll('.ring-card')];
+    const n = cards.length;
+    if (!track || n < 3) return;
+
+    const step = 360 / n;
+    let angle = 0, radius = 0, index = 0;
+
+    const layout = () => {
+      const base = cards.find(c => !c.classList.contains('is-front')) || cards[0];
+      const w = base.offsetWidth;
+      radius = Math.round((w / 2) / Math.tan(Math.PI / n)) + 40;
+      cards.forEach((c, i) => { c.style.transform = `translate(-50%,-50%) rotateY(${i * step}deg) translateZ(${radius}px)`; });
+      render();
+    };
+
+    const render = () => {
+      track.style.transform = `rotateX(7deg) rotateY(${-angle}deg)`;
+      cards.forEach((c, i) => {
+        /* distància angular al front, normalitzada 0..1 */
+        let d = Math.abs(((i * step - angle + 540) % 360) - 180);
+        d = (180 - d) / 180;
+        const front = d > 0.985;
+        c.classList.toggle('is-front', front);
+        c.style.opacity = (0.18 + Math.pow(d, 3) * 0.82).toFixed(3);
+        c.style.zIndex = Math.round(d * 100);
+      });
+    };
+
+    const goTo = i => { index = ((i % n) + n) % n; angle = index * step; track.classList.add('is-snapping'); render(); };
+
+    /* Arrossegar */
+    let down = false, sx = 0, sa = 0, moved = 0;
+    const px2deg = () => 0.35;
     track.addEventListener('pointerdown', e => {
-      if (e.pointerType === 'touch') return;
-      down = true; moved = 0; sx = e.clientX; sl = track.scrollLeft;
+      down = true; moved = 0; sx = e.clientX; sa = angle;
+      track.classList.remove('is-snapping');
       track.setPointerCapture(e.pointerId);
-      track.classList.add('is-dragging');
+      root.classList.add('is-dragging');
     });
     track.addEventListener('pointermove', e => {
       if (!down) return;
       const dx = e.clientX - sx; moved = Math.abs(dx);
-      track.scrollLeft = sl - dx;
+      angle = sa + dx * px2deg();
+      render();
     });
     const end = e => {
       if (!down) return;
-      down = false; track.classList.remove('is-dragging');
+      down = false; root.classList.remove('is-dragging');
       try { track.releasePointerCapture(e.pointerId); } catch (_) {}
-      if (!native) mark();
+      goTo(Math.round(angle / step));
     };
     track.addEventListener('pointerup', end);
     track.addEventListener('pointercancel', end);
+    /* Si s'ha arrossegat, el clic no obre el lightbox */
     track.addEventListener('click', e => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
 
-    /* Fletxes */
-    const step = () => (tiles[0].offsetWidth + 18);
-    const go = dir => track.scrollBy({ left: dir * step(), behavior: 'smooth' });
-    root.querySelectorAll('[data-tiles-prev]').forEach(b => b.addEventListener('click', () => go(-1)));
-    root.querySelectorAll('[data-tiles-next]').forEach(b => b.addEventListener('click', () => go(1)));
-
-    /* Teclat */
-    track.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    /* Fletxes, teclat i punts */
+    root.querySelectorAll('[data-ring-prev]').forEach(b => b.addEventListener('click', () => goTo(index - 1)));
+    root.querySelectorAll('[data-ring-next]').forEach(b => b.addEventListener('click', () => goTo(index + 1)));
+    root.setAttribute('tabindex', '0');
+    root.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(index - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
     });
+    /* Roda del ratolí horitzontal / trackpad */
+    let wt = 0;
+    root.addEventListener('wheel', e => {
+      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : 0;
+      if (!d) return;
+      e.preventDefault();
+      const now = Date.now();
+      if (now - wt < 260) return;
+      wt = now; goTo(index + (d > 0 ? 1 : -1));
+    }, { passive: false });
+
+    /* Clic en una targeta lateral: la porta al centre */
+    cards.forEach((c, i) => c.addEventListener('click', e => {
+      if (!c.classList.contains('is-front')) { e.preventDefault(); e.stopPropagation(); goTo(i); }
+    }, true));
+
+    window.addEventListener('resize', layout, { passive: true });
+    if (document.readyState === 'complete') layout(); else window.addEventListener('load', layout);
+    layout();
   });
 }

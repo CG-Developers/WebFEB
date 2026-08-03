@@ -48,27 +48,70 @@
         <div class="section-inner">
             <div class="section-label">Fotografía</div>
             <h2 class="section-title" style="margin-bottom:28px">Momentos en escena</h2>
-            <div class="gallery-masonry" id="gallery">
-                <div class="gitem" data-idx="0"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-01.jpg" alt="Flamenco Barcelona 1" loading="lazy"></div></div>
-                <div class="gitem" data-idx="1"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-02.jpg" alt="Flamenco Barcelona 2" loading="lazy"></div></div>
-                <div class="gitem" data-idx="2"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-03.jpg" alt="Flamenco Barcelona 3" loading="lazy"></div></div>
-                <div class="gitem" data-idx="3"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-04.jpg" alt="Flamenco Barcelona 4" loading="lazy"></div></div>
-                <div class="gitem" data-idx="4"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-05.jpg" alt="Flamenco Barcelona 5" loading="lazy"></div></div>
-                <div class="gitem" data-idx="5"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-06.jpg" alt="Flamenco Barcelona 6" loading="lazy"></div></div>
-                <div class="gitem" data-idx="6"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-07.jpg" alt="Flamenco Barcelona 7" loading="lazy"></div></div>
-                <div class="gitem" data-idx="7"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-08.jpg" alt="Flamenco Barcelona 8" loading="lazy"></div></div>
-                <div class="gitem" data-idx="8"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-09.jpg" alt="Flamenco Barcelona 9" loading="lazy"></div></div>
-                <div class="gitem" data-idx="9"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-10.jpg" alt="Flamenco Barcelona 10" loading="lazy"></div></div>
-                <div class="gitem" data-idx="10"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-11.jpg" alt="Flamenco Barcelona 11" loading="lazy"></div></div>
-                <div class="gitem" data-idx="11"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-12.jpg" alt="Flamenco Barcelona 12" loading="lazy"></div></div>
-                <!-- Noves fotos -->
-                <div class="gitem" data-idx="12"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-13.jpg" alt="Bailaora flamenca con abanico" loading="lazy"></div></div>
-                <div class="gitem" data-idx="13"><div class="photo-slot" style="aspect-ratio:4/5"><img src="assets/photos/galeria-14.jpg" alt="Bailaora con vestido lila y guitarrista" loading="lazy"></div></div>
-                <div class="gitem" data-idx="14"><div class="photo-slot" style="aspect-ratio:9/16"><img src="assets/photos/galeria-15.jpg" alt="Bailaora en movimiento con bata de cola" loading="lazy"></div></div>
-                <div class="gitem" data-idx="15"><div class="photo-slot" style="aspect-ratio:3/4"><img src="assets/photos/galeria-16.jpg" alt="Escenario del tablao con claveles rojos" loading="lazy"></div></div>
-                <div class="gitem" data-idx="16"><div class="photo-slot" style="aspect-ratio:4/3"><img src="assets/photos/galeria-17.jpg" alt="Artistas flamencos con palmas en escena" loading="lazy"></div></div>
-                <div class="gitem" data-idx="17"><div class="photo-slot" style="aspect-ratio:1/1"><img src="assets/photos/galeria-18.jpg" alt="Bailaora con mantón y flor amarilla" loading="lazy"></div></div>
-                <div class="gitem" data-idx="18"><div class="photo-slot" style="aspect-ratio:9/16"><img src="assets/photos/galeria-19.jpg" alt="Cuadro flamenco completo en escena" loading="lazy"></div></div>
+            <div class="ring3d" id="gallery" aria-label="Galería de fotos — arrastra para girar">
+                <div class="ring3d-track">
+                    <figure class="ring-card gitem" data-idx="0">
+                        <img src="assets/photos/galeria-15.jpg" alt="Bailaora con bata de cola" loading="eager" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Baile</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="1">
+                        <img src="assets/photos/galeria-13.jpg" alt="Bailaora flamenca con abanico" loading="eager" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Abanico</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="2">
+                        <img src="assets/photos/galeria-19.jpg" alt="Cuadro flamenco completo en escena" loading="eager" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">El cuadro</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="3">
+                        <img src="assets/photos/tablao-show-1.jpg" alt="Tablao flamenco en directo en Barcelona" loading="eager" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Tablao</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="4">
+                        <img src="assets/photos/galeria-17.jpg" alt="Artistas flamencos con palmas" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Palmas</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="5">
+                        <img src="assets/photos/eventos/rocio.jpg" alt="Bailaora en escena" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">En escena</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="6">
+                        <img src="assets/photos/galeria-16.jpg" alt="Escenario del tablao con claveles rojos" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Claveles</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="7">
+                        <img src="assets/photos/eventos/cantaora.jpg" alt="Cantaora flamenca" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Cante</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="8">
+                        <img src="assets/photos/galeria-14.jpg" alt="Bailaora y guitarrista" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Compás</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="9">
+                        <img src="assets/photos/eventos/cante_y_guitarra.jpg" alt="Cante y guitarra flamenca" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Guitarra</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="10">
+                        <img src="assets/photos/galeria-18.jpg" alt="Bailaora con mantón" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Mantón</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="11">
+                        <img src="assets/photos/tablao-show-2.jpg" alt="Espectáculo flamenco íntimo" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Zapateado</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="12">
+                        <img src="assets/photos/eventos/nito.jpg" alt="Guitarrista flamenco" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Toque</figcaption>
+                    </figure>
+                    <figure class="ring-card gitem" data-idx="13">
+                        <img src="assets/photos/tablao-show-3.jpg" alt="Artistas del tablao de Barcelona" loading="lazy" decoding="async" draggable="false">
+                        <figcaption class="ring-cap">Fin de fiesta</figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="ring3d-nav">
+                <button class="tiles-btn" type="button" data-ring-prev aria-label="Anterior">&#8592;</button>
+                <span class="ring3d-hint">Arrastra o pulsa una foto</span>
+                <button class="tiles-btn" type="button" data-ring-next aria-label="Siguiente">&#8594;</button>
             </div>
         </div>
     </section>
