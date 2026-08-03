@@ -721,17 +721,19 @@ input, textarea, select { font-family: inherit; }
 
 /* ── Foto→vídeo: creixement i control de so ─────────────── */
 .hover-video {
-  transition: transform 750ms var(--ease), box-shadow 750ms var(--ease);
-  /* creix cap a fora (dreta), no cap al text de l'esquerra */
-  transform-origin: 25% 50%;
+  transition: transform 800ms var(--ease), box-shadow 800ms var(--ease);
+  /* ancorat a la dreta: tot el creixement va cap a fora, mai cap al text */
+  transform-origin: 100% 50%;
 }
+/* escriptori: s'eixampla més que no s'estira (efecte panoràmic) */
 .hover-video.is-playing {
-  transform: scale(1.09);
-  box-shadow: 0 50px 110px rgba(0, 0, 0, .65);
+  transform: scale(1.15);
+  box-shadow: 0 55px 120px rgba(0, 0, 0, .7);
   z-index: 3;
 }
 /* el creixement no pot generar barra de scroll horitzontal */
 .section:has(.hover-video) { overflow: hidden; }
+.section:has(.hover-video) .section-inner { position: relative; }
 .hover-video__sound {
   position: absolute; z-index: 4; right: 16px; bottom: 16px;
   width: 40px; height: 40px; display: grid; place-items: center;
@@ -760,8 +762,9 @@ input, textarea, select { font-family: inherit; }
   50%      { box-shadow: 0 0 0 8px rgba(196,154,60,0) }
 }
 @media (max-width: 900px) {
-  .hover-video { transform-origin: center center; }
-  .hover-video.is-playing { transform: scale(1.02); }
+  /* mòbil: la columna ja és full-width; ancorem a dalt perquè creixi cap avall */
+  .hover-video { transform-origin: 50% 0%; }
+  .hover-video.is-playing { transform: scale(1.14); }
 }
 @media (prefers-reduced-motion: reduce) {
   .hover-video.is-playing { transform: none; }
