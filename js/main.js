@@ -366,6 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroVideo();
   initStrips();
   initRing();
+  initHoverVideo();
   if (lang !== 'es') applyLang(lang);
 });
 
@@ -590,5 +591,62 @@ function initRing() {
     /* Les imatges poden canviar l'alçada del contenidor en carregar */
     window.addEventListener('load', layout);
     layout();
+  });
+}
+
+/* ── Foto → vídeo en hover ───────────────────────────────
+   Càrrega mandrosa: el <video> no existeix fins que l'usuari
+   hi passa per sobre (o el toca en tàctil). Bail-out en
+   estalvi de dades, xarxa lenta o reduced-motion: es queda
+   com la fotografia de sempre.                              */
+function initHoverVideo() {
+  document.querySelectorAll('[data-hover-video]').forEach(box => {
+    const conn = navigator.connection || {};
+    const slow = conn.saveData === true || /^(slow-)?2g$/.test(conn.effectiveType || '');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (slow || reduced) { box.classList.add('is-idle'); return; }
+
+    const src = box.dataset.hoverVideo;
+    const coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    let video = null;
+
+    const build = () => {
+      if (video) return video;
+      video = document.createElement('video');
+      video.muted = true; video.loop = true; video.playsInline = true;
+      video.setAttribute('muted', ''); video.setAttribute('playsinline', '');
+      video.preload = 'auto';
+      video.tabIndex = -1;
+      video.setAttribute('aria-hidden', 'true');
+      video.src = src;
+      box.appendChild(video);
+      return video;
+    };
+
+    const play = () => {
+      const v = build();
+      const show = () => box.classList.add('is-playing');
+      if (v.readyState >= 2) show(); else v.addEventListener('canplay', show, { once: true });
+      v.play().catch(() => {});
+    };
+    const stop = () => {
+      box.classList.remove('is-playing');
+      if (video) video.pause();
+    };
+
+    if (coarse) {
+      box.addEventListener('click', () => {
+        box.classList.contains('is-playing') ? stop() : play();
+      });
+    } else {
+      box.addEventListener('pointerenter', play);
+      box.addEventListener('pointerleave', stop);
+    }
+
+    /* Si la secció surt de pantalla, para: bateria i dades */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
+    }
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
   });
 }
