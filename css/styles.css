@@ -663,18 +663,6 @@ input, textarea, select { font-family: inherit; }
 .ring-card.is-front:hover::after { border-color: rgba(196,154,60,.5); }
 .ring-card.is-front img { filter: none; }
 
-.ring-cap {
-  position: absolute; z-index: 2; left: 20px; bottom: 18px;
-  display: block;
-  font-size: 10px; font-weight: 600; letter-spacing: .18em;
-  text-transform: uppercase; color: var(--ivory-100);
-  text-shadow: 0 1px 14px rgba(10,10,10,.95);
-  opacity: 0; transform: translateY(8px);
-  transition: opacity 450ms var(--ease) 200ms, transform 450ms var(--ease) 200ms;
-  white-space: nowrap; pointer-events: none;
-}
-.ring-card.is-front .ring-cap { opacity: 1; transform: none; }
-
 .ring-nav {
   display: flex; align-items: center; justify-content: center;
   gap: 14px; margin-top: 14px;
