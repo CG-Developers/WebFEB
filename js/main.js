@@ -594,11 +594,12 @@ function initRing() {
   });
 }
 
-/* ── Foto → vídeo en hover ───────────────────────────────
-   Càrrega mandrosa: el <video> no existeix fins que l'usuari
-   hi passa per sobre (o el toca en tàctil). Bail-out en
-   estalvi de dades, xarxa lenta o reduced-motion: es queda
-   com la fotografia de sempre.                              */
+/* ── Foto → vídeo en hover, amb so ──────────────────────
+   El <video> no existeix fins que l'usuari hi passa per sobre.
+   El so: els navegadors només deixen reproduir amb àudio si hi
+   ha hagut un gest de l'usuari. Ho intentem; si ens ho bloquegen,
+   caiem a silenciat i el botó de so s'il·lumina perquè un clic
+   —que sí que és un gest— l'activi.                            */
 function initHoverVideo() {
   document.querySelectorAll('[data-hover-video]').forEach(box => {
     const conn = navigator.connection || {};
@@ -608,13 +609,17 @@ function initHoverVideo() {
 
     const src = box.dataset.hoverVideo;
     const coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    const soundBtn = box.querySelector('.hover-video__sound');
     let video = null;
+    let wantSound = true;   /* preferència de la sessió */
+
+    const paint = () => box.classList.toggle('is-muted', !video || video.muted);
 
     const build = () => {
       if (video) return video;
       video = document.createElement('video');
-      video.muted = true; video.loop = true; video.playsInline = true;
-      video.setAttribute('muted', ''); video.setAttribute('playsinline', '');
+      video.loop = true; video.playsInline = true;
+      video.setAttribute('playsinline', '');
       video.preload = 'auto';
       video.tabIndex = -1;
       video.setAttribute('aria-hidden', 'true');
@@ -623,30 +628,56 @@ function initHoverVideo() {
       return video;
     };
 
-    const play = () => {
+    const start = () => {
       const v = build();
       const show = () => box.classList.add('is-playing');
       if (v.readyState >= 2) show(); else v.addEventListener('canplay', show, { once: true });
-      v.play().catch(() => {});
+
+      v.muted = !wantSound;
+      paint();
+      v.play().then(() => {
+        box.classList.remove('is-blocked');
+      }).catch(() => {
+        /* bloquejat per la política d'autoplay: silenciem i avisem */
+        v.muted = true;
+        box.classList.add('is-blocked');
+        paint();
+        v.play().catch(() => {});
+      });
     };
+
     const stop = () => {
       box.classList.remove('is-playing');
       if (video) video.pause();
     };
 
+    if (soundBtn) {
+      soundBtn.addEventListener('click', e => {
+        e.stopPropagation(); e.preventDefault();
+        const v = build();
+        wantSound = !!v.muted;          /* el clic ÉS un gest: aquí el so sempre s'activa */
+        v.muted = !wantSound;
+        box.classList.remove('is-blocked');
+        paint();
+        if (!box.classList.contains('is-playing')) start();
+        else v.play().catch(() => {});
+      });
+    }
+
     if (coarse) {
       box.addEventListener('click', () => {
-        box.classList.contains('is-playing') ? stop() : play();
+        box.classList.contains('is-playing') ? stop() : start();
       });
     } else {
-      box.addEventListener('pointerenter', play);
+      box.addEventListener('pointerenter', start);
       box.addEventListener('pointerleave', stop);
     }
 
-    /* Si la secció surt de pantalla, para: bateria i dades */
+    /* Si la secció surt de pantalla, para: bateria, dades i sorolls indesitjats */
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
     }
     document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+    paint();
   });
 }

@@ -718,3 +718,45 @@ input, textarea, select { font-family: inherit; }
 .hover-video:hover .hover-video__cue { opacity: 1; }
 .hover-video.is-playing .hover-video__cue { opacity: 0; transform: translateY(8px); }
 .hover-video.is-idle .hover-video__cue { display: none; }   /* sense vídeo disponible */
+
+/* ── Foto→vídeo: creixement i control de so ─────────────── */
+.hover-video {
+  transition: transform 700ms var(--ease), box-shadow 700ms var(--ease);
+  transform-origin: center center;
+}
+.hover-video.is-playing {
+  transform: scale(1.035);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, .55);
+  z-index: 3;
+}
+.hover-video__sound {
+  position: absolute; z-index: 4; right: 16px; bottom: 16px;
+  width: 40px; height: 40px; display: grid; place-items: center;
+  border: 1px solid rgba(253,250,245,.35);
+  border-radius: 50%;
+  background: rgba(10,10,10,.45);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  color: var(--ivory-100); cursor: pointer;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 400ms var(--ease), transform 400ms var(--ease), background 220ms ease;
+  padding: 0;
+}
+.hover-video.is-playing .hover-video__sound,
+.hover-video:hover .hover-video__sound { opacity: 1; transform: none; }
+.hover-video__sound:hover { background: var(--crimson); border-color: var(--crimson); }
+.hover-video__sound .ico-off { display: none; }
+.hover-video.is-muted .hover-video__sound .ico-on { display: none; }
+.hover-video.is-muted .hover-video__sound .ico-off { display: block; }
+/* Si el navegador ens bloqueja el so, el botó demana atenció */
+.hover-video.is-blocked .hover-video__sound {
+  border-color: var(--dorado);
+  animation: sound-pulse 1.8s ease-in-out 3;
+}
+@keyframes sound-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196,154,60,.5) }
+  50%      { box-shadow: 0 0 0 8px rgba(196,154,60,0) }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-video.is-playing { transform: none; }
+  .hover-video.is-blocked .hover-video__sound { animation: none; }
+}
