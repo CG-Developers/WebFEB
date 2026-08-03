@@ -611,63 +611,74 @@ input, textarea, select { font-family: inherit; }
 }
 
 /* ══════════════════════════════════════════════════════════
-   Deck — galeria de làmines amb targeta central protagonista
+   Anell de targetes — galeria (projecció ortogràfica, sense 3D)
+   Cada targeta es col·loca amb matemàtiques pròpies: posició,
+   escala i compressió lateral es calculen al JS, de manera que
+   no depenem de la magnificació imprevisible de `perspective`.
    ══════════════════════════════════════════════════════════ */
-.deck {
-  display: flex; gap: 4px;
-  height: clamp(400px, 52vw, 620px);
-  margin-top: 32px;
+.ring {
+  position: relative;
+  height: clamp(400px, 48vw, 600px);
+  margin-top: 28px;
   overflow: hidden;
-  background: var(--obsidian);
-  -webkit-user-select: none; user-select: none;
+  cursor: grab;
   touch-action: pan-y;
+  -webkit-user-select: none; user-select: none;
 }
-.deck-card {
-  position: relative; flex: 1 1 0; min-width: 0;
-  overflow: hidden; cursor: pointer;
-  border: 0; padding: 0; background: #101010;
-  display: block; font: inherit; color: inherit; text-align: left;
+.ring.is-dragging { cursor: grabbing; }
+.ring:focus-visible { outline: 1px solid var(--dorado); outline-offset: 4px; }
+
+.ring-card {
+  position: absolute; top: 50%; left: 50%;
+  overflow: hidden;
+  background: #101010;
+  border: 0; padding: 0;
+  display: block; cursor: pointer;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  box-shadow: 0 22px 55px rgba(10,10,10,.45);
   -webkit-appearance: none; appearance: none;
-  transition: flex-grow 850ms var(--ease);
 }
-.deck-card img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(1) brightness(.62) contrast(1.1);
-  transition: filter 850ms var(--ease);
+.ring.is-snapping .ring-card {
+  transition: transform 720ms var(--ease), opacity 520ms var(--ease);
+}
+.ring-card img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: grayscale(1) brightness(.5) contrast(1.1);
+  transition: filter 700ms var(--ease);
   pointer-events: none;
 }
-.deck-card.is-active { flex-grow: 14; }
-.deck-card.is-active img { filter: none; }
+.ring-card.is-front {
+  box-shadow: 0 42px 95px rgba(10,10,10,.6);
+}
+.ring-card.is-front img { filter: none; }
 
-.deck-cap {
-  position: absolute; z-index: 2; left: 22px; bottom: 20px;
+.ring-cap {
+  position: absolute; z-index: 2; left: 20px; bottom: 18px;
   display: block;
   font-size: 10px; font-weight: 600; letter-spacing: .18em;
   text-transform: uppercase; color: var(--ivory-100);
-  text-shadow: 0 1px 12px rgba(10,10,10,.9);
-  opacity: 0; transform: translateY(10px);
-  transition: opacity 500ms var(--ease) 250ms, transform 500ms var(--ease) 250ms;
-  white-space: nowrap;
+  text-shadow: 0 1px 14px rgba(10,10,10,.95);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 450ms var(--ease) 200ms, transform 450ms var(--ease) 200ms;
+  white-space: nowrap; pointer-events: none;
 }
-.deck-card.is-active .deck-cap { opacity: 1; transform: none; }
-.deck-card:focus-visible { outline: 2px solid var(--dorado); outline-offset: -2px; }
+.ring-card.is-front .ring-cap { opacity: 1; transform: none; }
 
-.deck-nav {
+.ring-nav {
   display: flex; align-items: center; justify-content: center;
-  gap: 14px; margin-top: 16px;
+  gap: 14px; margin-top: 14px;
 }
-.deck-hint {
+.ring-hint {
   font-size: 10px; font-weight: 600; letter-spacing: .16em;
   text-transform: uppercase; color: var(--humo-200);
 }
-.deck-count { font-variant-numeric: tabular-nums; }
+.ring-count { font-variant-numeric: tabular-nums; }
 
 @media (max-width: 900px) {
-  .deck { height: clamp(360px, 92vw, 520px); gap: 3px; }
-  .deck-card.is-active { flex-grow: 22; }
-  .deck-cap { left: 14px; bottom: 14px; }
+  .ring { height: clamp(340px, 88vw, 500px); }
+  .ring-nav { gap: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .deck-card, .deck-card img, .deck-cap { transition-duration: 1ms; }
+  .ring.is-snapping .ring-card { transition-duration: 1ms; }
 }

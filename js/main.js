@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFadeUp();
   initHeroVideo();
   initStrips();
-  initDeck();
+  initRing();
   if (lang !== 'es') applyLang(lang);
 });
 
@@ -457,53 +457,117 @@ function initStrips() {
   });
 }
 
-/* ── Deck de galeria (làmines + protagonista) ───────────── */
-function initDeck() {
-  document.querySelectorAll('.deck').forEach(deck => {
-    const cards = [...deck.querySelectorAll('.deck-card')];
-    if (!cards.length) return;
-    let index = cards.findIndex(c => c.classList.contains('is-active'));
-    if (index < 0) index = 0;
+/* ── Anell de targetes (galeria) ─────────────────────────
+   Sense `perspective`: cada targeta es projecta a mà.
+   rotateY sense perspectiva = compressió horitzontal pura
+   (scaleX = cos θ), que és exactament l'efecte de làmina
+   que busquem i és 100% predictible a qualsevol pantalla. */
+function initRing() {
+  document.querySelectorAll('.ring').forEach(ring => {
+    const cards = [...ring.querySelectorAll('.ring-card')];
+    const n = cards.length;
+    if (n < 3) return;
 
-    const root = deck.closest('[data-deck-root]') || deck.parentElement;
-    const counter = root ? root.querySelector('[data-deck-count]') : null;
+    const root = ring.closest('[data-ring-root]') || ring.parentElement;
+    const counter = root ? root.querySelector('[data-ring-count]') : null;
 
-    const apply = () => {
-      cards.forEach((c, i) => {
-        const on = i === index;
-        c.classList.toggle('is-active', on);
-        c.setAttribute('aria-expanded', String(on));
-        c.tabIndex = 0;
-      });
-      if (counter) counter.textContent = (index + 1) + ' / ' + cards.length;
+    const step = 360 / n;
+    let rot = 0, index = 0;
+    let W = 0, H = 0, Rx = 0, Ry = 0, cardW = 0, cardH = 0;
+
+    const measure = () => {
+      W = ring.clientWidth; H = ring.clientHeight;
+      cardH = Math.round(H * 0.80);
+      cardW = Math.round(cardH * 0.72);
+      Rx = Math.min(W * 0.42, cardW * 1.75);
+      Ry = Math.round(H * 0.045);
+      cards.forEach(c => { c.style.width = cardW + 'px'; c.style.height = cardH + 'px'; });
     };
-    const go = i => { index = ((i % cards.length) + cards.length) % cards.length; apply(); };
 
-    cards.forEach((c, i) => c.addEventListener('click', () => {
-      if (i !== index) { go(i); return; }
-      const src = c.dataset.full || c.querySelector('img')?.src;
-      if (src && typeof window.openLightbox === 'function') window.openLightbox(i);
+    const render = () => {
+      cards.forEach((c, i) => {
+        /* angle relatiu al frontal, normalitzat a −180..180 */
+        const a = ((i * step - rot + 540) % 360) - 180;
+        const rad = a * Math.PI / 180;
+        const cos = Math.cos(rad), sin = Math.sin(rad);
+        const depth = (cos + 1) / 2;                   /* 0 = darrere, 1 = davant */
+        const s = 0.38 + 0.62 * Math.pow(depth, 5);    /* caiguda ràpida: el frontal mana */
+        const x = Rx * sin;
+        const y = -Ry * cos;
+        const back = cos < -0.1;
+        c.style.transform =
+          `translate(-50%,-50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${s.toFixed(3)}) rotateY(${a.toFixed(1)}deg)`;
+        c.style.opacity = back ? '0' : (0.22 + 0.78 * Math.pow(depth, 3)).toFixed(3);
+        c.style.zIndex = String(Math.round(depth * 100));
+        c.style.pointerEvents = back ? 'none' : 'auto';
+        c.classList.toggle('is-front', Math.abs(a) < step / 2);
+      });
+      if (counter) counter.textContent = (index + 1) + ' / ' + n;
+    };
+
+    const layout = () => { measure(); render(); };
+
+    const goTo = i => {
+      index = ((i % n) + n) % n;
+      rot = index * step;
+      ring.classList.add('is-snapping');
+      render();
+    };
+
+    /* Arrossegar */
+    let down = false, sx = 0, sr = 0, moved = 0;
+    ring.addEventListener('pointerdown', e => {
+      down = true; moved = 0; sx = e.clientX; sr = rot;
+      ring.classList.remove('is-snapping');
+      ring.classList.add('is-dragging');
+      ring.setPointerCapture(e.pointerId);
+    });
+    ring.addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - sx; moved = Math.abs(dx);
+      rot = sr - dx * 0.32;
+      render();
+    });
+    const end = e => {
+      if (!down) return;
+      down = false;
+      ring.classList.remove('is-dragging');
+      try { ring.releasePointerCapture(e.pointerId); } catch (_) {}
+      goTo(Math.round(rot / step));
+    };
+    ring.addEventListener('pointerup', end);
+    ring.addEventListener('pointercancel', end);
+
+    /* Clic: targeta lateral → al centre; frontal → lightbox */
+    cards.forEach((c, i) => c.addEventListener('click', e => {
+      if (moved > 6) { e.preventDefault(); return; }
+      if (!c.classList.contains('is-front')) { goTo(i); return; }
+      if (typeof window.openLightbox === 'function') window.openLightbox(i);
     }));
 
-    /* Arrossegar horitzontalment per canviar de foto */
-    let sx = null;
-    deck.addEventListener('pointerdown', e => { sx = e.clientX; });
-    deck.addEventListener('pointerup', e => {
-      if (sx === null) return;
-      const dx = e.clientX - sx; sx = null;
-      if (Math.abs(dx) > 45) go(index + (dx < 0 ? 1 : -1));
-    });
-    deck.addEventListener('pointercancel', () => { sx = null; });
-
-    /* Teclat i fletxes */
-    deck.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
-    });
+    /* Fletxes, teclat i roda horitzontal */
     if (root) {
-      root.querySelectorAll('[data-deck-prev]').forEach(b => b.addEventListener('click', () => go(index - 1)));
-      root.querySelectorAll('[data-deck-next]').forEach(b => b.addEventListener('click', () => go(index + 1)));
+      root.querySelectorAll('[data-ring-prev]').forEach(b => b.addEventListener('click', () => goTo(index - 1)));
+      root.querySelectorAll('[data-ring-next]').forEach(b => b.addEventListener('click', () => goTo(index + 1)));
     }
-    apply();
+    ring.setAttribute('tabindex', '0');
+    ring.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(index - 1); }
+    });
+    let wt = 0;
+    ring.addEventListener('wheel', e => {
+      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : 0;
+      if (!d) return;
+      e.preventDefault();
+      const now = Date.now();
+      if (now - wt < 280) return;
+      wt = now; goTo(index + (d > 0 ? 1 : -1));
+    }, { passive: false });
+
+    window.addEventListener('resize', layout, { passive: true });
+    /* Les imatges poden canviar l'alçada del contenidor en carregar */
+    window.addEventListener('load', layout);
+    layout();
   });
 }
