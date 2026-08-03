@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFadeUp();
   initHeroVideo();
   initStrips();
-  initRing();
+  initDeck();
   if (lang !== 'es') applyLang(lang);
 });
 
@@ -457,92 +457,53 @@ function initStrips() {
   });
 }
 
-/* ── Anell 3D de targetes (galeria) ─────────────────────── */
-function initRing() {
-  document.querySelectorAll('.ring3d').forEach(root => {
-    const track = root.querySelector('.ring3d-track');
-    const cards = [...root.querySelectorAll('.ring-card')];
-    const n = cards.length;
-    if (!track || n < 3) return;
+/* ── Deck de galeria (làmines + protagonista) ───────────── */
+function initDeck() {
+  document.querySelectorAll('.deck').forEach(deck => {
+    const cards = [...deck.querySelectorAll('.deck-card')];
+    if (!cards.length) return;
+    let index = cards.findIndex(c => c.classList.contains('is-active'));
+    if (index < 0) index = 0;
 
-    const step = 360 / n;
-    let angle = 0, radius = 0, index = 0;
+    const root = deck.closest('[data-deck-root]') || deck.parentElement;
+    const counter = root ? root.querySelector('[data-deck-count]') : null;
 
-    const layout = () => {
-      const base = cards.find(c => !c.classList.contains('is-front')) || cards[0];
-      const w = base.offsetWidth;
-      radius = Math.round((w / 2) / Math.tan(Math.PI / n)) + 40;
-      cards.forEach((c, i) => { c.style.transform = `translate(-50%,-50%) rotateY(${i * step}deg) translateZ(${radius}px)`; });
-      render();
-    };
-
-    const render = () => {
-      track.style.transform = `rotateX(7deg) rotateY(${-angle}deg)`;
+    const apply = () => {
       cards.forEach((c, i) => {
-        /* distància angular al front, normalitzada 0..1 */
-        let d = Math.abs(((i * step - angle + 540) % 360) - 180);
-        d = (180 - d) / 180;
-        const front = d > 0.985;
-        c.classList.toggle('is-front', front);
-        c.style.opacity = (0.18 + Math.pow(d, 3) * 0.82).toFixed(3);
-        c.style.zIndex = Math.round(d * 100);
+        const on = i === index;
+        c.classList.toggle('is-active', on);
+        c.setAttribute('aria-expanded', String(on));
+        c.tabIndex = 0;
       });
+      if (counter) counter.textContent = (index + 1) + ' / ' + cards.length;
     };
+    const go = i => { index = ((i % cards.length) + cards.length) % cards.length; apply(); };
 
-    const goTo = i => { index = ((i % n) + n) % n; angle = index * step; track.classList.add('is-snapping'); render(); };
+    cards.forEach((c, i) => c.addEventListener('click', () => {
+      if (i !== index) { go(i); return; }
+      const src = c.dataset.full || c.querySelector('img')?.src;
+      if (src && typeof window.openLightbox === 'function') window.openLightbox(i);
+    }));
 
-    /* Arrossegar */
-    let down = false, sx = 0, sa = 0, moved = 0;
-    const px2deg = () => 0.35;
-    track.addEventListener('pointerdown', e => {
-      down = true; moved = 0; sx = e.clientX; sa = angle;
-      track.classList.remove('is-snapping');
-      track.setPointerCapture(e.pointerId);
-      root.classList.add('is-dragging');
+    /* Arrossegar horitzontalment per canviar de foto */
+    let sx = null;
+    deck.addEventListener('pointerdown', e => { sx = e.clientX; });
+    deck.addEventListener('pointerup', e => {
+      if (sx === null) return;
+      const dx = e.clientX - sx; sx = null;
+      if (Math.abs(dx) > 45) go(index + (dx < 0 ? 1 : -1));
     });
-    track.addEventListener('pointermove', e => {
-      if (!down) return;
-      const dx = e.clientX - sx; moved = Math.abs(dx);
-      angle = sa + dx * px2deg();
-      render();
+    deck.addEventListener('pointercancel', () => { sx = null; });
+
+    /* Teclat i fletxes */
+    deck.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
     });
-    const end = e => {
-      if (!down) return;
-      down = false; root.classList.remove('is-dragging');
-      try { track.releasePointerCapture(e.pointerId); } catch (_) {}
-      goTo(Math.round(angle / step));
-    };
-    track.addEventListener('pointerup', end);
-    track.addEventListener('pointercancel', end);
-    /* Si s'ha arrossegat, el clic no obre el lightbox */
-    track.addEventListener('click', e => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
-
-    /* Fletxes, teclat i punts */
-    root.querySelectorAll('[data-ring-prev]').forEach(b => b.addEventListener('click', () => goTo(index - 1)));
-    root.querySelectorAll('[data-ring-next]').forEach(b => b.addEventListener('click', () => goTo(index + 1)));
-    root.setAttribute('tabindex', '0');
-    root.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(index - 1); }
-      if (e.key === 'ArrowRight') { e.preventDefault(); goTo(index + 1); }
-    });
-    /* Roda del ratolí horitzontal / trackpad */
-    let wt = 0;
-    root.addEventListener('wheel', e => {
-      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : 0;
-      if (!d) return;
-      e.preventDefault();
-      const now = Date.now();
-      if (now - wt < 260) return;
-      wt = now; goTo(index + (d > 0 ? 1 : -1));
-    }, { passive: false });
-
-    /* Clic en una targeta lateral: la porta al centre */
-    cards.forEach((c, i) => c.addEventListener('click', e => {
-      if (!c.classList.contains('is-front')) { e.preventDefault(); e.stopPropagation(); goTo(i); }
-    }, true));
-
-    window.addEventListener('resize', layout, { passive: true });
-    if (document.readyState === 'complete') layout(); else window.addEventListener('load', layout);
-    layout();
+    if (root) {
+      root.querySelectorAll('[data-deck-prev]').forEach(b => b.addEventListener('click', () => go(index - 1)));
+      root.querySelectorAll('[data-deck-next]').forEach(b => b.addEventListener('click', () => go(index + 1)));
+    }
+    apply();
   });
 }

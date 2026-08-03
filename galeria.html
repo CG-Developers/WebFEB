@@ -9,13 +9,6 @@
     <link rel="icon" href="assets/logo.jpg">
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        .gallery-masonry { columns: 3; gap: 4px; }
-        .gallery-masonry .gitem { break-inside: avoid; margin-bottom: 4px; }
-        .gitem { overflow: hidden; cursor: pointer; position: relative; }
-        .gitem img { width: 100%; display: block; transition: transform 500ms cubic-bezier(.16,1,.3,1); }
-        .gitem:hover img { transform: scale(1.04); }
-        @media(max-width:768px) { .gallery-masonry { columns:2; } }
-        @media(max-width:480px) { .gallery-masonry { columns:1; } }
         /* Lightbox */
         .lb { display:none; position:fixed; inset:0; z-index:999; background:rgba(10,10,10,.96); align-items:center; justify-content:center; }
         .lb.open { display:flex; }
@@ -48,70 +41,70 @@
         <div class="section-inner">
             <div class="section-label">Fotografía</div>
             <h2 class="section-title" style="margin-bottom:28px">Momentos en escena</h2>
-            <div class="ring3d" id="gallery" aria-label="Galería de fotos — arrastra para girar">
-                <div class="ring3d-track">
-                    <figure class="ring-card gitem" data-idx="0">
+            <div data-deck-root>
+                <div class="deck" id="gallery" role="group" aria-label="Galería de fotos">
+                    <button class="deck-card is-active" type="button" data-idx="0" aria-label="Baile">
                         <img src="assets/photos/galeria-15.jpg" alt="Bailaora con bata de cola" loading="eager" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Baile</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="1">
+                        <span class="deck-cap">Baile</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="1" aria-label="Abanico">
                         <img src="assets/photos/galeria-13.jpg" alt="Bailaora flamenca con abanico" loading="eager" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Abanico</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="2">
+                        <span class="deck-cap">Abanico</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="2" aria-label="El cuadro">
                         <img src="assets/photos/galeria-19.jpg" alt="Cuadro flamenco completo en escena" loading="eager" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">El cuadro</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="3">
-                        <img src="assets/photos/tablao-show-1.jpg" alt="Tablao flamenco en directo en Barcelona" loading="eager" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Tablao</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="4">
+                        <span class="deck-cap">El cuadro</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="3" aria-label="Tablao">
+                        <img src="assets/photos/tablao-show-1.jpg" alt="Tablao flamenco en directo en Barcelona" loading="lazy" decoding="async" draggable="false">
+                        <span class="deck-cap">Tablao</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="4" aria-label="Palmas">
                         <img src="assets/photos/galeria-17.jpg" alt="Artistas flamencos con palmas" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Palmas</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="5">
+                        <span class="deck-cap">Palmas</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="5" aria-label="En escena">
                         <img src="assets/photos/eventos/rocio.jpg" alt="Bailaora en escena" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">En escena</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="6">
+                        <span class="deck-cap">En escena</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="6" aria-label="Claveles">
                         <img src="assets/photos/galeria-16.jpg" alt="Escenario del tablao con claveles rojos" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Claveles</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="7">
+                        <span class="deck-cap">Claveles</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="7" aria-label="Cante">
                         <img src="assets/photos/eventos/cantaora.jpg" alt="Cantaora flamenca" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Cante</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="8">
+                        <span class="deck-cap">Cante</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="8" aria-label="Compás">
                         <img src="assets/photos/galeria-14.jpg" alt="Bailaora y guitarrista" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Compás</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="9">
+                        <span class="deck-cap">Compás</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="9" aria-label="Guitarra">
                         <img src="assets/photos/eventos/cante_y_guitarra.jpg" alt="Cante y guitarra flamenca" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Guitarra</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="10">
+                        <span class="deck-cap">Guitarra</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="10" aria-label="Mantón">
                         <img src="assets/photos/galeria-18.jpg" alt="Bailaora con mantón" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Mantón</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="11">
+                        <span class="deck-cap">Mantón</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="11" aria-label="Zapateado">
                         <img src="assets/photos/tablao-show-2.jpg" alt="Espectáculo flamenco íntimo" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Zapateado</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="12">
+                        <span class="deck-cap">Zapateado</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="12" aria-label="Toque">
                         <img src="assets/photos/eventos/nito.jpg" alt="Guitarrista flamenco" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Toque</figcaption>
-                    </figure>
-                    <figure class="ring-card gitem" data-idx="13">
+                        <span class="deck-cap">Toque</span>
+                    </button>
+                    <button class="deck-card" type="button" data-idx="13" aria-label="Fin de fiesta">
                         <img src="assets/photos/tablao-show-3.jpg" alt="Artistas del tablao de Barcelona" loading="lazy" decoding="async" draggable="false">
-                        <figcaption class="ring-cap">Fin de fiesta</figcaption>
-                    </figure>
+                        <span class="deck-cap">Fin de fiesta</span>
+                    </button>
                 </div>
-            </div>
-            <div class="ring3d-nav">
-                <button class="tiles-btn" type="button" data-ring-prev aria-label="Anterior">&#8592;</button>
-                <span class="ring3d-hint">Arrastra o pulsa una foto</span>
-                <button class="tiles-btn" type="button" data-ring-next aria-label="Siguiente">&#8594;</button>
+                <div class="deck-nav">
+                    <button class="tiles-btn" type="button" data-deck-prev aria-label="Anterior">&#8592;</button>
+                    <span class="deck-hint">Pulsa una foto · <span class="deck-count" data-deck-count>1 / 14</span></span>
+                    <button class="tiles-btn" type="button" data-deck-next aria-label="Siguiente">&#8594;</button>
+                </div>
             </div>
         </div>
     </section>
@@ -172,28 +165,27 @@
     </script>
     <script src="js/main.js"></script>
     <script>
-    // Simple lightbox
-    const items = document.querySelectorAll('.gitem');
+    // Lightbox
+    const items = document.querySelectorAll('.deck-card');
     const lb = document.getElementById('lb');
     const lbImg = document.getElementById('lb-img');
-    let current = 0;
     const srcs = [...items].map(i => i.querySelector('img')?.src || '');
-    items.forEach(item => {
-        item.addEventListener('click', () => {
-            current = parseInt(item.dataset.idx);
-            lbImg.src = srcs[current];
-            lb.classList.add('open');
-        });
-    });
+    let current = 0;
+    window.openLightbox = function (i) {
+        current = i;
+        lbImg.src = srcs[current];
+        lb.classList.add('open');
+    };
+    const step = d => { current = (current + d + srcs.length) % srcs.length; lbImg.src = srcs[current]; };
     document.getElementById('lb-close').onclick = () => lb.classList.remove('open');
-    document.getElementById('lb-prev').onclick = () => { current = (current - 1 + srcs.length) % srcs.length; lbImg.src = srcs[current]; };
-    document.getElementById('lb-next').onclick = () => { current = (current + 1) % srcs.length; lbImg.src = srcs[current]; };
+    document.getElementById('lb-prev').onclick = () => step(-1);
+    document.getElementById('lb-next').onclick = () => step(1);
     lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
     document.addEventListener('keydown', e => {
         if (!lb.classList.contains('open')) return;
         if (e.key === 'Escape') lb.classList.remove('open');
-        if (e.key === 'ArrowLeft') { current = (current-1+srcs.length)%srcs.length; lbImg.src=srcs[current]; }
-        if (e.key === 'ArrowRight') { current = (current+1)%srcs.length; lbImg.src=srcs[current]; }
+        if (e.key === 'ArrowLeft') step(-1);
+        if (e.key === 'ArrowRight') step(1);
     });
     </script>
 </body>

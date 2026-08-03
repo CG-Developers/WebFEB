@@ -476,113 +476,36 @@ input, textarea, select { font-family: inherit; }
 .hero-img img { transition: transform 900ms var(--ease); }
 .hero.has-video .hero-img img { transform: scale(calc(1 + (var(--hero-video-op, 0) * .04))); }
 
-/* Indicador de scroll — desapareix quan el vídeo ja és visible */
-.hero-scroll-cue {
-  position: absolute; z-index: 3;
-  left: var(--pad-x); bottom: 18px;
-  display: flex; align-items: center; gap: 10px;
-  font-size: 10px; font-weight: 600; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--humo-200);
-  opacity: calc(1 - var(--hero-video-op, 0));
-  transition: opacity 900ms var(--ease);
-  pointer-events: none;
-}
-.hero-scroll-cue i {
-  display: block; width: 34px; height: 1px;
-  background: var(--dorado);
-  animation: cue-slide 1.8s var(--ease) infinite;
-  transform-origin: left center;
-}
-@keyframes cue-slide { 0%,100% { transform: scaleX(.4); opacity: .4 } 50% { transform: scaleX(1); opacity: 1 } }
-
 @media (prefers-reduced-motion: reduce) {
   .hero-img video.hero-video { display: none; }
-  .hero-scroll-cue i { animation: none; }
 }
 
-/* ══════════════════════════════════════════════════════════
-   Anell 3D de targetes — galeria
-   ══════════════════════════════════════════════════════════ */
-.ring3d {
+/* Relleu del títol del hero — llum zenital sobre obsidiana */
+.hero-title--relief {
   position: relative;
-  height: clamp(430px, 50vw, 640px);
-  margin: 24px 0 8px;
-  perspective: 1500px;
-  perspective-origin: 50% 45%;
-  outline: none;
-  overflow: hidden;
-  -webkit-user-select: none; user-select: none;
+  color: var(--ivory-100);
+  text-shadow:
+    0 -1px 0 rgba(255, 255, 255, .30),
+    0  1px 0 rgba(0, 0, 0, .90),
+    0  2px 2px rgba(0, 0, 0, .65),
+    0  4px 10px rgba(0, 0, 0, .45),
+    0 26px 54px rgba(0, 0, 0, .55);
 }
-.ring3d-track {
-  position: absolute; inset: 0;
-  transform-style: preserve-3d;
-  cursor: grab;
-  touch-action: pan-y;
-}
-.ring3d.is-dragging .ring3d-track { cursor: grabbing; }
-.ring3d-track.is-snapping { transition: transform 720ms var(--ease); }
-.ring3d-track.is-snapping .ring-card { transition: opacity 500ms var(--ease); }
-
-.ring-card {
-  position: absolute; top: 50%; left: 50%;
-  width: clamp(140px, 13vw, 190px);
-  aspect-ratio: 3 / 4;
-  margin: 0; overflow: hidden;
-  background: #131313;
-  box-shadow: 0 18px 50px rgba(10,10,10,.35);
-  cursor: pointer;
-  transition: opacity 500ms var(--ease);
-}
-.ring-card img {
-  width: 100%; height: 100%; object-fit: cover;
-  display: block; pointer-events: none;
-  filter: grayscale(.4) contrast(1.05) brightness(.92);
-  transition: filter 700ms var(--ease);
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .hero-title--relief {
+    background: linear-gradient(178deg, #FFFFFF 0%, var(--ivory-100) 34%, var(--ivory-400) 72%, #BFB6A4 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    /* amb el text transparent, el relleu passa a un drop-shadow del pintat */
+    text-shadow: none;
+    filter:
+      drop-shadow(0 1px 0 rgba(0, 0, 0, .85))
+      drop-shadow(0 3px 4px rgba(0, 0, 0, .55))
+      drop-shadow(0 24px 46px rgba(0, 0, 0, .5));
+  }
 }
 
-/* La targeta frontal: protagonisme */
-.ring-card.is-front {
-  width: clamp(215px, 20vw, 280px);
-  z-index: 50;
-  box-shadow: 0 40px 90px rgba(10,10,10,.55);
-  transition: width 600ms var(--ease), opacity 500ms var(--ease);
-}
-.ring-card.is-front img { filter: none; }
-.ring-card.is-front::after {
-  content: ''; position: absolute; inset: 0;
-  border: 1px solid rgba(196,154,60,.45);
-  pointer-events: none;
-}
-.ring-cap {
-  position: absolute; z-index: 2; left: 0; right: 0; bottom: 0;
-  padding: 30px 16px 14px;
-  background: linear-gradient(to top, rgba(10,10,10,.8), transparent);
-  font-size: 10px; font-weight: 600; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--ivory-100);
-  opacity: 0; transition: opacity 450ms var(--ease) 150ms;
-}
-.ring-card.is-front .ring-cap { opacity: 1; }
-
-.ring3d-nav {
-  display: flex; align-items: center; justify-content: center;
-  gap: 14px; margin-top: 6px;
-}
-.ring3d-hint {
-  font-size: 10px; font-weight: 600; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--humo-200);
-}
-
-@media (max-width: 900px) {
-  .ring3d { height: clamp(380px, 112vw, 540px); perspective: 1100px; }
-  .ring-card { width: 28vw; }
-  .ring-card.is-front { width: 42vw; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ring3d-track.is-snapping,
-  .ring3d-track.is-snapping .ring-card { transition: none; }
-}
-
-/* ── Botons de navegació (anell / carrusels) ───────────── */
+/* ── Botons de navegació ──────────────────────────────── */
 .tiles-btn {
   width: 44px; height: 44px; display: grid; place-items: center;
   background: transparent; border: 1px solid rgba(10,10,10,.16);
@@ -685,4 +608,66 @@ input, textarea, select { font-family: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   .strip, .strip img, .strip-info { transition-duration: 1ms; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   Deck — galeria de làmines amb targeta central protagonista
+   ══════════════════════════════════════════════════════════ */
+.deck {
+  display: flex; gap: 4px;
+  height: clamp(400px, 52vw, 620px);
+  margin-top: 32px;
+  overflow: hidden;
+  background: var(--obsidian);
+  -webkit-user-select: none; user-select: none;
+  touch-action: pan-y;
+}
+.deck-card {
+  position: relative; flex: 1 1 0; min-width: 0;
+  overflow: hidden; cursor: pointer;
+  border: 0; padding: 0; background: #101010;
+  display: block; font: inherit; color: inherit; text-align: left;
+  -webkit-appearance: none; appearance: none;
+  transition: flex-grow 850ms var(--ease);
+}
+.deck-card img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) brightness(.62) contrast(1.1);
+  transition: filter 850ms var(--ease);
+  pointer-events: none;
+}
+.deck-card.is-active { flex-grow: 14; }
+.deck-card.is-active img { filter: none; }
+
+.deck-cap {
+  position: absolute; z-index: 2; left: 22px; bottom: 20px;
+  display: block;
+  font-size: 10px; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ivory-100);
+  text-shadow: 0 1px 12px rgba(10,10,10,.9);
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 500ms var(--ease) 250ms, transform 500ms var(--ease) 250ms;
+  white-space: nowrap;
+}
+.deck-card.is-active .deck-cap { opacity: 1; transform: none; }
+.deck-card:focus-visible { outline: 2px solid var(--dorado); outline-offset: -2px; }
+
+.deck-nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px; margin-top: 16px;
+}
+.deck-hint {
+  font-size: 10px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--humo-200);
+}
+.deck-count { font-variant-numeric: tabular-nums; }
+
+@media (max-width: 900px) {
+  .deck { height: clamp(360px, 92vw, 520px); gap: 3px; }
+  .deck-card.is-active { flex-grow: 22; }
+  .deck-cap { left: 14px; bottom: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-card, .deck-card img, .deck-cap { transition-duration: 1ms; }
 }
