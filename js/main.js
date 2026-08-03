@@ -475,14 +475,14 @@ function initRing() {
     const step = 360 / n;
     let rot = 0, index = 0, hover = false;
     let W = 0, H = 0, Rx = 0, Ry = 0, cardW = 0, cardH = 0;
-    const ZOOM = 1.18;   /* creixement de la targeta central en passar-hi el cursor */
+    const ZOOM = 1.06;   /* creixement de la targeta central en passar-hi el cursor */
 
     const measure = () => {
       W = ring.clientWidth; H = ring.clientHeight;
-      cardH = Math.round(H * 0.76);
+      cardH = Math.round(H * 0.92);
       cardW = Math.round(cardH * 0.72);
       Rx = Math.min(W * 0.42, cardW * 1.75);
-      Ry = Math.round(H * 0.045);
+      Ry = Math.round(H * 0.02);
       cards.forEach(c => { c.style.width = cardW + 'px'; c.style.height = cardH + 'px'; });
     };
 
@@ -494,7 +494,7 @@ function initRing() {
         const cos = Math.cos(rad), sin = Math.sin(rad);
         const depth = (cos + 1) / 2;                   /* 0 = darrere, 1 = davant */
         const front = Math.abs(a) < step / 2;
-        let s = 0.38 + 0.62 * Math.pow(depth, 5);      /* caiguda ràpida: el frontal mana */
+        let s = 0.40 + 0.60 * Math.pow(depth, 5);      /* caiguda ràpida: el frontal mana */
         if (front && hover) s *= ZOOM;                  /* protagonisme en hover */
         const x = Rx * sin;
         const y = -Ry * cos;
