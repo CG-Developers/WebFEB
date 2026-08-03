@@ -472,12 +472,13 @@ function initRing() {
     const counter = root ? root.querySelector('[data-ring-count]') : null;
 
     const step = 360 / n;
-    let rot = 0, index = 0;
+    let rot = 0, index = 0, hover = false;
     let W = 0, H = 0, Rx = 0, Ry = 0, cardW = 0, cardH = 0;
+    const ZOOM = 1.18;   /* creixement de la targeta central en passar-hi el cursor */
 
     const measure = () => {
       W = ring.clientWidth; H = ring.clientHeight;
-      cardH = Math.round(H * 0.80);
+      cardH = Math.round(H * 0.76);
       cardW = Math.round(cardH * 0.72);
       Rx = Math.min(W * 0.42, cardW * 1.75);
       Ry = Math.round(H * 0.045);
@@ -491,16 +492,20 @@ function initRing() {
         const rad = a * Math.PI / 180;
         const cos = Math.cos(rad), sin = Math.sin(rad);
         const depth = (cos + 1) / 2;                   /* 0 = darrere, 1 = davant */
-        const s = 0.38 + 0.62 * Math.pow(depth, 5);    /* caiguda ràpida: el frontal mana */
+        const front = Math.abs(a) < step / 2;
+        let s = 0.38 + 0.62 * Math.pow(depth, 5);      /* caiguda ràpida: el frontal mana */
+        if (front && hover) s *= ZOOM;                  /* protagonisme en hover */
         const x = Rx * sin;
         const y = -Ry * cos;
         const back = cos < -0.1;
         c.style.transform =
           `translate(-50%,-50%) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${s.toFixed(3)}) rotateY(${a.toFixed(1)}deg)`;
-        c.style.opacity = back ? '0' : (0.22 + 0.78 * Math.pow(depth, 3)).toFixed(3);
+        let op = back ? 0 : 0.22 + 0.78 * Math.pow(depth, 3);
+        if (hover && !front) op *= 0.6;                 /* les laterals cedeixen el pas */
+        c.style.opacity = op.toFixed(3);
         c.style.zIndex = String(Math.round(depth * 100));
         c.style.pointerEvents = back ? 'none' : 'auto';
-        c.classList.toggle('is-front', Math.abs(a) < step / 2);
+        c.classList.toggle('is-front', front);
       });
       if (counter) counter.textContent = (index + 1) + ' / ' + n;
     };
@@ -517,7 +522,7 @@ function initRing() {
     /* Arrossegar */
     let down = false, sx = 0, sr = 0, moved = 0;
     ring.addEventListener('pointerdown', e => {
-      down = true; moved = 0; sx = e.clientX; sr = rot;
+      down = true; moved = 0; sx = e.clientX; sr = rot; hover = false;
       ring.classList.remove('is-snapping');
       ring.classList.add('is-dragging');
       ring.setPointerCapture(e.pointerId);
@@ -537,6 +542,22 @@ function initRing() {
     };
     ring.addEventListener('pointerup', end);
     ring.addEventListener('pointercancel', end);
+
+    /* Hover sobre la central: es fa gran i les veïnes s'aparten */
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (fine) {
+      const setHover = v => {
+        if (down || hover === v) return;
+        hover = v;
+        ring.classList.add('is-snapping');
+        render();
+      };
+      cards.forEach(c => {
+        c.addEventListener('pointerenter', () => setHover(c.classList.contains('is-front')));
+        c.addEventListener('pointerleave', () => setHover(false));
+      });
+      ring.addEventListener('pointerleave', () => setHover(false));
+    }
 
     /* Clic: targeta lateral → al centre; frontal → lightbox */
     cards.forEach((c, i) => c.addEventListener('click', e => {

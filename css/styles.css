@@ -651,6 +651,16 @@ input, textarea, select { font-family: inherit; }
 .ring-card.is-front {
   box-shadow: 0 42px 95px rgba(10,10,10,.6);
 }
+.ring-card.is-front:hover {
+  box-shadow: 0 55px 120px rgba(10,10,10,.72);
+}
+.ring-card.is-front::after {
+  content: ''; position: absolute; inset: 0;
+  border: 1px solid rgba(196,154,60,0);
+  transition: border-color 500ms var(--ease);
+  pointer-events: none;
+}
+.ring-card.is-front:hover::after { border-color: rgba(196,154,60,.5); }
 .ring-card.is-front img { filter: none; }
 
 .ring-cap {
