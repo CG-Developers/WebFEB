@@ -799,7 +799,7 @@ input, textarea, select { font-family: inherit; }
 }
 .collage-item--wide { grid-column: span 2; }
 .collage-item img {
-  width: 100%; height: 100%; object-fit: cover; object-position: center 25%;
+  width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
   display: block;
   filter: grayscale(1) contrast(1.05) brightness(.8);
   transition: filter 600ms var(--ease);
@@ -815,10 +815,12 @@ input, textarea, select { font-family: inherit; }
   transition: border-color 550ms var(--ease); pointer-events: none;
 }
 .collage-item:hover, .collage-item:focus-visible {
-  transform: scale(1.22); z-index: 20;
-  box-shadow: 0 45px 100px rgba(0,0,0,.72);
+  transform: scale(1.35); z-index: 20;
+  box-shadow: 0 50px 110px rgba(0,0,0,.75);
 }
 .collage-item:hover img, .collage-item:focus-visible img {
+  object-fit: contain;
+  background: #0a0a0a;
   filter: none;
 }
 .collage-item:hover::after, .collage-item:focus-visible::after { opacity: 0; }
@@ -831,6 +833,8 @@ input, textarea, select { font-family: inherit; }
 .collage-item:nth-child(3n):focus-visible { transform-origin: right center; }
 .collage-item:nth-child(3n+1):hover,
 .collage-item:nth-child(3n+1):focus-visible { transform-origin: left center; }
+
+
 
 /* Vídeo vertical a la dreta, tota l'alçada */
 .collage-video {
