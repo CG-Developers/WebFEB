@@ -774,39 +774,39 @@ input, textarea, select { font-family: inherit; }
 
 /* ══════════════════════════════════════════════════════════
    Collage / masonry — "En escena" (tablao)
-   Graella irregular en blanc i negre; color i creixement al hover.
+   Ordre net 01→08 (sense dense). B/N; al hover: color, creix
+   i mostra la foto SENCERA (contain) amb bona qualitat.
    ══════════════════════════════════════════════════════════ */
 .collage {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: clamp(130px, 15vw, 200px);
-  grid-auto-flow: dense;
+  grid-auto-rows: clamp(150px, 17vw, 230px);
   gap: 12px;
   margin-top: 36px;
 }
 .collage-item {
   position: relative; margin: 0;
-  background: #111; cursor: pointer;
-  grid-row: span 1; grid-column: span 1;
+  grid-column: span 1; grid-row: span 1;
+  background: #0d0d0d;
+  cursor: pointer;
   overflow: hidden;
-  transition: transform 600ms var(--ease), box-shadow 600ms var(--ease);
+  transition: transform 620ms var(--ease), box-shadow 620ms var(--ease);
   z-index: 1;
 }
-.collage-item--tall { grid-row: span 2; }
 .collage-item--wide { grid-column: span 2; }
 
+/* Capa base: la foto retallada (cover) en B/N, ompliment net */
 .collage-item img {
-  width: 100%; height: 100%; object-fit: cover; object-position: center 22%;
+  width: 100%; height: 100%; object-fit: cover; object-position: center 25%;
   display: block;
-  filter: grayscale(1) contrast(1.05) brightness(.82);
-  transition: filter 650ms var(--ease), transform 700ms var(--ease);
+  filter: grayscale(1) contrast(1.05) brightness(.8);
+  transition: filter 600ms var(--ease), object-fit 0ms;
 }
 .collage-item::after {
   content: ''; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(to top, rgba(10,10,10,.8) 0%, rgba(10,10,10,.1) 42%, transparent 62%);
+  background: linear-gradient(to top, rgba(10,10,10,.8) 0%, rgba(10,10,10,.1) 45%, transparent 65%);
   opacity: .5; transition: opacity 600ms var(--ease);
 }
-/* filet daurat */
 .collage-item::before {
   content: ''; position: absolute; inset: 0; z-index: 3;
   border: 1px solid rgba(196,154,60,0);
@@ -814,22 +814,25 @@ input, textarea, select { font-family: inherit; }
   pointer-events: none;
 }
 
-/* Hover: en comptes d'escalar la caixa (que talla amb overflow:hidden),
-   fem zoom DINS la imatge i elevem la peça amb ombra. Net, sense talls. */
+/* Hover: la peça s'expandeix, passa per davant, i la foto es veu
+   SENCERA (contain) i a color amb bona nitidesa.                    */
 .collage-item:hover,
 .collage-item:focus-visible {
-  z-index: 10;
-  box-shadow: 0 34px 80px rgba(0,0,0,.6);
+  transform: scale(1.18);
+  z-index: 20;
+  box-shadow: 0 40px 95px rgba(0,0,0,.7);
 }
 .collage-item:hover img,
 .collage-item:focus-visible img {
+  object-fit: contain;
+  background: #0a0a0a;
   filter: none;
-  transform: scale(1.10);
+  image-rendering: auto;
 }
 .collage-item:hover::after,
-.collage-item:focus-visible::after { opacity: .85; }
+.collage-item:focus-visible::after { opacity: 0; }
 .collage-item:hover::before,
-.collage-item:focus-visible::before { border-color: rgba(196,154,60,.55); }
+.collage-item:focus-visible::before { border-color: rgba(196,154,60,.6); }
 
 .collage-cap {
   position: absolute; z-index: 4; left: 16px; bottom: 14px;
@@ -838,7 +841,7 @@ input, textarea, select { font-family: inherit; }
   text-transform: uppercase; color: var(--ivory-100);
   text-shadow: 0 1px 12px rgba(10,10,10,.95);
   opacity: 0; transform: translateY(10px);
-  transition: opacity 500ms var(--ease) 80ms, transform 500ms var(--ease) 80ms;
+  transition: opacity 450ms var(--ease) 60ms, transform 450ms var(--ease) 60ms;
 }
 .collage-item:hover .collage-cap,
 .collage-item:focus-visible .collage-cap { opacity: 1; transform: none; }
@@ -848,14 +851,26 @@ input, textarea, select { font-family: inherit; }
 }
 .collage-item:focus-visible { outline: none; }
 
+
+/* Les peces de vora creixen cap endins per no sortir de pantalla */
+.collage-item:nth-child(4n+1):hover,
+.collage-item:nth-child(4n+1):focus-visible { transform-origin: left center; }
+.collage-item:nth-child(4n):hover,
+.collage-item:nth-child(4n):focus-visible { transform-origin: right center; }
+.collage-item:hover, .collage-item:focus-visible { transform-origin: center center; }
+
 @media (max-width: 760px) {
-  .collage { grid-template-columns: repeat(2, 1fr); grid-auto-rows: clamp(150px, 40vw, 220px); gap: 8px; }
-  /* en tàctil no hi ha hover: color i fitxa sempre visibles */
+  .collage { grid-template-columns: repeat(2, 1fr); grid-auto-rows: clamp(150px, 42vw, 230px); gap: 8px; }
+  /* tàctil: sense hover → color i fitxa sempre; sense expansió */
   .collage-item img { filter: grayscale(.12) brightness(.9); }
-  .collage-item::after { opacity: .82; }
+  .collage-item::after { opacity: .8; }
   .collage-cap { opacity: 1; transform: none; }
+  .collage-item:hover { transform: none; }
+  .collage-item:hover img { object-fit: cover; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .collage-item img { transition-duration: 1ms; }
+  .collage-item { transition-duration: 1ms; }
+  .collage-item:hover { transform: scale(1.05); }
 }
 
+.section:has(.collage) { overflow: hidden; }
