@@ -193,7 +193,6 @@ function buildNav(lang) {
     </a>
     <div class="nav-links">
       <a class="nav-link ${active('index.html')}"           href="${root}index.html"           data-i18n="nav.inicio">${t['nav.inicio']}</a>
-      <a class="nav-link ${active('sobre-nosotros.html')}"  href="${root}sobre-nosotros.html"  data-i18n="nav.about">${t['nav.about']}</a>
       <a class="nav-link ${active('tablao.html')}"          href="${root}tablao.html"          data-i18n="nav.tablao">${t['nav.tablao']}</a>
       <a class="nav-link ${active('eventos.html')}"         href="${root}eventos.html"         data-i18n="nav.eventos">${t['nav.eventos']}</a>
       <a class="nav-link ${active('clases.html')}"          href="${root}clases.html"          data-i18n="nav.clases">${t['nav.clases']}</a>
@@ -213,7 +212,6 @@ function buildNav(lang) {
 </nav>
 <div class="nav-mobile" id="nav-mobile">
   <a class="nav-link" href="${root}index.html" data-i18n="nav.inicio">${t['nav.inicio']}</a>
-  <a class="nav-link" href="${root}sobre-nosotros.html" data-i18n="nav.about">${t['nav.about']}</a>
   <a class="nav-link" href="${root}tablao.html" data-i18n="nav.tablao">${t['nav.tablao']}</a>
   <a class="nav-link" href="${root}eventos.html" data-i18n="nav.eventos">${t['nav.eventos']}</a>
   <a class="nav-link" href="${root}clases.html" data-i18n="nav.clases">${t['nav.clases']}</a>
@@ -255,7 +253,6 @@ function buildFooter(lang) {
     <div>
       <div class="footer-heading" data-i18n="footer.company">${t['footer.company']}</div>
       <div class="footer-links">
-        <a href="${root}sobre-nosotros.html" class="footer-link" data-i18n="footer.about">${t['footer.about']}</a>
         <a href="${root}galeria.html"        class="footer-link" data-i18n="footer.gallery">${t['footer.gallery']}</a>
         <a href="${root}index.html"          class="footer-link" data-i18n="nav.inicio">${t['nav.inicio']}</a>
       </div>
