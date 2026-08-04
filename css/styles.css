@@ -859,6 +859,42 @@ input, textarea, select { font-family: inherit; }
 .collage-item:nth-child(4n):focus-visible { transform-origin: right center; }
 .collage-item:hover, .collage-item:focus-visible { transform-origin: center center; }
 
+
+/* Peça del collage que és vídeo (Fin de fiesta) */
+.collage-item--video video {
+  position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 500ms var(--ease);
+  pointer-events: none;
+}
+.collage-item--video.is-playing video { opacity: 1; }
+.collage-item--video.is-playing > img { opacity: 0; }
+.collage-item--video:hover img,
+.collage-item--video:focus-visible img { object-fit: cover; }  /* el poster no fa contain */
+.collage-play {
+  position: absolute; z-index: 2; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  transition: transform .3s var(--ease), opacity .3s var(--ease);
+  pointer-events: none;
+}
+.collage-item--video:hover .collage-play { transform: translate(-50%,-50%) scale(1.1); }
+.collage-item--video.is-playing .collage-play { opacity: 0; }
+.collage-sound {
+  position: absolute; z-index: 4; right: 12px; bottom: 12px;
+  width: 34px; height: 34px; display: grid; place-items: center;
+  border: 1px solid rgba(253,250,245,.35); border-radius: 50%;
+  background: rgba(10,10,10,.5); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  color: var(--ivory-100); cursor: pointer; padding: 0;
+  opacity: 0; transition: opacity .35s var(--ease), background .2s ease;
+}
+.collage-item--video:hover .collage-sound,
+.collage-item--video.is-playing .collage-sound { opacity: 1; }
+.collage-sound:hover { background: var(--crimson); border-color: var(--crimson); }
+.collage-sound .ico-off { display: none; }
+.collage-item--video.is-muted .collage-sound .ico-on { display: none; }
+.collage-item--video.is-muted .collage-sound .ico-off { display: block; }
+.collage-item--video.is-blocked .collage-sound { border-color: var(--dorado); animation: sound-pulse 1.8s ease-in-out 3; }
+
 @media (max-width: 760px) {
   .collage { grid-template-columns: repeat(2, 1fr); grid-auto-rows: clamp(150px, 42vw, 230px); gap: 8px; }
   /* tàctil: sense hover → color i fitxa sempre; sense expansió */

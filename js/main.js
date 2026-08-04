@@ -363,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroVideo();
   initStrips();
   initRing();
+  initCollageVideo();
   initHoverVideo();
   if (lang !== 'es') applyLang(lang);
 });
@@ -674,6 +675,62 @@ function initHoverVideo() {
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
     }
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+    paint();
+  });
+}
+
+/* ── Peça del collage que és vídeo (Fin de fiesta) ───────
+   Reutilitza la lògica del hover-video: càrrega mandrosa,
+   so amb gest, pausa en sortir. Compatible amb l'expansió
+   del collage (creix igual que les altres peces).          */
+function initCollageVideo() {
+  document.querySelectorAll('.collage-item--video').forEach(box => {
+    const conn = navigator.connection || {};
+    const slow = conn.saveData === true || /^(slow-)?2g$/.test(conn.effectiveType || '');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const src = box.dataset.collageVideo;
+    const coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    const soundBtn = box.querySelector('.collage-sound');
+    let video = null, wantSound = true;
+
+    const paint = () => box.classList.toggle('is-muted', !video || video.muted);
+
+    const build = () => {
+      if (video) return video;
+      video = document.createElement('video');
+      video.loop = true; video.playsInline = true;
+      video.setAttribute('playsinline', ''); video.preload = 'auto';
+      video.tabIndex = -1; video.setAttribute('aria-hidden', 'true');
+      video.src = src;
+      box.insertBefore(video, box.firstChild);
+      return video;
+    };
+
+    const start = () => {
+      if (slow || reduced) return;
+      const v = build();
+      const show = () => box.classList.add('is-playing');
+      if (v.readyState >= 2) show(); else v.addEventListener('canplay', show, { once: true });
+      v.muted = !wantSound; paint();
+      v.play().then(() => box.classList.remove('is-blocked'))
+              .catch(() => { v.muted = true; box.classList.add('is-blocked'); paint(); v.play().catch(() => {}); });
+    };
+    const stop = () => { box.classList.remove('is-playing'); if (video) video.pause(); };
+
+    if (soundBtn) soundBtn.addEventListener('click', e => {
+      e.stopPropagation(); e.preventDefault();
+      const v = build();
+      wantSound = !!v.muted; v.muted = !wantSound;
+      box.classList.remove('is-blocked'); paint();
+      if (!box.classList.contains('is-playing')) start(); else v.play().catch(() => {});
+    });
+
+    if (coarse) box.addEventListener('click', () => box.classList.contains('is-playing') ? stop() : start());
+    else { box.addEventListener('pointerenter', start); box.addEventListener('pointerleave', stop); }
+
+    if ('IntersectionObserver' in window)
+      new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
     document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
     paint();
   });
