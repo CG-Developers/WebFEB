@@ -685,7 +685,7 @@ function initHoverVideo() {
    so amb gest, pausa en sortir. Compatible amb l'expansió
    del collage (creix igual que les altres peces).          */
 function initCollageVideo() {
-  document.querySelectorAll('.collage-item--video').forEach(box => {
+  document.querySelectorAll('.collage-video').forEach(box => {
     const conn = navigator.connection || {};
     const slow = conn.saveData === true || /^(slow-)?2g$/.test(conn.effectiveType || '');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
