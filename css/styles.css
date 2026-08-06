@@ -11,6 +11,7 @@
   --ivory-100:  #FDFAF5;
   --ivory-400:  #EBE3D2;
   --crimson:    #9B1B30;
+  --granate:    #761224;   /* franja CTA · el mateix del booking */
   --dorado:     #C49A3C;
   --humo:       #6B6560;
   --humo-100:   #C4BDB4;
@@ -296,7 +297,7 @@ input, textarea, select { font-family: inherit; }
 
 /* ── CTA strip ────────────────────────────────────────── */
 .cta-strip {
-  background: var(--crimson); padding: var(--sec-y) var(--pad-x);
+  background: var(--granate); padding: var(--sec-y) var(--pad-x);
   text-align: center; color: #fff;
 }
 .cta-strip h2 { font-family: var(--font-d); font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 700; margin-bottom: 10px; }
@@ -922,3 +923,28 @@ input, textarea, select { font-family: inherit; }
   .collage-item:hover { transform: scale(1.04); }
 }
 
+
+
+/* ══════════════════════════════════════════════════════
+   CURSOR CLAVELL
+   El mateix del subdomini de reserves, perquè les dues
+   webs es notin de la mateixa casa.
+   ══════════════════════════════════════════════════════ */
+body {
+  cursor: url('../assets/cursor-clavell.png') 11 8, default;
+}
+
+/* Els elements interactius conserven el cursor de sempre.
+   És deliberat: el cursor és el senyal que diu què es pot
+   clicar, i treure'l costa conversions. */
+a, button, .btn, .lang-btn, .nav-burger, .nav-link,
+.svc-card, .gallery-item, .tiles-btn, .strip,
+summary, [role="button"], [onclick] {
+  cursor: pointer;
+}
+input, textarea, select { cursor: text; }
+button:disabled, .btn[disabled] { cursor: not-allowed; }
+iframe, video { cursor: auto; }
+
+/* Pantalles tàctils: no hi ha cursor, el PNG seria pes mort */
+@media (hover: none) { body { cursor: auto; } }
