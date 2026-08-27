@@ -376,9 +376,7 @@ function renderClasesCentros(lang) {
         </tr>`).join('');
     const poblacionTxt = centro.poblacion ? pick(centro.poblacion) : t['clases.ubicacion_pendiente'];
     const etiqueta = `${pick(centro.dia)} · ${poblacionTxt}`.toUpperCase();
-    const nota = centro.nota
-      ? `<div style="font-size:.8125rem;color:var(--crimson);margin-top:10px;font-weight:600">${pick(centro.nota)}</div>`
-      : '';
+    const tipoTxt = centro.tipo ? pick(centro.tipo) : '';
     const mapQ = encodeURIComponent(centro.mapQuery || centro.nombre);
     const mapa = centro.mapQuery ? `
           <div style="margin-top:14px;border:1px solid #EBE3D2;overflow:hidden">
@@ -389,11 +387,12 @@ function renderClasesCentros(lang) {
       ? `<div class="card-img"><img src="${centro.foto}" alt="${centro.nombre}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
       : `<div class="card-img" style="background:linear-gradient(135deg,#2A2520,#4A4440)"></div>`;
     return `
-      <div>
+      <div style="height:100%;display:flex;flex-direction:column">
         <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--dorado);margin-bottom:8px">${etiqueta}</div>
-        <div class="card fade-up">
+        <div class="card fade-up" style="flex:1;display:flex;flex-direction:column">
           ${imagen}
-          <div class="card-body">
+          <div class="card-body" style="flex:1">
+            ${tipoTxt ? `<div style="font-size:.75rem;color:#9B9189;font-style:italic">${tipoTxt}</div>` : ''}
             <div class="card-title">${centro.nombre}</div>
             <table style="width:100%;border-collapse:collapse;margin-top:8px">
               <thead><tr>
@@ -402,11 +401,9 @@ function renderClasesCentros(lang) {
               </tr></thead>
               <tbody>${filas}</tbody>
             </table>
-            ${nota}
             ${mapa}
-            <div style="margin-top:16px;padding-top:16px;border-top:1px solid #EBE3D2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-              <a href="tel:+34${centro.telefono}" style="font-size:.8125rem;color:#6B6560">${t['clases.telefono_label']}: ${centro.telefono}</a>
-              <a href="${centro.bookingUrl}" class="btn btn-sm btn-accent">${t['clases.apuntarme']}</a>
+            <div style="margin-top:auto;padding-top:16px;border-top:1px solid #EBE3D2">
+              <a href="${centro.bookingUrl}" class="btn btn-sm btn-accent" style="width:100%;text-align:center;display:block">${t['clases.apuntarme']}</a>
             </div>
           </div>
         </div>
