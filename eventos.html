@@ -152,33 +152,45 @@
             <h2 class="section-title" data-i18n="eventos.video_title">Siéntelo antes de vivirlo</h2>
             <p class="section-subtitle" data-i18n="eventos.video_sub">Flamenco en estado puro</p>
 
-            <div class="evento-video-wrap" id="videoWrap" onclick="playEventVideo(this)">
-                <img src="assets/photos/eventos/video-poster.jpg" alt="Flamenco & Events Barcelona — Ver vídeo" class="evento-video-poster" id="videoPoster">
-                <div class="evento-video-play" id="videoPlay">
-                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="31" stroke="rgba(255,255,255,.6)" stroke-width="2"/>
-                        <polygon points="26,20 26,44 46,32" fill="rgba(255,255,255,.9)"/>
-                    </svg>
+            <style>
+                .eventos-videos { display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:720px; margin:32px auto 0; }
+                .eventos-videos .video-card { position:relative; aspect-ratio:9/16; background:#0a0a0a; border-radius:4px; overflow:hidden; cursor:pointer; }
+                .eventos-videos .video-card > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition: filter .4s ease; }
+                .eventos-videos .video-card:hover > img { filter: brightness(.85); }
+                .eventos-videos .video-card video { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:none; background:#000; }
+                .eventos-videos .gal-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); transition: transform .25s ease; pointer-events:none; }
+                .eventos-videos .video-card:hover .gal-play { transform: translate(-50%,-50%) scale(1.12); }
+                @media (max-width:720px) { .eventos-videos { grid-template-columns: 1fr; } }
+            </style>
+
+            <div class="eventos-videos">
+                <div class="video-card" onclick="playEventVideoCard(this)">
+                    <img src="assets/photos/eventos/poster-video1.jpg" alt="Flamenco en directo — Ver vídeo">
+                    <div class="gal-play">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="31" stroke="rgba(255,255,255,.6)" stroke-width="2"/><polygon points="26,20 26,44 46,32" fill="rgba(255,255,255,.9)"/></svg>
+                    </div>
+                    <video playsinline preload="none" controlsList="nodownload" oncontextmenu="return false">
+                        <source src="assets/videos/gal-video_1284.mp4" type="video/mp4">
+                    </video>
                 </div>
-                <video
-                    class="evento-video"
-                    id="eventoVideo"
-                    playsinline
-                    preload="none"
-                    controlsList="nodownload"
-                    oncontextmenu="return false;"
-                    style="display:none">
-                    <source src="assets/videos/evento-tablao.mp4" type="video/mp4">
-                </video>
+                <div class="video-card" onclick="playEventVideoCard(this)">
+                    <img src="assets/photos/eventos/poster-video2.jpg" alt="Espectáculo flamenco — Ver vídeo">
+                    <div class="gal-play">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="31" stroke="rgba(255,255,255,.6)" stroke-width="2"/><polygon points="26,20 26,44 46,32" fill="rgba(255,255,255,.9)"/></svg>
+                    </div>
+                    <video playsinline preload="none" controlsList="nodownload" oncontextmenu="return false">
+                        <source src="assets/videos/gal-video_1295.mp4" type="video/mp4">
+                    </video>
+                </div>
             </div>
 
             <script>
-            function playEventVideo(wrap) {
-                var poster = document.getElementById('videoPoster');
-                var playBtn = document.getElementById('videoPlay');
-                var video = document.getElementById('eventoVideo');
-                poster.style.display = 'none';
-                playBtn.style.display = 'none';
+            function playEventVideoCard(card) {
+                var img = card.querySelector('img');
+                var play = card.querySelector('.gal-play');
+                var video = card.querySelector('video');
+                if (img) img.style.display = 'none';
+                if (play) play.style.display = 'none';
                 video.style.display = 'block';
                 video.controls = true;
                 video.play();
