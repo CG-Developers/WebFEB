@@ -57,6 +57,19 @@ const i18n = {
     'footer.terms':    'Términos',
     'footer.desc':     'La experiencia más auténtica del flamenco en Barcelona.',
     'footer.copy':     '© 2026 Flamenco & Events Barcelona. Todos los derechos reservados.',
+    'clases.centros_label':  'Nuestros centros',
+    'clases.centros_title':  '¿Dónde bailamos?',
+    'clases.centros_sub':    'Cinco centros repartidos por Barcelona y Granollers',
+    'clases.dia_label':      'Día',
+    'clases.horario_label':  'Horario',
+    'clases.nivel_label':    'Nivel',
+    'clases.telefono_label': 'Teléfono',
+    'clases.apuntarme':      'Apuntarme',
+    'clases.ubicacion_pendiente': 'Ubicación a confirmar',
+    'clases.booking_label':  'Inscripción y precios',
+    'clases.booking_title':  'Reserva tu plaza',
+    'clases.booking_desc':   'Las inscripciones, los precios y la disponibilidad de cada centro se gestionan a través de nuestra plataforma de reservas.',
+    'clases.booking_btn':    'Ir a reservas',
   },
   ca: {
     'nav.tablao':   'Tablao',
@@ -113,6 +126,19 @@ const i18n = {
     'footer.terms':    'Condicions',
     'footer.desc':     'L\'experiència més autèntica del flamenc a Barcelona.',
     'footer.copy':     '© 2026 Flamenco & Events Barcelona. Tots els drets reservats.',
+    'clases.centros_label':  'Els nostres centres',
+    'clases.centros_title':  'On ballem?',
+    'clases.centros_sub':    'Cinc centres repartits per Barcelona i Granollers',
+    'clases.dia_label':      'Dia',
+    'clases.horario_label':  'Horari',
+    'clases.nivel_label':    'Nivell',
+    'clases.telefono_label': 'Telèfon',
+    'clases.apuntarme':      'Apuntar-me',
+    'clases.ubicacion_pendiente': 'Ubicació a confirmar',
+    'clases.booking_label':  'Inscripció i preus',
+    'clases.booking_title':  'Reserva la teva plaça',
+    'clases.booking_desc':   'Les inscripcions, els preus i la disponibilitat de cada centre es gestionen a través de la nostra plataforma de reserves.',
+    'clases.booking_btn':    'Anar a reserves',
   },
   en: {
     'nav.tablao':   'Tablao',
@@ -169,6 +195,19 @@ const i18n = {
     'footer.terms':    'Terms',
     'footer.desc':     'The most authentic flamenco experience in Barcelona.',
     'footer.copy':     '© 2026 Flamenco & Events Barcelona. All rights reserved.',
+    'clases.centros_label':  'Our locations',
+    'clases.centros_title':  'Where do we dance?',
+    'clases.centros_sub':    'Five locations across Barcelona and Granollers',
+    'clases.dia_label':      'Day',
+    'clases.horario_label':  'Schedule',
+    'clases.nivel_label':    'Level',
+    'clases.telefono_label': 'Phone',
+    'clases.apuntarme':      'Sign me up',
+    'clases.ubicacion_pendiente': 'Location to be confirmed',
+    'clases.booking_label':  'Enrolment and pricing',
+    'clases.booking_title':  'Book your spot',
+    'clases.booking_desc':   'Enrolment, pricing and availability for each location are managed through our booking platform.',
+    'clases.booking_btn':    'Go to booking',
   }
 };
 
@@ -301,6 +340,45 @@ function initFadeUp() {
 }
 
 
+/* ── Clases: render de centros (clases.html) ───────────
+   Lee CLASES_DATA (js/clases-data.js) y pinta una card por
+   centro activo. Se vuelve a llamar al cambiar de idioma. */
+function renderClasesCentros(lang) {
+  const grid = document.getElementById('centros-grid');
+  if (!grid || typeof CLASES_DATA === 'undefined') return;
+  const t = i18n[lang];
+  const pick = (obj) => obj ? (obj[lang] || obj.es) : null;
+
+  grid.innerHTML = CLASES_DATA.filter(c => c.estado !== 'pausado').map(centro => {
+    const filas = centro.horarios.map(h =>
+      `<tr><td>${h.inicio} – ${h.fin}</td><td>${pick(h.nivel)}</td></tr>`
+    ).join('');
+    const ubicacion = centro.poblacion
+      ? `<div class="card-meta" style="margin-top:2px">${pick(centro.poblacion)}</div>`
+      : `<div class="card-meta" style="margin-top:2px;font-style:italic">${t['clases.ubicacion_pendiente']}</div>`;
+    const nota = centro.nota
+      ? `<div style="font-size:.8125rem;color:var(--crimson);margin-top:10px;font-weight:600">${pick(centro.nota)}</div>`
+      : '';
+    return `
+      <div class="card fade-up">
+        <div class="card-body">
+          <div class="card-meta t-crimson">${pick(centro.dia)}</div>
+          <div class="card-title">${centro.nombre}</div>
+          ${ubicacion}
+          <table class="show-table" style="margin-top:12px">
+            <thead><tr><th>${t['clases.horario_label']}</th><th>${t['clases.nivel_label']}</th></tr></thead>
+            <tbody>${filas}</tbody>
+          </table>
+          ${nota}
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid #EBE3D2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+            <a href="tel:+34${centro.telefono}" style="font-size:.8125rem;color:#6B6560">${t['clases.telefono_label']}: ${centro.telefono}</a>
+            <a href="${centro.bookingUrl}" class="btn btn-sm btn-accent">${t['clases.apuntarme']}</a>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 /* ── WhatsApp flotant ────────────────────────────────── */
 function initWhatsApp(lang) {
   if (document.getElementById('wa-float')) return;
@@ -341,6 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* Rebuild nav/footer in new lang */
     const nav = document.getElementById('main-nav');
     if (nav) { nav.outerHTML = buildNav(btn.dataset.lang) + (document.getElementById('nav-mobile')?.outerHTML || ''); }
+    renderClasesCentros(btn.dataset.lang);
   });
 
   /* Burger menu */
@@ -365,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRing();
   initCollageVideo();
   initHoverVideo();
+  renderClasesCentros(lang);
   if (lang !== 'es') applyLang(lang);
 });
 
