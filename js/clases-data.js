@@ -16,7 +16,7 @@
 const CLASES_DATA = [
   {
     id: "can-cabanyes",
-    nombre: "Centre Cívic Can Cabanyes",
+    nombre: "Can Cabanyes",
     tipo: { es: "Centro cívico municipal", ca: "Centre cívic municipal", en: "Municipal civic centre" },
     foto: "assets/photos/clases/can-cabanyes.jpg",
     poblacion: { es: "Badalona", ca: "Badalona", en: "Badalona" },
@@ -32,7 +32,7 @@ const CLASES_DATA = [
   },
   {
     id: "can-pepus",
-    nombre: "Centre Cívic Can Pepus",
+    nombre: "Can Pepus",
     tipo: { es: "Centro cívico municipal", ca: "Centre cívic municipal", en: "Municipal civic centre" },
     foto: "assets/photos/clases/can-pepus.jpg",
     poblacion: { es: "Badalona", ca: "Badalona", en: "Badalona" },
@@ -67,7 +67,7 @@ const CLASES_DATA = [
   },
   {
     id: "canyado",
-    nombre: "Centre de Cultura Tradicional Can Canyadó",
+    nombre: "Masia Can Canyadó",
     tipo: { es: "Centro cívico · masía histórica", ca: "Centre cívic · masia històrica", en: "Civic centre · historic farmhouse" },
     foto: "assets/photos/clases/canyado.jpg",
     poblacion: { es: "Badalona", ca: "Badalona", en: "Badalona" },
@@ -85,7 +85,7 @@ const CLASES_DATA = [
   },
   {
     id: "lesseps",
-    nombre: "2estones Multiespai de Creació",
+    nombre: "2Estones Espai de Ball",
     tipo: { es: "Multiespacio de creación", ca: "Multiespai de creació", en: "Creative multi-space" },
     foto: "assets/photos/clases/lesseps.jpg",
     poblacion: { es: "Barcelona", ca: "Barcelona", en: "Barcelona" },

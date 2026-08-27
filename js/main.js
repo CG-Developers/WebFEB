@@ -384,8 +384,8 @@ function renderClasesCentros(lang) {
           </div>
           <a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" style="font-size:.75rem;color:#9B1B30;margin-top:6px;display:inline-block">${t['clases.como_llegar']}</a>` : '';
     const imagen = centro.foto
-      ? `<div class="card-img"><img src="${centro.foto}" alt="${centro.nombre}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
-      : `<div class="card-img" style="background:linear-gradient(135deg,#2A2520,#4A4440)"></div>`;
+      ? `<div class="card-img" style="height:190px;overflow:hidden"><img src="${centro.foto}" alt="${centro.nombre}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
+      : `<div class="card-img" style="height:190px;overflow:hidden;background:linear-gradient(135deg,#2A2520,#4A4440)"></div>`;
     return `
       <div style="height:100%;display:flex;flex-direction:column">
         <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--dorado);margin-bottom:8px">${etiqueta}</div>

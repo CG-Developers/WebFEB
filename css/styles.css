@@ -308,6 +308,7 @@ input, textarea, select { font-family: inherit; }
 .card {
   background: var(--white); border: 1px solid var(--ivory-400);
   overflow: hidden;
+  color: var(--obsidian);   /* la card sempre és clara, no ha d'heretar el color de .section--dark */
   transition: box-shadow var(--trans);
 }
 .card:hover { box-shadow: 0 8px 32px rgba(10,10,10,.12); }
