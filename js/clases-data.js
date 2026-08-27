@@ -64,10 +64,10 @@ const CLASES_DATA = [
   },
   {
     id: "canyado",
-    nombre: "Centre Cívic del Canyadó",
+    nombre: "Centre de Cultura Tradicional Can Canyadó",
     foto: "assets/photos/clases/canyado.jpg",
     poblacion: { es: "Badalona", ca: "Badalona", en: "Badalona" },
-    mapQuery: "Centre Cívic del Canyadó, Badalona",
+    mapQuery: "Centre de Cultura Tradicional Can Canyadó, Carrer d'Occitània, 08911 Badalona",
     dia: { es: "Martes", ca: "Dimarts", en: "Tuesday" },
     horarios: [
       { inicio: "17:00", fin: "18:00", nivel: { es: "Avanzado", ca: "Avançat", en: "Advanced" } },
@@ -80,13 +80,11 @@ const CLASES_DATA = [
     bookingUrl: "https://booking.flamencoeventsbarcelona.com"
   },
   {
-    // TODO: confirmar nombre oficial del centro en Lesseps (ahora mismo solo
-    // se sabe la plaza/zona) para que el mini-mapa apunte exacto.
     id: "lesseps",
-    nombre: "Lesseps",
-    foto: null,   // TODO: falta foto del centro de Lesseps
+    nombre: "2estones Multiespai de Creació",
+    foto: "assets/photos/clases/lesseps.jpg",
     poblacion: { es: "Barcelona", ca: "Barcelona", en: "Barcelona" },
-    mapQuery: "Plaça de Lesseps, Barcelona",
+    mapQuery: "2estones Multiespai de Creació, Passatge de Frígola 27, Barcelona",
     dia: { es: "Miércoles", ca: "Dimecres", en: "Wednesday" },
     horarios: [
       { inicio: "16:00", fin: "17:00", nivel: { es: "Avanzado", ca: "Avançat", en: "Advanced" } },
