@@ -70,6 +70,8 @@ const i18n = {
     'clases.booking_title':  'Reserva tu plaza',
     'clases.booking_desc':   'Las inscripciones, los precios y la disponibilidad de cada centro se gestionan a través de nuestra plataforma de reservas.',
     'clases.booking_btn':    'Ir a reservas',
+    'clases.como_llegar':    'Cómo llegar',
+    'clases.tagline':        'Donde aprender disfrutando',
   },
   ca: {
     'nav.tablao':   'Tablao',
@@ -139,6 +141,8 @@ const i18n = {
     'clases.booking_title':  'Reserva la teva plaça',
     'clases.booking_desc':   'Les inscripcions, els preus i la disponibilitat de cada centre es gestionen a través de la nostra plataforma de reserves.',
     'clases.booking_btn':    'Anar a reserves',
+    'clases.como_llegar':    'Com arribar-hi',
+    'clases.tagline':        'On aprendre gaudint',
   },
   en: {
     'nav.tablao':   'Tablao',
@@ -208,6 +212,8 @@ const i18n = {
     'clases.booking_title':  'Book your spot',
     'clases.booking_desc':   'Enrolment, pricing and availability for each location are managed through our booking platform.',
     'clases.booking_btn':    'Go to booking',
+    'clases.como_llegar':    'Get directions',
+    'clases.tagline':        'Where learning feels like play',
   }
 };
 
@@ -350,26 +356,38 @@ function renderClasesCentros(lang) {
   const pick = (obj) => obj ? (obj[lang] || obj.es) : null;
 
   grid.innerHTML = CLASES_DATA.filter(c => c.estado !== 'pausado').map(centro => {
-    const filas = centro.horarios.map(h =>
-      `<tr><td>${h.inicio} – ${h.fin}</td><td>${pick(h.nivel)}</td></tr>`
-    ).join('');
+    const filas = centro.horarios.map(h => `
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px solid #EBE3D2;color:#2A2520;font-size:.875rem">${h.inicio} – ${h.fin}</td>
+          <td style="padding:8px 0;border-bottom:1px solid #EBE3D2;color:#6B6560;font-size:.875rem;text-align:right">${pick(h.nivel)}</td>
+        </tr>`).join('');
     const ubicacion = centro.poblacion
       ? `<div class="card-meta" style="margin-top:2px">${pick(centro.poblacion)}</div>`
       : `<div class="card-meta" style="margin-top:2px;font-style:italic">${t['clases.ubicacion_pendiente']}</div>`;
     const nota = centro.nota
       ? `<div style="font-size:.8125rem;color:var(--crimson);margin-top:10px;font-weight:600">${pick(centro.nota)}</div>`
       : '';
+    const mapQ = encodeURIComponent(centro.mapQuery || centro.nombre);
+    const mapa = centro.mapQuery ? `
+          <div style="margin-top:14px;border:1px solid #EBE3D2;overflow:hidden">
+            <iframe src="https://www.google.com/maps?q=${mapQ}&output=embed" width="100%" height="120" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="${centro.nombre}"></iframe>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" style="font-size:.75rem;color:#9B1B30;margin-top:6px;display:inline-block">${t['clases.como_llegar']}</a>` : '';
     return `
       <div class="card fade-up">
         <div class="card-body">
           <div class="card-meta t-crimson">${pick(centro.dia)}</div>
           <div class="card-title">${centro.nombre}</div>
           ${ubicacion}
-          <table class="show-table" style="margin-top:12px">
-            <thead><tr><th>${t['clases.horario_label']}</th><th>${t['clases.nivel_label']}</th></tr></thead>
+          <table style="width:100%;border-collapse:collapse;margin-top:12px">
+            <thead><tr>
+              <th style="text-align:left;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.horario_label']}</th>
+              <th style="text-align:right;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.nivel_label']}</th>
+            </tr></thead>
             <tbody>${filas}</tbody>
           </table>
           ${nota}
+          ${mapa}
           <div style="margin-top:16px;padding-top:16px;border-top:1px solid #EBE3D2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
             <a href="tel:+34${centro.telefono}" style="font-size:.8125rem;color:#6B6560">${t['clases.telefono_label']}: ${centro.telefono}</a>
             <a href="${centro.bookingUrl}" class="btn btn-sm btn-accent">${t['clases.apuntarme']}</a>
@@ -420,6 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nav = document.getElementById('main-nav');
     if (nav) { nav.outerHTML = buildNav(btn.dataset.lang) + (document.getElementById('nav-mobile')?.outerHTML || ''); }
     renderClasesCentros(btn.dataset.lang);
+    initFadeUp();   // las cards recién repintadas necesitan su propio observer
   });
 
   /* Burger menu */
@@ -438,13 +457,13 @@ document.addEventListener('DOMContentLoaded', () => {
     img.addEventListener('error', () => { img.style.display = 'none'; });
   });
 
+  renderClasesCentros(lang);   // pinta las cards ANTES de armar el observer de fade-up
   initFadeUp();
   initHeroVideo();
   initStrips();
   initRing();
   initCollageVideo();
   initHoverVideo();
-  renderClasesCentros(lang);
   if (lang !== 'es') applyLang(lang);
 });
 
