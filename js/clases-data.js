@@ -17,6 +17,7 @@ const CLASES_DATA = [
   {
     id: "can-cabanyes",
     nombre: "Centre Cívic Can Cabanyes",
+    foto: "assets/photos/clases/can-cabanyes.jpg",
     poblacion: { es: "Badalona", ca: "Badalona", en: "Badalona" },
     mapQuery: "Centre Cívic Can Cabanyes, Badalona",
     dia: { es: "Jueves", ca: "Dijous", en: "Thursday" },
@@ -31,6 +32,7 @@ const CLASES_DATA = [
   {
     id: "can-pepus",
     nombre: "Centre Cívic Can Pepus",
+    foto: "assets/photos/clases/can-pepus.jpg",
     poblacion: { es: "Badalona", ca: "Badalona", en: "Badalona" },
     mapQuery: "Centre Cívic Can Pepus, Badalona",
     dia: { es: "Jueves", ca: "Dijous", en: "Thursday" },
@@ -46,6 +48,7 @@ const CLASES_DATA = [
   {
     id: "granollers",
     nombre: "Casino Club de Ritme",
+    foto: "assets/photos/clases/granollers-casino.jpg",
     poblacion: { es: "Granollers", ca: "Granollers", en: "Granollers" },
     mapQuery: "Casino Club de Ritme, Granollers",
     dia: { es: "Lunes", ca: "Dilluns", en: "Monday" },
@@ -62,6 +65,7 @@ const CLASES_DATA = [
   {
     id: "canyado",
     nombre: "Centre Cívic del Canyadó",
+    foto: "assets/photos/clases/canyado.jpg",
     poblacion: { es: "Badalona", ca: "Badalona", en: "Badalona" },
     mapQuery: "Centre Cívic del Canyadó, Badalona",
     dia: { es: "Martes", ca: "Dimarts", en: "Tuesday" },
@@ -80,6 +84,7 @@ const CLASES_DATA = [
     // se sabe la plaza/zona) para que el mini-mapa apunte exacto.
     id: "lesseps",
     nombre: "Lesseps",
+    foto: null,   // TODO: falta foto del centro de Lesseps
     poblacion: { es: "Barcelona", ca: "Barcelona", en: "Barcelona" },
     mapQuery: "Plaça de Lesseps, Barcelona",
     dia: { es: "Miércoles", ca: "Dimecres", en: "Wednesday" },

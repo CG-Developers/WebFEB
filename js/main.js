@@ -348,22 +348,34 @@ function initFadeUp() {
 
 /* ── Clases: render de centros (clases.html) ───────────
    Lee CLASES_DATA (js/clases-data.js) y pinta una card por
-   centro activo. Se vuelve a llamar al cambiar de idioma. */
+   centro activo, ordenadas por día de la semana (y hora de
+   inicio dentro del mismo día). Se vuelve a llamar al cambiar
+   de idioma. */
+const DIAS_ORDEN = ['lunes','martes','miércoles','miercoles','jueves','viernes','sábado','sabado','domingo'];
+function diaIndex(centro) {
+  const key = (centro.dia.es || '').toLowerCase();
+  const i = DIAS_ORDEN.indexOf(key);
+  return i === -1 ? 99 : i;
+}
 function renderClasesCentros(lang) {
   const grid = document.getElementById('centros-grid');
   if (!grid || typeof CLASES_DATA === 'undefined') return;
   const t = i18n[lang];
   const pick = (obj) => obj ? (obj[lang] || obj.es) : null;
 
-  grid.innerHTML = CLASES_DATA.filter(c => c.estado !== 'pausado').map(centro => {
+  const centros = CLASES_DATA
+    .filter(c => c.estado !== 'pausado')
+    .slice()
+    .sort((a, b) => diaIndex(a) - diaIndex(b) || a.horarios[0].inicio.localeCompare(b.horarios[0].inicio));
+
+  grid.innerHTML = centros.map(centro => {
     const filas = centro.horarios.map(h => `
         <tr>
           <td style="padding:8px 0;border-bottom:1px solid #EBE3D2;color:#2A2520;font-size:.875rem">${h.inicio} – ${h.fin}</td>
           <td style="padding:8px 0;border-bottom:1px solid #EBE3D2;color:#6B6560;font-size:.875rem;text-align:right">${pick(h.nivel)}</td>
         </tr>`).join('');
-    const ubicacion = centro.poblacion
-      ? `<div class="card-meta" style="margin-top:2px">${pick(centro.poblacion)}</div>`
-      : `<div class="card-meta" style="margin-top:2px;font-style:italic">${t['clases.ubicacion_pendiente']}</div>`;
+    const poblacionTxt = centro.poblacion ? pick(centro.poblacion) : t['clases.ubicacion_pendiente'];
+    const etiqueta = `${pick(centro.dia)} · ${poblacionTxt}`.toUpperCase();
     const nota = centro.nota
       ? `<div style="font-size:.8125rem;color:var(--crimson);margin-top:10px;font-weight:600">${pick(centro.nota)}</div>`
       : '';
@@ -373,24 +385,29 @@ function renderClasesCentros(lang) {
             <iframe src="https://www.google.com/maps?q=${mapQ}&output=embed" width="100%" height="120" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="${centro.nombre}"></iframe>
           </div>
           <a href="https://www.google.com/maps/search/?api=1&query=${mapQ}" target="_blank" rel="noopener" style="font-size:.75rem;color:#9B1B30;margin-top:6px;display:inline-block">${t['clases.como_llegar']}</a>` : '';
+    const imagen = centro.foto
+      ? `<div class="card-img"><img src="${centro.foto}" alt="${centro.nombre}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div>`
+      : `<div class="card-img" style="background:linear-gradient(135deg,#2A2520,#4A4440)"></div>`;
     return `
-      <div class="card fade-up">
-        <div class="card-body">
-          <div class="card-meta t-crimson">${pick(centro.dia)}</div>
-          <div class="card-title">${centro.nombre}</div>
-          ${ubicacion}
-          <table style="width:100%;border-collapse:collapse;margin-top:12px">
-            <thead><tr>
-              <th style="text-align:left;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.horario_label']}</th>
-              <th style="text-align:right;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.nivel_label']}</th>
-            </tr></thead>
-            <tbody>${filas}</tbody>
-          </table>
-          ${nota}
-          ${mapa}
-          <div style="margin-top:16px;padding-top:16px;border-top:1px solid #EBE3D2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-            <a href="tel:+34${centro.telefono}" style="font-size:.8125rem;color:#6B6560">${t['clases.telefono_label']}: ${centro.telefono}</a>
-            <a href="${centro.bookingUrl}" class="btn btn-sm btn-accent">${t['clases.apuntarme']}</a>
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--dorado);margin-bottom:8px">${etiqueta}</div>
+        <div class="card fade-up">
+          ${imagen}
+          <div class="card-body">
+            <div class="card-title">${centro.nombre}</div>
+            <table style="width:100%;border-collapse:collapse;margin-top:8px">
+              <thead><tr>
+                <th style="text-align:left;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.horario_label']}</th>
+                <th style="text-align:right;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.nivel_label']}</th>
+              </tr></thead>
+              <tbody>${filas}</tbody>
+            </table>
+            ${nota}
+            ${mapa}
+            <div style="margin-top:16px;padding-top:16px;border-top:1px solid #EBE3D2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+              <a href="tel:+34${centro.telefono}" style="font-size:.8125rem;color:#6B6560">${t['clases.telefono_label']}: ${centro.telefono}</a>
+              <a href="${centro.bookingUrl}" class="btn btn-sm btn-accent">${t['clases.apuntarme']}</a>
+            </div>
           </div>
         </div>
       </div>`;
