@@ -1,0 +1,82 @@
+AUDITORIA WEBFEB — patch acumulatiu
+28/08/2026
+
+COM APLICAR-HO
+1. Arrossega tot el contingut d'aquest ZIP a la carpeta del repo WebFEB
+   (GitHub Desktop et marcarà els fitxers canviats).
+2. Esborra manualment aquests 2 fitxers del repo (ja no es fan servir,
+   substituïts per bailaor2.jpg / eliminats per pes mort):
+     - assets/photos/eventos/bailaor2.png
+     - assets/photos/eventos/granollers.png
+3. Fes commit i puja.
+
+QUÈ CONTÉ (9 fitxers + 1 imatge nova)
+  blog.html, clases.html, contacto.html, index.html, tablao.html,
+  talleres.html, css/eventos.css, css/styles.css, js/main.js,
+  assets/photos/eventos/bailaor2.jpg
+
+CANVIS — CAL ARREGLAR (objectiu, ja aplicat)
+─────────────────────────────────────────────
+1. Bug de mòbil que vas reportar: .grid-3 no tenia cap regla
+   responsive — es quedava sempre en 3 columnes fixes i es retallava
+   contingut. Ara: 2 columnes ≤1024px, 1 columna ≤768px. Afecta
+   clases.html (Niveles + Nuestros centros), tablao.html, talleres.html.
+
+2. Pes d'assets:
+   - bailaor2.png (1,9 MB, es carregava de veritat a index.html) →
+     bailaor2.jpg (126 KB, −93%). Verificat visualment sense pèrdua
+     de qualitat.
+   - granollers.png (2,3 MB) eliminat: no es feia servir enlloc.
+
+3. Text funcional per sota d'11px (floor d'accessibilitat WCAG):
+   72 ocurrències trobades amb impeccable (labels de card-meta,
+   formularis, footer, taula d'horaris del tablao...), totes a 9-10px.
+   Pujades a 11px a css/styles.css, css/eventos.css, js/main.js,
+   contacto.html, tablao.html, talleres.html.
+
+4. Contrast real per sota d'AA (4,5:1), verificat amb la fórmula WCAG,
+   no només llegint el CSS:
+   - Etiqueta "INSCRIPCIÓN Y PRECIOS" (footer bordeus, clases.html):
+     daurat sobre granate feia 4,27:1. Nou to #D4AB4D (5,17:1), via
+     regla CSS nova .cta-strip .section-label.
+   - .card-meta (etiquetes de totes les cards blanques del lloc):
+     el gris humo-200 feia 3,09:1 sobre blanc. Nou to #7A716A
+     (4,78:1) a css/styles.css, més 3 usos inline al render de
+     targetes de classes a js/main.js, i 4 més a blog.html,
+     contacto.html i tablao.html (×3).
+
+   IMPORTANT — vaig cometre i corregir un error pel camí: al primer
+   intent vaig canviar TAMBÉ dos paràgrafs que semblaven estar sobre
+   fons blanc però en realitat són caixes fosques niades dins de
+   seccions clares (svc-card--dark a index.html, i el bloc de
+   contacte fosc a talleres.html). Vaig revertir aquests 2 canvis
+   just a temps, després de verificar cada context amb la fórmula de
+   contrast abans d'incloure-ho en aquest ZIP. Ho dic perquè quedi
+   constància — no perquè calgui fer res més.
+
+FALSOS POSITIUS DE L'EINA (verificats, NO tocats)
+──────────────────────────────────────────────────
+- #fdfaf5 sobre #f3ede0 — cap ocurrència real trobada al codi.
+- #c4bdb4 sobre #f3ede0 — en realitat sempre sobre fons obsidiana
+  (10,64:1). L'eina emparella malament color i fons perquè no
+  resol el DOM real, només el CSS estàtic.
+- #9b1b30 sobre #0a0a0a — crimson mai renderitza sobre negre pur al
+  lloc real; totes les seves aparicions són sobre blanc (8,1:1+).
+- #6b6560 sobre #0a0a0a — .t-muted només s'usa sobre cards blanques.
+- <img src=""> a galeria.html — placeholder del lightbox, l'omple el
+  JS en obrir-se. No és una imatge trencada.
+
+NO TOCAT — DECISIÓ DE MARCA, NO BUG (proposo, decidiu vosaltres)
+───────────────────────────────────────────────────────────────
+Paleta crema (cream-palette), majúscules al cos de text
+(all-caps-body), degradats i ratlles decoratives (gradient-text,
+repeating-stripes-gradient), padding "cramped" en algunes seccions.
+Són la identitat visual ja establerta de FEB. Si en algun moment
+voleu revisar-ne algun en concret, digueu-m'ho i ho mirem, però no
+són defectes.
+
+PENDENT (fora d'aquest patch)
+───────────────────────────────
+Res pendent d'aquesta auditoria. La propera pendent és la de
+BookingFEB (connectar Vercel + admin de la Ivette), que va per
+un altre fil.

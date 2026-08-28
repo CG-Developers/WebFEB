@@ -392,12 +392,12 @@ function renderClasesCentros(lang) {
         <div class="card fade-up" style="flex:1;display:flex;flex-direction:column">
           ${imagen}
           <div class="card-body" style="flex:1">
-            ${tipoTxt ? `<div style="font-size:.75rem;color:#9B9189;font-style:italic">${tipoTxt}</div>` : ''}
+            ${tipoTxt ? `<div style="font-size:.75rem;color:#7A716A;font-style:italic">${tipoTxt}</div>` : ''}
             <div class="card-title">${centro.nombre}</div>
             <table style="width:100%;border-collapse:collapse;margin-top:8px">
               <thead><tr>
-                <th style="text-align:left;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.horario_label']}</th>
-                <th style="text-align:right;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#9B9189;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.nivel_label']}</th>
+                <th style="text-align:left;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#7A716A;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.horario_label']}</th>
+                <th style="text-align:right;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#7A716A;padding-bottom:6px;border-bottom:1px solid #EBE3D2">${t['clases.nivel_label']}</th>
               </tr></thead>
               <tbody>${filas}</tbody>
             </table>
