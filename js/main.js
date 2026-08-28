@@ -776,18 +776,26 @@ function initHoverVideo() {
     }
 
     if (coarse) {
+      /* Mòbil: no hi ha hover, així que el vídeo arrenca sol en
+         entrar a pantalla i para en sortir-ne. El tap permet
+         pausar-lo manualment si algú no el vol veure. */
       box.addEventListener('click', () => {
         box.classList.contains('is-playing') ? stop() : start();
       });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([e]) => {
+          e.isIntersecting ? start() : stop();
+        }, { threshold: 0.5 }).observe(box);
+      }
     } else {
       box.addEventListener('pointerenter', start);
       box.addEventListener('pointerleave', stop);
+      /* Si la secció surt de pantalla, para: bateria, dades i sorolls indesitjats */
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
+      }
     }
 
-    /* Si la secció surt de pantalla, para: bateria, dades i sorolls indesitjats */
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
-    }
     document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
     paint();
   });
@@ -839,11 +847,17 @@ function initCollageVideo() {
       if (!box.classList.contains('is-playing')) start(); else v.play().catch(() => {});
     });
 
-    if (coarse) box.addEventListener('click', () => box.classList.contains('is-playing') ? stop() : start());
-    else { box.addEventListener('pointerenter', start); box.addEventListener('pointerleave', stop); }
-
-    if ('IntersectionObserver' in window)
-      new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
+    if (coarse) {
+      /* Mòbil: arrenca sol en entrar a pantalla, para en sortir-ne;
+         el tap permet pausar-lo manualment. */
+      box.addEventListener('click', () => box.classList.contains('is-playing') ? stop() : start());
+      if ('IntersectionObserver' in window)
+        new IntersectionObserver(([e]) => { e.isIntersecting ? start() : stop(); }, { threshold: 0.5 }).observe(box);
+    } else {
+      box.addEventListener('pointerenter', start); box.addEventListener('pointerleave', stop);
+      if ('IntersectionObserver' in window)
+        new IntersectionObserver(([e]) => { if (!e.isIntersecting) stop(); }, { threshold: 0.05 }).observe(box);
+    }
     document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
     paint();
   });
