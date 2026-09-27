@@ -27,7 +27,13 @@
   var MAX_OTRAS  = 3;
   var LOCALE     = { es: 'es-ES', ca: 'ca-ES', en: 'en-GB' };
   var TZ         = 'Europe/Madrid';
-  var RE_NINO    = /ni[ñn]|infan|kid|child|\bnen|menor/i;   // tarifa infantil: no compta per al "desde"
+  var RE_NINO    = /ni[ñn]|infan|kid|child|\bnen|menor/i;   // tarifa infantil (si no porta `infantil: true`)
+
+  /* MATEIXA REGLA que BookingFEB js/plazas.js (llistat, detall i panell).
+     Si allà canvia el llindar o el "sense límit", canvia-ho aquí també:
+     la web ha de dir el mateix que el booking. */
+  var LLINDAR_ULTIMES = { tablao: 5, tardeo: 5 };
+  var SENSE_LIMIT     = 999;
 
   var ultims = null;                        // darrer catàleg vàlid, per repintar en canviar d'idioma
 
@@ -136,7 +142,8 @@
     if (!ev || typeof ev !== 'object') return null;
     var d = (ev.dades && typeof ev.dades === 'object') ? Object.assign({}, ev, ev.dades) : ev;
 
-    if (String(d.tipo || d.tipus || '').toLowerCase() !== 'tablao') return null;
+    var tipo = String(d.tipo || d.tipus || '').toLowerCase();
+    if (tipo !== 'tablao') return null;
     var estado = String(d.estado || 'activo').toLowerCase();
     if (estado !== 'activo' && estado !== 'agotado') return null;      // próximamente / oculto: fora
 
@@ -146,29 +153,32 @@
     var hora = normHora(d.hora) || (fr.indexOf('T') > 0 ? normHora(fr.split('T')[1]) : null);
 
     var tarifas = Array.isArray(d.tarifas) ? d.tarifas : (Array.isArray(d.tarifes) ? d.tarifes : []);
-    var reservables = tarifas.filter(function (x) {
-      return x && String(x.estado || x.estat || 'disponible').toLowerCase() !== 'completo';
-    });
-    var adults = reservables
-      .filter(function (x) { return !RE_NINO.test(String(x.id || '') + ' ' + txt(x.nombre, 'es')); })
-      .map(function (x) { return { t: x, p: num(x.precio) }; })
-      .filter(function (x) { return x.p != null && x.p > 0; })
-      .sort(function (a, b) { return a.p - b.p; });
+    var estTar = function (x) { return String((x && (x.estado || x.estat)) || 'disponible').toLowerCase(); };
 
-    var cupo = num(d.cupoWeb), vend = num(d.vendidas);
-    var lliures = num(d.disponibles != null ? d.disponibles : (d.plazasLibres != null ? d.plazasLibres : d.plazas_libres));
-    if (lliures == null && cupo != null) lliures = cupo - (vend || 0);
+    /* "Desde": la tarifa d'adult més barata que es pot comprar.
+       Fora les infantils, les completes i les de preu "a consultar" (0). */
+    var adults = tarifas
+      .filter(function (x) {
+        return x && estTar(x) !== 'completo' && !x.infantil &&
+               !RE_NINO.test(String(x.id || '') + ' ' + txt(x.nombre, 'es'));
+      })
+      .map(function (x) { return num(x.precio); })
+      .filter(function (p) { return p != null && p > 0; })
+      .sort(function (a, b) { return a - b; });
+
+    /* Places — calc idèntic a Plazas.estado() del booking */
+    var cupo      = Number(d.cupoWeb) || 0;
+    var sinLimite = cupo >= SENSE_LIMIT;
+    var libres    = Math.max(0, cupo - (Number(d.vendidas) || 0));
 
     var agotado = estado === 'agotado' ||
-                  (lliures != null && lliures <= 0) ||
-                  (tarifas.length > 0 && reservables.length === 0);
+      (tarifas.length > 0 && tarifas.every(function (x) { return estTar(x) === 'completo'; })) ||
+      (!sinLimite && libres === 0);
 
-    var umbral = num(d.umbralUltimas != null ? d.umbralUltimas : d.umbral_ultimas);
+    var ll = LLINDAR_ULTIMES[tipo];
     var ultimas = !agotado && (
-      d.ultimasPlazas === true || d.ultimas === true ||
-      String(d.estadoPlazas || '').toLowerCase() === 'ultimas' ||
-      (umbral != null && lliures != null && lliures <= umbral) ||
-      (adults[0] && String(adults[0].t.estado || adults[0].t.estat || '').toLowerCase() === 'ultimas')
+      tarifas.some(function (x) { return estTar(x) === 'ultimas'; }) ||
+      (ll != null && !sinLimite && libres > 0 && libres <= ll)
     );
 
     var f = m[1] + '-' + m[2] + '-' + m[3];
@@ -179,7 +189,7 @@
       clau: f + ' ' + (hora || '23:59'),
       titulo: d.titulo,
       duracion: num(d.duracion),
-      desde: adults[0] ? adults[0].p : null,
+      desde: adults.length ? adults[0] : null,
       agotado: agotado,
       ultimas: !!ultimas
     };
