@@ -365,6 +365,26 @@ input, textarea, select { font-family: inherit; }
   }
 }
 .show-badge { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; background: var(--crimson); color: #fff; }
+/* Estats de plaça (js/proximas-fechas.js) · contrastos verificats */
+.show-badge--ok      { background: var(--dorado); color: var(--obsidian); }                               /* 7,57:1 */
+.show-badge--ultimas { background: var(--crimson); color: #fff; }                                         /* 8,10:1 */
+.show-badge--agotado { background: transparent; color: var(--humo-100); border: 1px solid rgba(255,255,255,.25); } /* 10,64:1 */
+.show-table tr.is-agotado td { color: var(--humo-200); }                                                  /* 6,42:1 */
+.show-table .pf-fallback td:first-child { white-space: normal; color: var(--humo-100); }
+.show-table .pf-m { display: none; }
+.pf-m--ult { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #E0566B; } /* 5,39:1 */
+/* Mòbil: la taula cap sencera i el botó Reservar sempre visible (abans quedava fora, darrere l'scroll) */
+@media (max-width: 640px) {
+  .show-table { min-width: 0; }
+  .show-table th, .show-table td { padding: 12px 8px; }
+  .show-table td:last-child { text-align: right; }
+  .show-table:not(.is-live) thead { display: none; }
+  .show-table.is-live th:nth-child(3), .show-table.is-live td:nth-child(3),
+  .show-table.is-live th:nth-child(4), .show-table.is-live td:nth-child(4) { display: none; }
+  .show-table .pf-m { display: inline-block; }
+  .show-table .pf-m--ult { display: block; margin-bottom: 6px; }
+  .show-table-wrap { -webkit-mask-image: none; mask-image: none; }
+}
 
 /* ── Breadcrumb ───────────────────────────────────────── */
 .breadcrumb { font-size: 11px; color: var(--humo-100); letter-spacing: .05em; margin-bottom: 24px; }

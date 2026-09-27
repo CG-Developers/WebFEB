@@ -25,7 +25,7 @@
     <h1 class="hero-title">Tablao<br>Flamenco</h1>
     <p class="hero-sub">Flamenco puro en un ambiente íntimo</p>
     <div class="hero-actions">
-      <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse">Reservar plaza</a>
+      <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse" data-pf-link>Reservar plaza</a>
     <a href="https://wa.me/34662432855?text=Hola!%20Quiero%20reservar%20para%20el%20tablao%20flamenco." target="_blank" rel="noopener" class="btn btn-lg" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)">Reservar por WhatsApp</a>
       <a href="#programa" class="btn btn-lg btn-inv-out">Ver programa</a>
     </div>
@@ -63,30 +63,29 @@
   </div>
 </section>
 
-<!-- Programa -->
+<!-- Programa — files dinàmiques des del booking (js/proximas-fechas.js).
+     La fila genèrica és el que veu Google i el que queda si el booking
+     no respon. NO hi posis dates a mà. -->
 <section class="section section--dark" id="programa">
   <div class="section-inner">
-    <div class="section-label">Próximas fechas</div>
-    <h2 class="section-title">Programa de espectáculos</h2>
-    <p class="section-subtitle">Consulta disponibilidad y reserva tu plaza</p>
+    <div class="section-label" data-i18n="pf.prog_label">Próximas fechas</div>
+    <h2 class="section-title" data-i18n="pf.prog_title">Programa de espectáculos</h2>
+    <p class="section-subtitle" data-i18n="pf.prog_sub">Consulta disponibilidad y reserva tu plaza</p>
     <div class="show-table-wrap">
     <table class="show-table">
       <thead>
         <tr>
-          <th>Fecha</th>
-          <th>Hora</th>
-          <th>Espectáculo</th>
-          <th>Plazas</th>
+          <th data-i18n="pf.th_fecha">Fecha</th>
+          <th data-i18n="pf.th_hora">Hora</th>
+          <th data-i18n="pf.th_espectaculo">Espectáculo</th>
+          <th data-i18n="pf.th_plazas">Plazas</th>
           <th></th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>Consulta el calendario</td>
-          <td>Ej. Vie 20:00 h</td>
-          <td>Flamenco en estado puro</td>
-          <td><span class="show-badge" style="background:#C49A3C;color:#0A0A0A">Ver fechas y reservar</span></td>
-          <td><a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-sm btn-inverse">Reservar</a></td>
+      <tbody data-pf-taula>
+        <tr class="pf-fallback">
+          <td colspan="4" data-i18n="pf.tabla_fallback">Consulta las próximas fechas y la disponibilidad en tiempo real</td>
+          <td><a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-sm btn-inverse" data-i18n="pf.ver_fechas">Ver fechas</a></td>
         </tr>
       </tbody>
     </table>
@@ -188,12 +187,13 @@
   <h2>¿Listo para reservar?</h2>
   <p>Plazas limitadas — asegura la tuya con antelación</p>
   <div class="cta-strip-actions">
-    <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse">Reservar plaza</a>
+    <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse" data-pf-link>Reservar plaza</a>
     <a href="https://wa.me/34662432855?text=Hola!%20Quiero%20reservar%20para%20el%20tablao%20flamenco." target="_blank" rel="noopener" class="btn btn-lg" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)">Reservar por WhatsApp</a>
   </div>
 </div>
 
 <div id="footer-placeholder"></div>
 <script src="js/main.js"></script>
+<script src="js/proximas-fechas.js"></script>
 </body>
 </html>

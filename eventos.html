@@ -12,7 +12,7 @@
 
     <!-- OpenGraph -->
     <meta property="og:title" content="Tablao Flamenco — Flamenco & Events Barcelona">
-    <meta property="og:description" content="Noche única de flamenco puro. 5 artistas, precio especial 19€. C/ Aribau 230, Barcelona.">
+    <meta property="og:description" content="Tablao flamenco en la zona alta de Barcelona: una hora de baile, cante y guitarra con cinco artistas en directo. C/ Aribau 230.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.flamencoeventsbarcelona.com/eventos.html">
     <meta property="og:image" content="https://www.flamencoeventsbarcelona.com/assets/photos/eventos/Tablao.jpg">
@@ -20,40 +20,22 @@
     <meta property="og:locale:alternate" content="en_GB">
     <meta property="og:locale:alternate" content="ca_ES">
 
-    <!-- Schema.org Event -->
+    <!-- Schema.org — el recinte és estàtic; els Event amb data real
+         els injecta js/proximas-fechas.js des del booking -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Event",
-      "name": "Tablao Flamenco Especial — Noche Única",
-      "description": "Una noche única de flamenco puro Precio especial 19€.",
-      "startDate": "2026-09-04T20:00:00+02:00",
-      "endDate": "2026-09-04T21:00:00+02:00",
-      "eventStatus": "https://schema.org/EventScheduled",
-      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-      "location": {
-        "@type": "Place",
-        "name": "Flamenco & Events Barcelona",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Carrer d'Aribau 230",
-          "addressLocality": "Barcelona",
-          "postalCode": "08006",
-          "addressCountry": "ES"
-        }
-      },
+      "@type": "PerformingArtsTheater",
+      "name": "Flamenco & Events Barcelona",
+      "url": "https://www.flamencoeventsbarcelona.com/eventos.html",
       "image": "https://www.flamencoeventsbarcelona.com/assets/photos/eventos/Tablao.jpg",
-      "organizer": {
-        "@type": "Organization",
-        "name": "Flamenco & Events Barcelona",
-        "url": "https://www.flamencoeventsbarcelona.com"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "19",
-        "priceCurrency": "EUR",
-        "availability": "https://schema.org/InStock",
-        "url": "https://www.flamencoeventsbarcelona.com/contacto.html"
+      "telephone": "+34662432855",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Carrer d'Aribau 230",
+        "addressLocality": "Barcelona",
+        "postalCode": "08006",
+        "addressCountry": "ES"
       }
     }
     </script>
@@ -73,38 +55,42 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════
-         FEATURED: TABLAO 10 JULIO
+         PRÒXIM PASSI — dinàmic des del booking (js/proximas-fechas.js)
+         Aquest HTML és la versió genèrica: és el que veu Google i el
+         que queda si el booking no respon. NO hi posis dates a mà:
+         les dates es gestionen al gestor del booking.
          ═══════════════════════════════════════════════════ -->
-    <section class="section section--dark evento-hero-section">
+    <section class="section section--dark evento-hero-section" data-pf-hero>
         <div class="section-inner">
-            <div class="evento-featured-label" data-i18n="eventos.destacado_label">Próximo evento destacado</div>
+            <div class="evento-featured-label" data-pf="label" data-i18n="pf.label_generico">Próximos pases</div>
             <div class="evento-hero">
                 <!-- Left: info -->
                 <div class="evento-hero__info">
                     <div class="evento-date-badge fade-up">
-                        <span class="evento-date-badge__day">04</span>
-                        <span class="evento-date-badge__month">SEP</span>
-                        <span class="evento-date-badge__year">2026</span>
+                        <span class="evento-date-badge__day" data-pf="badge-dia">5</span>
+                        <span class="evento-date-badge__month" data-pf="badge-mes" data-i18n="pf.badge_artistas">Artistas</span>
+                        <span class="evento-date-badge__year" data-pf="badge-any" data-i18n="pf.badge_envivo">En vivo</span>
                     </div>
 
                     <h1 class="evento-hero__title fade-up">
-                        Tablao Flamenco
-                        <em data-i18n="eventos.vuelve">Viernes 4 de septiembre</em>
+                        <span data-i18n="eventos.tablao_title">Tablao Flamenco</span>
+                        <em data-pf="fecha" data-i18n="pf.elige">Elige tu fecha</em>
                     </h1>
 
                     <p class="evento-hero__desc fade-up" data-i18n="eventos.tablao_desc">Una hora de flamenco puro con cinco artistas de primer nivel. Baile, cante y guitarra a un palmo del público en nuestro tablao íntimo de la zona alta de Barcelona.</p>
 
                     <div class="evento-pricing fade-up">
-                        <div class="evento-pricing__special">19<span class="evento-pricing__curr">€</span></div>
-                        <div class="evento-pricing__note" data-i18n="eventos.precio_nota">Entradas desde · Reservas abiertas</div>
+                        <div class="evento-pricing__special" data-pf="precio" hidden></div>
+                        <div class="evento-pricing__note" data-pf="precio-nota" data-i18n="pf.aforo">Aforo reducido · Plazas limitadas</div>
+                        <span class="pf-tag" data-pf="ultimas" hidden></span>
                     </div>
 
                     <div class="evento-meta fade-up">
-                        <div class="evento-meta__item">
+                        <div class="evento-meta__item" data-pf="hora-item" hidden>
                             <span class="evento-meta__icon">&#9201;</span>
                             <div>
                                 <span class="evento-meta__label" data-i18n="eventos.hora_label">Hora</span>
-                                <span class="evento-meta__value" data-i18n="eventos.hora_value">Vie 20:00 h</span>
+                                <span class="evento-meta__value" data-pf="hora"></span>
                             </div>
                         </div>
                         <div class="evento-meta__item">
@@ -118,14 +104,15 @@
                             <span class="evento-meta__icon">&#9834;</span>
                             <div>
                                 <span class="evento-meta__label" data-i18n="eventos.duracion_label">Duración</span>
-                                <span class="evento-meta__value">1 h</span>
+                                <span class="evento-meta__value" data-pf="duracion">1 h</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="hero-actions fade-up" style="margin-top:28px">
-                        <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse" data-i18n="eventos.reservar">Reservar entrada</a>
+                        <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse" data-pf="cta" data-i18n="pf.cta_generico">Ver fechas y reservar</a>
                     </div>
+                    <div class="pf-otras" data-pf="otras" hidden></div>
                 </div>
 
                 <!-- Right: photo -->
@@ -300,12 +287,13 @@
         <h2 data-i18n="eventos.cta_title">¿Quieres vivir el flamenco?</h2>
         <p data-i18n="eventos.cta_sub">Reserva tu entrada y vive una experiencia inolvidable</p>
         <div class="cta-strip-actions">
-            <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse" data-i18n="eventos.cta_btn">Reservar ahora</a>
+            <a href="https://booking.flamencoeventsbarcelona.com" class="btn btn-lg btn-inverse" data-i18n="eventos.cta_btn" data-pf-link>Reservar ahora</a>
             <a href="https://wa.me/34662432855?text=Hola!%20Quiero%20reservar%20para%20el%20tablao%20flamenco." target="_blank" rel="noopener" class="btn btn-lg" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)">WhatsApp</a>
         </div>
     </section>
 
     <div id="footer-placeholder"></div>
     <script src="js/main.js"></script>
+    <script src="js/proximas-fechas.js"></script>
 </body>
 </html>
