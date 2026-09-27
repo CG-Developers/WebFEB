@@ -21,8 +21,6 @@
   var BOOKING    = 'https://booking.flamencoeventsbarcelona.com';
   var API        = BOOKING + '/api/events';
   var TIMEOUT_MS = 3500;
-  var CACHE_KEY  = 'feb-pf-v1';
-  var CACHE_TTL  = 5 * 60 * 1000;          // 5 min: eventos → tablao sense tornar a demanar
   var MAX_TAULA  = 5;
   var MAX_OTRAS  = 3;
   var LOCALE     = { es: 'es-ES', ca: 'ca-ES', en: 'en-GB' };
@@ -98,26 +96,22 @@
   }
 
   /* ── Lectura del catàleg ───────────────────────────────── */
+  /* Sense memòria cau pròpia: cada càrrega de pàgina demana el catàleg
+     i el navegador el revalida (cache: 'no-cache'). Així un canvi de
+     data al gestor es veu a la web en recarregar, igual que al booking
+     (el servidor ja té la seva pròpia memòria de 15 s). */
   function carregar() {
-    try {
-      var c = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
-      if (c && Date.now() - c.t < CACHE_TTL) return Promise.resolve(c.d);
-    } catch (e) {}
-
     if (!window.fetch) return Promise.resolve(null);
     var ctrl = window.AbortController ? new AbortController() : null;
     var tm = ctrl ? setTimeout(function () { ctrl.abort(); }, TIMEOUT_MS) : null;
 
     return fetch(API, {
       credentials: 'omit',
+      cache: 'no-cache',
       headers: { Accept: 'application/json' },
       signal: ctrl ? ctrl.signal : undefined
     })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        if (j) { try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: j })); } catch (e) {} }
-        return j;
-      })
       .catch(function () { return null; })
       .then(function (j) { if (tm) clearTimeout(tm); return j; });
   }
